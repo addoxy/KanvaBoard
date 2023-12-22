@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Sidebar from "./components/Sidebar/Sidebar";
 import "./globals.css";
 import { cn } from "./utils/utils";
 
@@ -17,7 +18,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cn("debug-screens", inter.className)}>{children}</body>
+      <body className={cn("debug-screens flex bg-zinc-900", inter.className)}>
+        <Sidebar />
+        {children}
+      </body>
     </html>
   );
 }
