@@ -21,8 +21,16 @@ export default function page() {
       <Table>
         <ProjectHeader />
         <TableBody>
-          <ProjectCard />
-          <ProjectCard />
+          <ProjectCard
+            name="Project Progress"
+            lastViewed="Nov 10, 2023"
+            href="/"
+          />
+          <ProjectCard
+            name="Hackathon Tasks"
+            lastViewed="Dec 12, 2023"
+            href="/"
+          />
         </TableBody>
       </Table>
     </div>
