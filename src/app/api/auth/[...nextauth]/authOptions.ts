@@ -35,6 +35,10 @@ export const authOptions: NextAuthOptions = {
         return baseUrl + "/dashboard";
       }
 
+      if (url === "/signout") {
+        return baseUrl + "/sign-in";
+      }
+
       return baseUrl;
     },
   },
