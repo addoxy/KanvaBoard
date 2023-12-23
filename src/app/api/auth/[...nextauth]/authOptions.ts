@@ -29,6 +29,14 @@ export const authOptions: NextAuthOptions = {
       console.log("[AUTH] Sign in");
       return true;
     },
+
+    async redirect({ url, baseUrl }) {
+      if (url === "/sign-in") {
+        return baseUrl + "/dashboard";
+      }
+
+      return baseUrl;
+    },
   },
   pages: {
     signIn: "/sign-in",

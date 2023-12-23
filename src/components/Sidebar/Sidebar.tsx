@@ -1,8 +1,14 @@
+"use client";
+
+import { cn } from "@/utils/utils";
+import { usePathname } from "next/navigation";
 import NavHeader from "./NavHeader";
 import NavItem from "./NavItem";
 import ProfileMenu from "./ProfileMenu";
 
-const Sidebar = async () => {
+const Sidebar = () => {
+  const pathname = usePathname();
+
   const links = [
     { name: "Projects", href: "/projects" },
     {
@@ -21,7 +27,12 @@ const Sidebar = async () => {
   ];
 
   return (
-    <aside className="w-50 shrink-0 h-screen bg-zinc-800/20 border border-r border-zinc-700/25">
+    <aside
+      className={cn(
+        "w-50 shrink-0 h-screen bg-zinc-800/20 border border-r border-zinc-700/25",
+        pathname === "/sign-in" && "hidden"
+      )}
+    >
       <nav className="flex flex-col">
         <div className="flex justify-center mb-8 mt-6">
           <ProfileMenu />

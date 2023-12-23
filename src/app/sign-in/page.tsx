@@ -1,28 +1,20 @@
-"use client";
+import Image from "next/image";
 
-import { signIn } from "next-auth/react";
+import logo from "@/../public/logo.png";
+import SignInButton from "./components/SignInButton";
 
 export default function page() {
   return (
-    <div className="flex flex-col">
-      <button
-        onClick={() => signIn("google")}
-        className="w-40 py-4 bg-blue-200 text-zinc-800"
-      >
-        Google
-      </button>
-      <button
-        onClick={() => signIn("github")}
-        className="w-40 py-4 bg-violet-200 text-zinc-800"
-      >
-        Github
-      </button>
-      <button
-        onClick={() => signIn("discord")}
-        className="w-40 py-4 bg-zinc-200 text-zinc-800"
-      >
-        Discord
-      </button>
+    <div className="grid place-items-center w-screen mt-32 mb-48">
+      <Image height={120} width={120} src={logo} alt="logo" className="mb-16" />
+      <div className="w-150 h-120 bg-zinc-800/40 border border-zinc-700 mb-14 pt-14 pb-20 rounded-2xl grid place-items-center">
+        <span className="mb-12 text-zinc-300 text-lg">Sign in with</span>
+        <div className="flex flex-col gap-y-4">
+          <SignInButton name="Google" brand="google" />
+          <SignInButton name="Github" brand="github" />
+          <SignInButton name="Discord" brand="discord" />
+        </div>
+      </div>
     </div>
   );
 }
