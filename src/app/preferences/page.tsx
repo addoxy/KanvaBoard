@@ -1,18 +1,15 @@
 "use client";
 
 import Button from "@/components/Button";
+import Title from "@/components/Title";
 import Toggle from "./components/Toggle";
 
 export default function page() {
   return (
     <div className="flex flex-col px-48">
-      <span className="font-medium text-2xl text-zinc-300 mb-14">
-        Preferences
-      </span>
+      <Title text="Preferences" variant="xl" className="mb-14" />
       <div className="flex flex-col pb-18 border-b border-b-zinc-700/50">
-        <span className="font-medium text-base text-zinc-300 mb-6">
-          General
-        </span>
+        <Title text="General" variant="lg" className="mb-6" />
         <span className="text-sm text-zinc-400 mb-3">Workspace Name</span>
         <input
           className="w-100 text-sm py-2 px-3 text-zinc-300 bg-zinc-800/50 border border-zinc-700/25 rounded-md mb-6"
@@ -25,7 +22,7 @@ export default function page() {
         />
       </div>
       <div className="flex flex-col pt-18 border-b-zinc-700/50">
-        <span className="font-medium text-base text-zinc-300 mb-6">Theme</span>
+        <Title text="Theme" variant="lg" className="mb-6" />
         <div className="flex justify-between">
           <span className="text-sm text-zinc-400 mb-3">Dark Mode</span>
           <Toggle />

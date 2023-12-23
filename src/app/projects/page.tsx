@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/Button";
+import Title from "@/components/Title";
 import { Table, TableBody } from "@/components/otherui/Table";
 import ProjectCard from "./components/ProjectCard";
 import ProjectHeader from "./components/ProjectHeader";
@@ -9,7 +10,7 @@ import SearchBar from "./components/SearchBar";
 export default function page() {
   return (
     <div className="flex flex-col">
-      <span className="font-medium text-2xl text-zinc-300 mb-10">Projects</span>
+      <Title text="Projects" variant="xl" className="mb-10" />
       <div className="flex gap-x-2 items-center mb-20">
         <SearchBar />
         <Button
