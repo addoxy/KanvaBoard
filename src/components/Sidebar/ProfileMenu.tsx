@@ -26,7 +26,7 @@ const ProfileMenu = () => {
             height={24}
             src={session?.user?.image || ""}
             alt="Profile Picture"
-            className="mr-3 border border-zinc-500 w-6 h-6 rounded-lg"
+            className="mr-3 rounded-lg"
           />
           {/* Default name of workspace, can be changed */}
           My Workspace
