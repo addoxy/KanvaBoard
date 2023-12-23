@@ -1,14 +1,15 @@
 "use client";
 
-import avatar from "@/../public/avatar.png";
 import { cn } from "@/utils/utils";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
 import { SignoutIcon } from "../Icons";
 
 const ProfileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: session } = useSession();
 
   return (
     <DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -21,7 +22,9 @@ const ProfileMenu = () => {
         >
           {/* check for user session and retrieve user image */}
           <Image
-            src={avatar}
+            width={24}
+            height={24}
+            src={session?.user?.image || ""}
             alt="Profile Picture"
             className="mr-3 border border-zinc-500 w-6 h-6 rounded-lg"
           />

@@ -2,7 +2,7 @@ import NavHeader from "./NavHeader";
 import NavItem from "./NavItem";
 import ProfileMenu from "./ProfileMenu";
 
-const Sidebar = () => {
+const Sidebar = async () => {
   const links = [
     { name: "Projects", href: "/projects" },
     {

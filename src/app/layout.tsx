@@ -1,3 +1,4 @@
+import Providers from "@/components/Providers";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -19,8 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn("debug-screens flex bg-zinc-900", inter.className)}>
-        <Sidebar />
-        {children}
+        <Providers>
+          <Sidebar />
+          {children}
+        </Providers>
       </body>
     </html>
   );
