@@ -1,7 +1,7 @@
 "use client";
 
 import avatar from "@/../public/avatar.png";
-import { cn } from "@/app/utils/utils";
+import { cn } from "@/utils/utils";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import Image from "next/image";
 import { useState } from "react";

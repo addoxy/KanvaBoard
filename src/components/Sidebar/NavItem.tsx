@@ -1,4 +1,4 @@
-import { cn } from "@/app/utils/utils";
+import { cn } from "@/utils/utils";
 import Link from "next/link";
 import { HashIcon, PreferenceIcon, ProjectIcon, TemplateIcon } from "../Icons";
 
