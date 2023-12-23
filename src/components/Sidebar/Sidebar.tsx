@@ -34,13 +34,13 @@ const Sidebar = () => {
               <ProfileMenu />
             </div>
             <NavHeader name="Tools" className="mb-6 ml-8" />
-            <div className="flex flex-col items-center mb-10">
+            <div className="flex flex-col gap-y-1 items-center mb-10">
               {links.map((link, i) => (
                 <NavItem name={link.name} href={link.href} key={i} />
               ))}
             </div>
             <NavHeader name="Favorites" className="mb-6 ml-8" />
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col gap-y-1 items-center">
               {favorites.map((link, i) => (
                 <NavItem name={link.name} href={link.href} key={i} />
               ))}

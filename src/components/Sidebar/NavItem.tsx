@@ -1,5 +1,8 @@
+"use client";
+
 import { cn } from "@/utils/utils";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { HashIcon, PreferenceIcon, ProjectIcon, TemplateIcon } from "../Icons";
 
 interface NavItemProps {
@@ -10,12 +13,16 @@ interface NavItemProps {
 
 const NavItem = (props: NavItemProps) => {
   const { name, href, className } = props;
+  const pathname = usePathname();
 
   return (
     <Link
       href={href}
       className={cn(
-        "text-zinc-500 hover:text-zinc-300 text-sm font-normal py-3 hover:bg-violet-700 w-44 rounded-lg flex items-center pl-5 pr-3",
+        "text-zinc-500 text-sm font-normal py-3 w-44 rounded-lg flex items-center pl-5 pr-3",
+        pathname === `/${name.toLowerCase()}`
+          ? "bg-violet-700 text-zinc-300"
+          : "hover:bg-zinc-800/50 hover:text-zinc-300",
         className
       )}
     >
