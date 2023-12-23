@@ -14,10 +14,10 @@ const Button = (props: ButtonProps) => {
   return (
     <button
       className={cn(
-        "bg-violet-700 text-zinc-300 text-sm rounded-lg shrink-0",
-        variant === "xl" && "w-44 h-11",
-        variant === "lg" && "w-32 h-8",
-        variant === "md" && "w-22 h-8"
+        "bg-violet-700 text-zinc-300 text-sm shrink-0",
+        variant === "xl" && "w-44 h-11 rounded-lg",
+        variant === "lg" && "w-32 h-8 rounded-lg",
+        variant === "md" && "w-22 h-8 rounded-md"
       )}
       onClick={handleClick}
     >
