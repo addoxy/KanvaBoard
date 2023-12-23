@@ -29,7 +29,7 @@ const SearchBar = () => {
       <Combobox
         as="div"
         onChange={() => router.push("/")}
-        className="rounded-lg h-fit border border-zinc-700/50 bg-zinc-800/50"
+        className="rounded-lg border border-zinc-700/50 bg-zinc-800/50"
       >
         <div className="flex items-center px-4">
           <SearchIcon className="w-4 h-4 text-zinc-500 mr-3" />
