@@ -16,7 +16,7 @@ const Button = (props: ButtonProps) => {
       className={cn(
         "bg-violet-700 text-zinc-300 text-sm shrink-0",
         variant === "xl" && "w-44 h-11 rounded-lg",
-        variant === "lg" && "w-32 h-8 rounded-lg",
+        variant === "lg" && "w-36 h-9 rounded-lg",
         variant === "md" && "w-22 h-8 rounded-md"
       )}
       onClick={handleClick}

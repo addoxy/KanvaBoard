@@ -20,13 +20,15 @@ export const DragIcon = (props: IconProps) => {
   return (
     <svg
       className={cn("fill-current", className)}
-      viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
     >
-      <circle cx="1.33333" cy="1.33333" r="1.33333" />
-      <circle cx="6.66683" cy="1.33333" r="1.33333" />
-      <circle cx="6.66683" cy="6.66671" r="1.33333" />
-      <circle cx="1.33333" cy="6.66671" r="1.33333" />
+      <path
+        fill="currentColor"
+        fill-rule="evenodd"
+        d="M22 8a2 2 0 1 1-4 0a2 2 0 0 1 4 0m0 8a2 2 0 1 1-4 0a2 2 0 0 1 4 0m-8 0a2 2 0 1 1-4 0a2 2 0 0 1 4 0M6 8a2 2 0 1 1-4 0a2 2 0 0 1 4 0m0 8a2 2 0 1 1-4 0a2 2 0 0 1 4 0m8-8a2 2 0 1 1-4 0a2 2 0 0 1 4 0"
+        clip-rule="evenodd"
+      />
     </svg>
   );
 };

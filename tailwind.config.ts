@@ -45,6 +45,12 @@ const config: Config = {
         190: "760px",
         200: "800px",
       },
+      colors: {
+        zinc: {
+          750: "#2e2e32",
+          850: "#1c1c1e",
+        },
+      },
     },
   },
   plugins: [require("tailwindcss-debug-screens")],
