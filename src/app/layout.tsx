@@ -22,7 +22,7 @@ export default function RootLayout({
       <body className={cn("debug-screens flex bg-zinc-900", inter.className)}>
         <Providers>
           <Sidebar />
-          {children}
+          <div className="px-12 py-8">{children}</div>
         </Providers>
       </body>
     </html>
