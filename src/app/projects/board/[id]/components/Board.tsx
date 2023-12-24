@@ -11,6 +11,23 @@ const Board = (props: BoardProps) => {
   const [title, setTitle] = useState(props.title);
   const [columns, setColumns] = useState(props.columns);
 
+  function handleSetColumns() {
+    setColumns([
+      ...columns,
+      {
+        id: "newid",
+        title: "New Column",
+        tasks: [],
+        handleDeleteColumn: handleDeleteColumn,
+      },
+    ]);
+  }
+
+  function handleDeleteColumn(columnId: string) {
+    const filteredColumns = columns.filter((column) => column.id !== columnId);
+    setColumns(filteredColumns);
+  }
+
   return (
     <>
       <div className="flex justify-between items-center mb-16">
@@ -18,7 +35,7 @@ const Board = (props: BoardProps) => {
         <Button
           text="+ New Column"
           variant="lg"
-          handleClick={() => console.log("")}
+          handleClick={handleSetColumns}
         />
       </div>
       <div className="flex gap-x-6">
@@ -28,6 +45,7 @@ const Board = (props: BoardProps) => {
             title={column.title}
             tasks={column.tasks}
             key={column.id}
+            handleDeleteColumn={handleDeleteColumn}
           />
         ))}
       </div>

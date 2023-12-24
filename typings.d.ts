@@ -12,6 +12,7 @@ interface ColumnProps {
   id: string;
   title: String;
   tasks: TaskProps[];
+  handleDeleteColumn: (columnId: string) => void;
 }
 
 interface TaskProps {
