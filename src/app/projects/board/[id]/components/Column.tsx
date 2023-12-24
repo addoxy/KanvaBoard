@@ -7,8 +7,8 @@ const Column = () => {
       <div className="mb-4 w-80 flex items-center justify-between gap-x-4">
         <span className="text-sm text-zinc-300 font-medium">Column Title</span>
         <div className="flex items-center">
-          <button className="hover:bg-zinc-700 rounded-md mr-2 p-1">
-            <DragIcon className="w-4 h-4 text-zinc-300" />
+          <button className="hover:bg-zinc-700 rounded-md mr-2 p-2">
+            <DragIcon className="w-2 h-2 text-zinc-300" />
           </button>
           <button className="hover:bg-zinc-700 rounded-md">
             <CrossIcon className="w-6 h-6 text-zinc-300" />
