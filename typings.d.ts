@@ -10,7 +10,7 @@ interface BoardProps {
 
 interface ColumnProps {
   id: string;
-  title: String;
+  title: string;
   tasks: TaskProps[];
   handleDeleteColumn: (columnId: string) => void;
 }
@@ -18,4 +18,7 @@ interface ColumnProps {
 interface TaskProps {
   id: string;
   content: string;
+  handleEditTask: (taskId: string, newContent: string) => void;
+  handleDeleteTask: (taskId: string) => void;
+  columnTitle: string;
 }

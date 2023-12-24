@@ -24,8 +24,7 @@ const Board = (props: BoardProps) => {
   }
 
   function handleDeleteColumn(columnId: string) {
-    const filteredColumns = columns.filter((column) => column.id !== columnId);
-    setColumns(filteredColumns);
+    setColumns(columns.filter((column) => column.id !== columnId));
   }
 
   return (
