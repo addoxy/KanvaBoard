@@ -36,7 +36,7 @@ const ProfileMenu = () => {
         <DropdownMenu.Content align="center" sideOffset={8}>
           <DropdownMenu.Item className="outline-none">
             <button
-              onClick={() => signOut()}
+              onClick={() => signOut({ callbackUrl: "/signout" })}
               className={
                 "text-zinc-500 font-medium flex items-center text-sm w-44 h-10 shadow-md bg-zinc-800 border border-zinc-700/25 rounded-lg pl-5 hover:bg-zinc-700 hover:text-zinc-400"
               }

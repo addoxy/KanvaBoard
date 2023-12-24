@@ -32,9 +32,8 @@ export const authOptions: NextAuthOptions = {
 
     async redirect({ url, baseUrl }) {
       if (url == "/signout") {
-        return baseUrl + "/sign-in";
+        return baseUrl;
       }
-
       return baseUrl + "/projects";
     },
   },
