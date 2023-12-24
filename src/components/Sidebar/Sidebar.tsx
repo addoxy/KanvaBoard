@@ -25,9 +25,11 @@ const Sidebar = () => {
     { name: "Resume Tracker", href: "/someid" },
   ];
 
+  const restrictedPaths = ["/sign-in", "/"];
+
   return (
     <>
-      {pathname !== "/sign-in" && (
+      {!restrictedPaths.includes(pathname) && (
         <aside className="w-50 shrink-0 h-screen bg-zinc-800/20 border border-r border-zinc-700/25">
           <nav className="flex flex-col">
             <div className="flex justify-center mb-8 mt-6">
