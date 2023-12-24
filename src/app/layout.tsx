@@ -1,5 +1,4 @@
 import Providers from "@/components/Providers";
-import Sidebar from "@/components/Sidebar/Sidebar";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { cn } from "../utils/utils";
@@ -20,10 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn("debug-screens flex bg-zinc-900", inter.className)}>
-        <Providers>
-          <Sidebar />
-          <div className="px-12 py-8 w-full">{children}</div>
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
