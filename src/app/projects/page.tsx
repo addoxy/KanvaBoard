@@ -4,11 +4,32 @@ import Button from "@/components/Button";
 import PageWrapper from "@/components/PageWrapper";
 import Title from "@/components/Title";
 import { Table, TableBody } from "@/components/otherui/Table";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import LoadingSkeleton from "./components/LoadingSkeleton";
 import ProjectCard from "./components/ProjectCard";
 import ProjectHeader from "./components/ProjectHeader";
 import SearchBar from "./components/SearchBar";
 
-export default function page() {
+interface ApiResponse {
+  id: string;
+  title: string;
+  userId: string;
+}
+
+export default function ProjectsPage() {
+  const { data, status } = useQuery({
+    queryKey: ["boards"],
+    queryFn: async () => {
+      const { data } = await axios.get("/api/board?q=boards");
+      return JSON.parse(data) as ApiResponse[];
+    },
+  });
+
+  if (status === "success") {
+    console.log(data);
+  }
+
   return (
     <PageWrapper>
       <div className="flex flex-col">
@@ -21,21 +42,22 @@ export default function page() {
             handleClick={() => console.log("")}
           />
         </div>
-        <Table>
-          <ProjectHeader />
-          <TableBody>
-            <ProjectCard
-              name="Project Progress"
-              lastViewed="Nov 10, 2023"
-              href="/"
-            />
-            <ProjectCard
-              name="Hackathon Tasks"
-              lastViewed="Dec 12, 2023"
-              href="/"
-            />
-          </TableBody>
-        </Table>
+        {status === "pending" && <LoadingSkeleton />}
+        {status === "success" && (
+          <Table>
+            <ProjectHeader />
+            <TableBody>
+              {data.map((project) => (
+                <ProjectCard
+                  name={project.title}
+                  lastViewed="Nov 10, 2023"
+                  href={`/projects/board/${project.id}`}
+                  key={project.id}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </div>
     </PageWrapper>
   );
