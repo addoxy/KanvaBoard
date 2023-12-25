@@ -29,10 +29,6 @@ export default function ProjectsPage() {
     },
   });
 
-  if (status === "success") {
-    console.log(data);
-  }
-
   return (
     <PageWrapper>
       <div className="flex flex-col">
