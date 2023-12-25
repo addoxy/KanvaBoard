@@ -3,17 +3,23 @@
 import { SearchIcon } from "@/components/Icons";
 import { Combobox } from "@headlessui/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
-// interface SearchProps {
-//   courses: Course[];
-//   resultsDisabled?: boolean;
-// }
+interface Projects {
+  id: string;
+  title: string;
+  viewedAt: Date;
+  favorite: boolean;
+}
 
-const SearchBar = () => {
-  // const { courses, resultsDisabled } = props;
+interface SearchProps {
+  projects: Projects[];
+  query: string;
+  setQuery: (query: string) => void;
+}
 
-  const [query, setQuery] = useState<string>("");
+const SearchBar = (props: SearchProps) => {
+  const { projects, query, setQuery } = props;
+
   const router = useRouter();
 
   // const filteredOptions = query
