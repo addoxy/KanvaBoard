@@ -4,7 +4,7 @@ export const todosTemplate = {
     "Efficiently manage your tasks with the To Dos Template. Customize columns, and effortlessly move tasks through different stages with a simple drag-and-drop interface. Stay organized and boost productivity with this intuitive task management tool.",
   columns: [
     {
-      title: "Todos",
+      title: "Todo",
       tasks: [
         { content: "Visit the projects page to see all your projects" },
         { content: "Change your preferences in the preferences page" },
