@@ -57,12 +57,13 @@ model VerificationToken {
 }
 
 model Board {
-  id       String   @id @default(cuid())
-  title    String
-  columns  Column[]
-  User     User?    @relation(fields: [userId], references: [id])
-  userId   String?
-  favorite Boolean  @default(false)
+  id        String   @id @default(cuid())
+  title     String
+  updatedAt DateTime @updatedAt
+  columns   Column[]
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  favorite  Boolean  @default(false)
 }
 
 model Column {
