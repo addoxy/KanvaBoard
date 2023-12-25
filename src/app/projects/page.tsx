@@ -15,9 +15,7 @@ import SearchBar from "./components/SearchBar";
 interface ApiResponse {
   id: string;
   title: string;
-  userId: string;
   viewedAt: Date;
-  favorite: boolean;
 }
 
 export default function ProjectsPage() {
@@ -49,6 +47,7 @@ export default function ProjectsPage() {
             <TableBody>
               {data.map((project) => (
                 <ProjectCard
+                  id={project.id}
                   name={project.title}
                   lastViewed={convertDateFormat(project.viewedAt)}
                   href={`/projects/board/${project.id}`}
