@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cn("debug-screens flex bg-zinc-900", inter.className)}>
+      <body className={cn("debug-screens bg-zinc-900", inter.className)}>
         <Providers>{children}</Providers>
       </body>
     </html>
