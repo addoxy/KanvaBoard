@@ -6,6 +6,7 @@ import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
 import { SignoutIcon } from "../Icons";
+import { ProfileSkeleton } from "./LoadingSkeleton";
 
 const ProfileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,25 +14,27 @@ const ProfileMenu = () => {
 
   return (
     <DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenu.Trigger asChild>
-        <button
-          className={cn(
-            "w-44 hover:bg-zinc-800 flex text-zinc-300 py-2 justify-center rounded-lg text-sm items-center",
-            isOpen && "bg-zinc-800"
-          )}
-        >
-          {/* check for user session and retrieve user image */}
-          <Image
-            width={24}
-            height={24}
-            src={session?.user?.image || ""}
-            alt="Profile Picture"
-            className="mr-3 rounded-lg"
-          />
-          {/* Default name of workspace, can be changed */}
-          My Workspace
-        </button>
-      </DropdownMenu.Trigger>
+      {!session?.user?.image && <ProfileSkeleton />}
+      {session?.user?.image && (
+        <DropdownMenu.Trigger asChild>
+          <button
+            className={cn(
+              "w-44 hover:bg-zinc-800 flex text-zinc-300 py-2 justify-center rounded-lg text-sm items-center",
+              isOpen && "bg-zinc-800"
+            )}
+          >
+            <Image
+              width={24}
+              height={24}
+              src={session?.user?.image || ""}
+              alt="pfp"
+              className="mr-3 rounded-lg"
+            />
+            {/* Default name of workspace, can be changed */}
+            My Workspace
+          </button>
+        </DropdownMenu.Trigger>
+      )}
       <DropdownMenu.Portal>
         <DropdownMenu.Content align="center" sideOffset={8}>
           <DropdownMenu.Item className="outline-none">
