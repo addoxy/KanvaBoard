@@ -4,7 +4,6 @@ const LoadingSkeleton = () => {
       <Rectangle />
       <Rectangle />
       <Rectangle />
-      <Rectangle />
     </div>
   );
 };
