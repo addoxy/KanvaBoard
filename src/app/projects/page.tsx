@@ -1,6 +1,5 @@
 "use client";
 
-import Button from "@/components/Button";
 import PageWrapper from "@/components/PageWrapper";
 import Title from "@/components/Title";
 import { Table, TableBody } from "@/components/otherui/Table";
@@ -8,6 +7,7 @@ import { convertDateFormat } from "@/utils/utils";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
+import CreateBoard from "./components/CreateBoard";
 import LoadingSkeleton from "./components/LoadingSkeleton";
 import ProjectCard from "./components/ProjectCard";
 import ProjectHeader from "./components/ProjectHeader";
@@ -45,11 +45,7 @@ export default function ProjectsPage() {
         {data && (
           <div className="flex gap-x-2 items-center mb-20">
             <SearchBar projects={data} query={query} setQuery={setQuery} />
-            <Button
-              variant="xl"
-              text="+ New Project"
-              handleClick={() => console.log("")}
-            />
+            <CreateBoard />
           </div>
         )}
         {status === "pending" && <LoadingSkeleton />}
