@@ -27,15 +27,17 @@ export async function PUT_BOARDS(req: Request, res: Response) {
 
   if (query === "favorite") {
     const boardId = searchParams.get("boardId");
+    const isFavorited = searchParams.get("isFavorited");
 
-    if (boardId) {
+    if (boardId && isFavorited) {
+      const favoriteStatus = JSON.parse(isFavorited);
       try {
         await prisma.board.update({
           where: {
             id: boardId,
           },
           data: {
-            favorite: true,
+            favorite: !favoriteStatus,
           },
         });
         return SendResponse("Successfully added board to favorites", 200);

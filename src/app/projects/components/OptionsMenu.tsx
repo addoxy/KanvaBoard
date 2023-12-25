@@ -7,10 +7,18 @@ import axios from "axios";
 
 interface OptionsMenuProps {
   id: string;
+  favorite: boolean;
 }
 
 const OptionsMenu = (props: OptionsMenuProps) => {
-  const { id } = props;
+  const { id, favorite } = props;
+
+  const favoriteMutation = useMutation({
+    mutationFn: async () =>
+      await axios.put(
+        `/api/board?q=favorite&boardId=${id}&isFavorited=${favorite}`
+      ),
+  });
 
   return (
     <DropdownMenu.Root>
@@ -21,14 +29,22 @@ const OptionsMenu = (props: OptionsMenuProps) => {
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content
-          className="w-40 bg-zinc-800 border border-zinc-700 rounded-md flex flex-col"
+          className="w-56 bg-zinc-800 border border-zinc-700 rounded-md flex flex-col"
           align="end"
         >
           <DropdownMenu.Item>
-            <OptionItem id={id} type="favorite" text="Add to favorites" />
+            <OptionItem
+              id={id}
+              text={favorite ? "Remove from favorites" : "Add to favorites"}
+              handleClick={() => favoriteMutation.mutate()}
+            />
           </DropdownMenu.Item>
           <DropdownMenu.Item>
-            <OptionItem id={id} type="delete" text="Delete" />
+            <OptionItem
+              id={id}
+              text="Delete"
+              handleClick={() => console.log("")}
+            />
           </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
@@ -39,22 +55,12 @@ const OptionsMenu = (props: OptionsMenuProps) => {
 interface OptionItem {
   id: string;
   text: string;
-  type: "favorite" | "delete";
+  handleClick: () => void;
 }
 
 const OptionItem = (props: OptionItem) => {
-  const { id, type, text } = props;
+  const { id, text, handleClick } = props;
 
-  const favoriteMutation = useMutation({
-    mutationFn: async () =>
-      await axios.put(`/api/board?q=favorite&boardId=${id}`),
-  });
-
-  function handleClick() {
-    if (type === "favorite") {
-      favoriteMutation.mutate();
-    }
-  }
   return (
     <button
       onClick={handleClick}

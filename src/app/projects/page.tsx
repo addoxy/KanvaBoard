@@ -16,6 +16,7 @@ interface ApiResponse {
   id: string;
   title: string;
   viewedAt: Date;
+  favorite: boolean;
 }
 
 export default function ProjectsPage() {
@@ -52,6 +53,7 @@ export default function ProjectsPage() {
                   lastViewed={convertDateFormat(project.viewedAt)}
                   href={`/projects/board/${project.id}`}
                   key={project.id}
+                  favorite={project.favorite}
                 />
               ))}
             </TableBody>

@@ -35,6 +35,7 @@ export async function GET_BOARDS(req: Request, res: Response) {
           id: true,
           title: true,
           viewedAt: true,
+          favorite: true,
         },
       });
 
