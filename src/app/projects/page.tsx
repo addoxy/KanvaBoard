@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import PageWrapper from "@/components/PageWrapper";
 import Title from "@/components/Title";
 import { Table, TableBody } from "@/components/otherui/Table";
+import { convertDateFormat } from "@/utils/utils";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import LoadingSkeleton from "./components/LoadingSkeleton";
@@ -15,6 +16,8 @@ interface ApiResponse {
   id: string;
   title: string;
   userId: string;
+  viewedAt: Date;
+  favorite: boolean;
 }
 
 export default function ProjectsPage() {
@@ -43,14 +46,15 @@ export default function ProjectsPage() {
           />
         </div>
         {status === "pending" && <LoadingSkeleton />}
-        {status === "success" && (
+        {status == "error" && <span>There was an error</span>}
+        {status === "success" && data.length > 0 && (
           <Table>
             <ProjectHeader />
             <TableBody>
               {data.map((project) => (
                 <ProjectCard
                   name={project.title}
-                  lastViewed="Nov 10, 2023"
+                  lastViewed={convertDateFormat(project.viewedAt)}
                   href={`/projects/board/${project.id}`}
                   key={project.id}
                 />

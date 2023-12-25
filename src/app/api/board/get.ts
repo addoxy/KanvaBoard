@@ -31,7 +31,14 @@ export async function GET_BOARDS(req: Request, res: Response) {
         where: {
           userId: prismaUser.id,
         },
+        select: {
+          id: true,
+          title: true,
+          viewedAt: true,
+        },
       });
+
+      console.log(boards);
 
       return SendResponse(JSON.stringify(boards), 200);
     } catch (error) {
