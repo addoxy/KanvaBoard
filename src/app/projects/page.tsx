@@ -41,13 +41,10 @@ export default function ProjectsPage() {
     <PageWrapper>
       <div className="flex flex-col">
         <Title text="Projects" variant="xl" className="mb-10" />
-
-        {data && (
-          <div className="flex gap-x-2 items-center mb-20">
-            <SearchBar projects={data} query={query} setQuery={setQuery} />
-            <CreateBoard />
-          </div>
-        )}
+        <div className="flex gap-x-2 items-center mb-20">
+          <SearchBar isEnabled={status === "success"} setQuery={setQuery} />
+          <CreateBoard isEnabled={status === "success"} />
+        </div>
         {status === "pending" && <LoadingSkeleton />}
         {status == "error" && <span>There was an error</span>}
         {status === "success" && query.length === 0 && data.length > 0 && (

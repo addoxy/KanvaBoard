@@ -3,14 +3,19 @@ import Title from "@/components/Title";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 
-const CreateBoard = () => {
+interface CreateBoardProps {
+  isEnabled: boolean;
+}
+
+const CreateBoard = (props: CreateBoardProps) => {
+  const { isEnabled } = props;
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
-      <Dialog.Trigger asChild>
-        <button className="bg-violet-700 text-zinc-300 text-sm shrink-0 w-44 h-11 rounded-lg">
+      <Dialog.Trigger disabled={!isEnabled} asChild>
+        <button className="bg-violet-700 text-zinc-300 text-sm shrink-0 w-44 h-11 rounded-lg disabled:cursor-not-allowed">
           + New Board
         </button>
       </Dialog.Trigger>
