@@ -6,21 +6,8 @@ import NavHeader from "./NavHeader";
 import NavItem from "./NavItem";
 import ProfileMenu from "./ProfileMenu";
 
-interface ApiResponse {
-  id: string;
-  title: string;
-}
-
 const Sidebar = () => {
-  // const { data, status } = useQuery({
-  //   queryKey: ["favorites"],
-  //   queryFn: async () => {
-  //     const { data } = await axios.get("/api/board?q=favorites");
-  //     return JSON.parse(data) as ApiResponse[];
-  //   },
-  // });
-
-  const { boards, status, refreshBoards } = useGetBoards();
+  const { boards, status } = useGetBoards();
 
   const links = [
     { name: "Projects", href: "/projects" },
