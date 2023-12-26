@@ -14,10 +14,8 @@ export const useCreateBoardMutation = (props: {
   const createBoardMutation = useMutation({
     mutationFn: async () =>
       await axios.post(`/api/board?id=${id}&title=${title}`),
-    onSuccess: () => {
-      refreshBoards();
-      // router.push(`/projects/board/${id}`);
-    },
+    onSuccess: () => refreshBoards(),
+    onSettled: () => router.push(`/projects/board/${id}`),
   });
 
   return createBoardMutation;
