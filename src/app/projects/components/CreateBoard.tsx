@@ -1,5 +1,8 @@
 import { CrossIcon } from "@/components/Icons";
 import Title from "@/components/Title";
+import { useCreateBoardMutation } from "@/lib/mutations";
+import { useGetBoards } from "@/lib/queries";
+import { createId } from "@paralleldrive/cuid2";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 
@@ -11,6 +14,14 @@ const CreateBoard = (props: CreateBoardProps) => {
   const { isEnabled } = props;
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
+
+  const { refreshBoards } = useGetBoards();
+
+  const createBoardMutation = useCreateBoardMutation({
+    id: createId(),
+    title: title,
+    refreshBoards,
+  });
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -41,6 +52,7 @@ const CreateBoard = (props: CreateBoardProps) => {
           </div>
           <button
             onClick={() => {
+              createBoardMutation.mutate();
               setIsOpen(false);
             }}
             className="bg-violet-600 w-full text-zinc-100 text-sm py-3 rounded-lg"
