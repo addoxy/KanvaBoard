@@ -41,3 +41,16 @@ export const useUpdateFavoriteMutation = (props: {
 };
 
 // delete
+export const useDeleteBoardMutation = (props: {
+  id: string;
+  refreshBoards: () => void;
+}) => {
+  const { id, refreshBoards } = props;
+
+  const deleteBoardMutation = useMutation({
+    mutationFn: async () => await axios.delete(`/api/board?id=${id}`),
+    onSuccess: () => refreshBoards(),
+  });
+
+  return deleteBoardMutation;
+};

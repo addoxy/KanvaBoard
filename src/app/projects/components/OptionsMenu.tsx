@@ -1,7 +1,10 @@
 "use client";
 
 import { ThreeDotsIcon } from "@/components/Icons";
-import { useUpdateFavoriteMutation } from "@/lib/mutations";
+import {
+  useDeleteBoardMutation,
+  useUpdateFavoriteMutation,
+} from "@/lib/mutations";
 import { useGetBoards } from "@/lib/queries";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
@@ -14,9 +17,14 @@ const OptionsMenu = (props: OptionsMenuProps) => {
   const { id, favorite } = props;
   const { refreshBoards } = useGetBoards();
 
-  const favoriteMutation = useUpdateFavoriteMutation({
+  const favoriteBoardMutation = useUpdateFavoriteMutation({
     id,
     favorite,
+    refreshBoards,
+  });
+
+  const deleteBoardMutation = useDeleteBoardMutation({
+    id,
     refreshBoards,
   });
 
@@ -36,14 +44,14 @@ const OptionsMenu = (props: OptionsMenuProps) => {
             <OptionItem
               id={id}
               text={favorite ? "Remove from favorites" : "Add to favorites"}
-              handleClick={() => favoriteMutation.mutate()}
+              handleClick={() => favoriteBoardMutation.mutate()}
             />
           </DropdownMenu.Item>
           <DropdownMenu.Item>
             <OptionItem
               id={id}
               text="Delete"
-              handleClick={() => console.log("")}
+              handleClick={() => deleteBoardMutation.mutate()}
             />
           </DropdownMenu.Item>
         </DropdownMenu.Content>

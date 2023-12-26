@@ -71,7 +71,7 @@ model Column {
   title   String
   order   Int
   tasks   Task[]
-  board   Board  @relation(fields: [boardId], references: [id])
+  board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
   boardId String
 }
 
@@ -79,6 +79,6 @@ model Task {
   id       String  @id @default(cuid())
   content  String?
   order    Int
-  column   Column  @relation(fields: [columnId], references: [id])
+  column   Column  @relation(fields: [columnId], references: [id], onDelete: Cascade)
   columnId String
 }
