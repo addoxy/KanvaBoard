@@ -1,10 +1,9 @@
 "use client";
 
 import { ThreeDotsIcon } from "@/components/Icons";
+import { useUpdateFavoriteMutation } from "@/lib/mutations";
 import { useGetBoards } from "@/lib/queries";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 
 interface OptionsMenuProps {
   id: string;
@@ -15,12 +14,10 @@ const OptionsMenu = (props: OptionsMenuProps) => {
   const { id, favorite } = props;
   const { refreshBoards } = useGetBoards();
 
-  const favoriteMutation = useMutation({
-    mutationFn: async () =>
-      await axios.put(
-        `/api/board?q=favorite&boardId=${id}&isFavorited=${favorite}`
-      ),
-    onSuccess: () => refreshBoards(),
+  const favoriteMutation = useUpdateFavoriteMutation({
+    id,
+    favorite,
+    refreshBoards,
   });
 
   return (
