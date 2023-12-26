@@ -2,25 +2,28 @@ interface IconProps {
   className: string;
 }
 
-interface BoardProps {
+interface TaskProps {
   id: string;
-  title: string;
-  columns: ColumnProps[];
+  content: string | null;
+  order: number;
+  columnId: string;
 }
 
 interface ColumnProps {
   id: string;
   title: string;
-  tasks: TaskProps[];
-  handleDeleteColumn?: (columnId: string) => void;
+  order: number;
+  boardId: string;
+  tasks: Task[];
 }
 
-interface TaskProps {
+interface BoardProps {
   id: string;
-  content: string;
-  handleEditTask?: (taskId: string, newContent: string) => void;
-  handleDeleteTask?: (taskId: string) => void;
-  columnTitle?: string;
+  title: string;
+  viewedAt: Date;
+  usedId: string | null;
+  favorite: boolean;
+  columns: Column[];
 }
 
 interface TaskTemplateProps {
