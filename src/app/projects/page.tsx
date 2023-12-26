@@ -89,8 +89,8 @@ export default function ProjectsPage() {
           query.length === 0 &&
           boards &&
           boards.length === 0 && (
-            <div className="text-2xl py-10 font-semibold text-center text-zinc-400">
-              You have no boards yet. Click on the `&apos;+ New Board`&apos;
+            <div className="text-md py-10 text-center text-zinc-400">
+              You have no boards yet. Click on the &quot;+ New Board&quot;
               button to create a new board.
             </div>
           )}
