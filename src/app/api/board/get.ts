@@ -27,40 +27,30 @@ export async function GET_BOARDS(req: Request, res: Response) {
 
   if (query === "boards") {
     try {
-      const allBoards = await prisma.board.findMany({
+      const boards = await prisma.board.findMany({
         where: {
           userId: prismaUser.id,
         },
-        select: {
-          id: true,
-          title: true,
-          viewedAt: true,
-          favorite: true,
+        include: {
+          columns: {
+            orderBy: {
+              order: "asc",
+            },
+            include: {
+              tasks: {
+                orderBy: {
+                  order: "asc",
+                },
+              },
+            },
+          },
         },
       });
 
-      return SendResponse(JSON.stringify(allBoards), 200);
+      return SendResponse(JSON.stringify(boards), 200);
     } catch (error) {
       return SendResponse("Unable to fetch your boards", 500);
     }
   }
-
-  if (query === "favorites") {
-    try {
-      const favoriteBoards = await prisma.board.findMany({
-        where: {
-          userId: prismaUser.id,
-          favorite: true,
-        },
-        select: {
-          id: true,
-          title: true,
-        },
-      });
-
-      return SendResponse(JSON.stringify(favoriteBoards), 200);
-    } catch (error) {
-      return SendResponse("Unable to fetch your boards", 500);
-    }
-  }
+  return SendResponse("You sent an invalid query", 400);
 }

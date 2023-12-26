@@ -14,6 +14,7 @@ interface OptionsMenuProps {
 const OptionsMenu = (props: OptionsMenuProps) => {
   const { id, favorite } = props;
   const { refreshBoards } = useGetBoards();
+
   const favoriteMutation = useMutation({
     mutationFn: async () =>
       await axios.put(
