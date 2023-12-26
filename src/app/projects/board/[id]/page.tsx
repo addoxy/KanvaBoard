@@ -4,6 +4,7 @@ import PageWrapper from "@/components/PageWrapper";
 import { useGetBoards } from "@/lib/queries";
 import { notFound } from "next/navigation";
 import Board from "./components/Board";
+import LoadingSkeleton from "./components/LoadingSkeleton";
 
 interface PageParams {
   id: string;
@@ -21,6 +22,9 @@ export default function BoardPage(props: PageProps) {
   if (status === "success" && !currentBoard) notFound();
 
   return (
-    <PageWrapper>{currentBoard && <Board {...currentBoard} />}</PageWrapper>
+    <PageWrapper>
+      {!currentBoard && <LoadingSkeleton />}
+      {currentBoard && <Board {...currentBoard} />}
+    </PageWrapper>
   );
 }
