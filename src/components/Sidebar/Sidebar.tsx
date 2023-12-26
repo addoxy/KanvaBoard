@@ -1,7 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { useGetBoards } from "@/lib/queries";
 import { FavoriteSkeleton } from "./LoadingSkeleton";
 import NavHeader from "./NavHeader";
 import NavItem from "./NavItem";
@@ -13,13 +12,15 @@ interface ApiResponse {
 }
 
 const Sidebar = () => {
-  const { data, status } = useQuery({
-    queryKey: ["favorites"],
-    queryFn: async () => {
-      const { data } = await axios.get("/api/board?q=favorites");
-      return JSON.parse(data) as ApiResponse[];
-    },
-  });
+  // const { data, status } = useQuery({
+  //   queryKey: ["favorites"],
+  //   queryFn: async () => {
+  //     const { data } = await axios.get("/api/board?q=favorites");
+  //     return JSON.parse(data) as ApiResponse[];
+  //   },
+  // });
+
+  const { boards, status, refreshBoards } = useGetBoards();
 
   const links = [
     { name: "Projects", href: "/projects" },
@@ -49,13 +50,17 @@ const Sidebar = () => {
         <div className="flex flex-col gap-y-1 items-center">
           {status === "pending" && <FavoriteSkeleton />}
           {status === "success" &&
-            data?.map((favorite) => (
-              <NavItem
-                name={favorite.title}
-                href={`/projects/board/${favorite.id}`}
-                key={favorite.id}
-              />
-            ))}
+            boards?.map((board) => {
+              if (board.favorite) {
+                return (
+                  <NavItem
+                    name={board.title}
+                    href={`/projects/board/${board.id}`}
+                    key={board.id}
+                  />
+                );
+              }
+            })}
         </div>
       </nav>
     </aside>

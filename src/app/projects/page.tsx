@@ -3,9 +3,8 @@
 import PageWrapper from "@/components/PageWrapper";
 import Title from "@/components/Title";
 import { Table, TableBody } from "@/components/otherui/Table";
+import { useGetBoards } from "@/lib/queries";
 import { convertDateFormat } from "@/utils/utils";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { useState } from "react";
 import CreateBoard from "./components/CreateBoard";
 import LoadingSkeleton from "./components/LoadingSkeleton";
@@ -13,27 +12,14 @@ import ProjectCard from "./components/ProjectCard";
 import ProjectHeader from "./components/ProjectHeader";
 import SearchBar from "./components/SearchBar";
 
-interface ApiResponse {
-  id: string;
-  title: string;
-  viewedAt: Date;
-  favorite: boolean;
-}
-
 export default function ProjectsPage() {
-  const { data, status } = useQuery({
-    queryKey: ["boards"],
-    queryFn: async () => {
-      const { data } = await axios.get("/api/board?q=boards");
-      return JSON.parse(data) as ApiResponse[];
-    },
-  });
+  const { boards, status, refreshBoards } = useGetBoards();
 
   const [query, setQuery] = useState<string>("");
 
   const filteredOptions = query
-    ? data?.filter((course) =>
-        course.title.toLowerCase().includes(query.toLowerCase())
+    ? boards?.filter((board) =>
+        board.title.toLowerCase().includes(query.toLowerCase())
       )
     : [];
 
@@ -47,32 +33,36 @@ export default function ProjectsPage() {
         </div>
         {status === "pending" && <LoadingSkeleton />}
         {status == "error" && <span>There was an error</span>}
-        {status === "success" && query.length === 0 && data.length > 0 && (
-          <Table>
-            <ProjectHeader />
-            <TableBody>
-              {data.map((project) => (
-                <ProjectCard
-                  id={project.id}
-                  name={project.title}
-                  lastViewed={convertDateFormat(project.viewedAt)}
-                  href={`/projects/board/${project.id}`}
-                  key={project.id}
-                  favorite={project.favorite}
-                />
-              ))}
-            </TableBody>
-          </Table>
-        )}
+        {status === "success" &&
+          query.length === 0 &&
+          boards &&
+          boards.length > 0 && (
+            <Table>
+              <ProjectHeader />
+              <TableBody>
+                {boards.map((project) => (
+                  <ProjectCard
+                    id={project.id}
+                    name={project.title}
+                    lastViewed={convertDateFormat(project.viewedAt)}
+                    href={`/projects/board/${project.id}`}
+                    key={project.id}
+                    favorite={project.favorite}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          )}
         {status === "success" &&
           query.length > 0 &&
           filteredOptions &&
+          boards &&
           filteredOptions?.length > 0 && (
             <Table>
               <ProjectHeader />
               <TableBody>
                 {filteredOptions.map((option, i) => {
-                  const project = data.find(
+                  const project = boards.find(
                     (project) => project.id === option.id
                   );
                   if (!project) {
@@ -95,12 +85,15 @@ export default function ProjectsPage() {
         {status === "success" && query && filteredOptions?.length === 0 && (
           <p className="py-16 text-center text-zinc-400">No results found</p>
         )}
-        {status === "success" && query.length === 0 && data.length === 0 && (
-          <div className="text-2xl py-10 font-semibold text-center text-zinc-400">
-            You have no boards yet. Click on the `&apos;+ New Board`&apos;
-            button to create a new board.
-          </div>
-        )}
+        {status === "success" &&
+          query.length === 0 &&
+          boards &&
+          boards.length === 0 && (
+            <div className="text-2xl py-10 font-semibold text-center text-zinc-400">
+              You have no boards yet. Click on the `&apos;+ New Board`&apos;
+              button to create a new board.
+            </div>
+          )}
       </div>
     </PageWrapper>
   );
