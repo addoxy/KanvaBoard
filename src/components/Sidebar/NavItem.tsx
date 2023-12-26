@@ -20,7 +20,7 @@ const NavItem = (props: NavItemProps) => {
       href={href}
       className={cn(
         "text-zinc-500 text-sm font-normal py-3 w-44 rounded-lg flex items-center pl-5 pr-3",
-        pathname === `/${name.toLowerCase()}`
+        pathname === `${href}`
           ? "bg-violet-700 text-zinc-300"
           : "hover:bg-zinc-800/50 hover:text-zinc-300",
         className
