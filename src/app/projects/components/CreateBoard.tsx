@@ -16,7 +16,7 @@ const CreateBoard = (props: CreateBoardProps) => {
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Trigger disabled={!isEnabled} asChild>
         <button className="bg-violet-700 text-zinc-300 text-sm shrink-0 w-44 h-11 rounded-lg disabled:cursor-not-allowed">
-          + New Board
+          + New Project
         </button>
       </Dialog.Trigger>
       <Dialog.Portal>
