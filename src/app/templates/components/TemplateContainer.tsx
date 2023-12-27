@@ -9,7 +9,7 @@ const TemplateContainer = (props: TemplateContainerProps) => {
 
   return (
     <div className="bg-zinc-950/25 -mx-12 flex justify-center">
-      <div className="flex gap-x-6 pt-7 px-12 pb-11 overflow-x-auto max-w-full">
+      <div className="flex gap-x-6 pt-7 px-12 pb-11 overflow-x-auto max-w-full scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round">
         {columns.map((column, i) => (
           <Column title={column.title} tasks={column.tasks} key={i} />
         ))}

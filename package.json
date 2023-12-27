@@ -28,7 +28,8 @@
     "react-hot-toast": "^2.4.1",
     "react-query": "^3.39.3",
     "react-spinners": "^0.13.8",
-    "tailwind-merge": "^2.2.0"
+    "tailwind-merge": "^2.2.0",
+    "tailwind-scrollbar": "^3.0.5"
   },
   "devDependencies": {
     "@types/node": "^20",

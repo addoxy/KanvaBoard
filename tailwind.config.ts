@@ -53,6 +53,9 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-debug-screens")],
+  plugins: [
+    require("tailwindcss-debug-screens"),
+    require("tailwind-scrollbar"),
+  ],
 };
 export default config;
