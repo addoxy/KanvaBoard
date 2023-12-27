@@ -1,7 +1,7 @@
 import PageWrapper from "@/components/PageWrapper";
 import Title from "@/components/Title";
 import Template from "./components/Template";
-import { todosTemplate } from "./templates";
+import { todosTemplate, weeklyPlannerTemplate } from "./templates";
 
 export default function page() {
   return (
@@ -10,6 +10,8 @@ export default function page() {
         <Title text="Templates" variant="xl" />
       </div>
       <Template {...todosTemplate} />
+      <div className="mt-24"></div>
+      <Template {...weeklyPlannerTemplate} />
     </PageWrapper>
   );
 }

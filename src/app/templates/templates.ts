@@ -26,3 +26,43 @@ export const todosTemplate = {
     },
   ],
 };
+
+export const weeklyPlannerTemplate = {
+  title: "Weekly Planner",
+  description:
+    "Streamline your weekly planning with the Weekly Planner template Visualize your week, prioritize tasks, and boost productivity with this user-friendly template.",
+  columns: [
+    {
+      title: "Done",
+      tasks: [{ content: "All the tasks you've finished" }],
+    },
+    {
+      title: "Monday",
+      tasks: [{ content: "Task for Monday" }],
+    },
+    {
+      title: "Tuesday",
+      tasks: [{ content: "Task for Tuesday" }],
+    },
+    {
+      title: "Wednesday",
+      tasks: [{ content: "Task for Wednesday" }],
+    },
+    {
+      title: "Thursday",
+      tasks: [{ content: "Task for Thursday" }],
+    },
+    {
+      title: "Friday",
+      tasks: [{ content: "Task for Friday" }],
+    },
+    {
+      title: "Saturday",
+      tasks: [{ content: "Task for Saturday" }],
+    },
+    {
+      title: "Sunday",
+      tasks: [{ content: "Task for Sunday" }],
+    },
+  ],
+};

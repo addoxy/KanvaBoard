@@ -6,7 +6,9 @@ const PageWrapper = (props: { children: React.ReactNode }) => {
   return (
     <div className="w-screen h-screen flex">
       <Sidebar />
-      <div className="px-12 py-8 w-full h-screen">{children}</div>
+      <div className="px-12 py-8 w-full h-screen overflow-y-auto">
+        {children}
+      </div>
     </div>
   );
 };
