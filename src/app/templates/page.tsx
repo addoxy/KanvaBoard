@@ -12,6 +12,7 @@ export default function page() {
       <Template {...todosTemplate} />
       <div className="mt-24"></div>
       <Template {...weeklyPlannerTemplate} />
+      <div className="mt-24"></div>
     </PageWrapper>
   );
 }
