@@ -45,6 +45,9 @@ export async function GET_BOARDS(req: Request, res: Response) {
             },
           },
         },
+        orderBy: {
+          viewedAt: "desc",
+        },
       });
 
       return SendResponse(JSON.stringify(boards), 200);
