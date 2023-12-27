@@ -25,7 +25,7 @@ export default function ProjectsPage() {
 
   return (
     <PageWrapper>
-      <div className="flex flex-col">
+      <div className="flex flex-col pb-20">
         <Title text="Projects" variant="xl" className="mb-10" />
         <div className="flex gap-x-2 items-center mb-20">
           <SearchBar isEnabled={status === "success"} setQuery={setQuery} />
