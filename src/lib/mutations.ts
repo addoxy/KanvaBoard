@@ -40,6 +40,21 @@ export const useUpdateFavoriteMutation = (props: {
   return favoriteBoardMutation;
 };
 
+export const useUpdateViewedAtMutation = (props: {
+  id: string;
+  refreshBoards: () => void;
+}) => {
+  const { id, refreshBoards } = props;
+
+  const favoriteBoardMutation = useMutation({
+    mutationFn: async () =>
+      await axios.put(`/api/board?q=recent&boardId=${id}`),
+    onSuccess: () => refreshBoards(),
+  });
+
+  return favoriteBoardMutation;
+};
+
 // delete
 export const useDeleteBoardMutation = (props: {
   id: string;

@@ -19,7 +19,9 @@ export default function BoardPage(props: PageProps) {
   const { boards, status } = useGetBoards();
   const currentBoard = boards?.find((board) => board.id === params.id);
 
-  if (status === "success" && !currentBoard) notFound();
+  if (status === "success" && !currentBoard) {
+    notFound();
+  }
 
   return (
     <PageWrapper>

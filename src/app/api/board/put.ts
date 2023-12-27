@@ -47,5 +47,28 @@ export async function PUT_BOARDS(req: Request, res: Response) {
     }
     return SendResponse("You did not provide a board ID", 400);
   }
+
+  if (query === "recent") {
+    const boardId = searchParams.get("boardId");
+
+    if (boardId) {
+      try {
+        await prisma.board.update({
+          where: {
+            id: boardId,
+          },
+          data: {
+            viewedAt: new Date(),
+          },
+        });
+        return SendResponse(
+          "Successfully updated the view date of the board",
+          200
+        );
+      } catch (error) {
+        return SendResponse("You did not provide a board ID", 400);
+      }
+    }
+  }
   return SendResponse("You did not provide a valid query", 400);
 }
