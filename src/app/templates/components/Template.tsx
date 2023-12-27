@@ -25,7 +25,9 @@ const Template = (props: TemplateProps) => {
         <Button
           text="Get Template"
           variant="lg"
-          handleClick={() => createTemplateMutation.mutate()}
+          handleClick={() => {
+            createTemplateMutation.mutate();
+          }}
         />
       </div>
       <TemplateDescription>{description}</TemplateDescription>

@@ -55,5 +55,41 @@ export async function GET_BOARDS(req: Request, res: Response) {
       return SendResponse("Unable to fetch your boards", 500);
     }
   }
+
+  if (query === "board") {
+    const boardId = searchParams.get("boardId");
+
+    if (boardId) {
+      try {
+        const boards = await prisma.board.findMany({
+          where: {
+            id: boardId,
+          },
+          include: {
+            columns: {
+              orderBy: {
+                order: "asc",
+              },
+              include: {
+                tasks: {
+                  orderBy: {
+                    order: "asc",
+                  },
+                },
+              },
+            },
+          },
+        });
+
+        return SendResponse(JSON.stringify(boards), 200);
+      } catch (error) {
+        return SendResponse("Unable to fetch board", 500);
+      }
+    }
+
+    if (!boardId) {
+      return SendResponse("You did not send a board ID", 400);
+    }
+  }
   return SendResponse("You sent an invalid query", 400);
 }

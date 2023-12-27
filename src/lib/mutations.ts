@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 
 // create
 export const useCreateBoardMutation = (props: {
@@ -9,13 +8,11 @@ export const useCreateBoardMutation = (props: {
   refreshBoards: () => void;
 }) => {
   const { title, id, refreshBoards } = props;
-  const router = useRouter();
 
   const createBoardMutation = useMutation({
     mutationFn: async () =>
       await axios.post(`/api/board?q=create&id=${id}&title=${title}`),
     onSuccess: () => refreshBoards(),
-    onSettled: () => router.push(`/projects/board/${id}`),
   });
 
   return createBoardMutation;
@@ -27,13 +24,11 @@ export const useCreateTemplateMutation = (props: {
   refreshBoards: () => void;
 }) => {
   const { id, type, refreshBoards } = props;
-  const router = useRouter();
 
   const createTemplateMutation = useMutation({
     mutationFn: async () =>
       await axios.post(`/api/board?q=template&type=${type}&boardId=${id}`),
     onSuccess: () => refreshBoards(),
-    onSettled: () => router.push(`/projects/board/${id}`),
   });
 
   return createTemplateMutation;
