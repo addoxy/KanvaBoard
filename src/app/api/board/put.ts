@@ -70,5 +70,6 @@ export async function PUT_BOARDS(req: Request, res: Response) {
       }
     }
   }
+
   return SendResponse("You did not provide a valid query", 400);
 }

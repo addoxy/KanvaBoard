@@ -13,12 +13,30 @@ export const useCreateBoardMutation = (props: {
 
   const createBoardMutation = useMutation({
     mutationFn: async () =>
-      await axios.post(`/api/board?id=${id}&title=${title}`),
+      await axios.post(`/api/board?q=create&id=${id}&title=${title}`),
     onSuccess: () => refreshBoards(),
     onSettled: () => router.push(`/projects/board/${id}`),
   });
 
   return createBoardMutation;
+};
+
+export const useCreateTemplateMutation = (props: {
+  id: string;
+  type: "todos" | "weeklyPlanner";
+  refreshBoards: () => void;
+}) => {
+  const { id, type, refreshBoards } = props;
+  const router = useRouter();
+
+  const createTemplateMutation = useMutation({
+    mutationFn: async () =>
+      await axios.post(`/api/board?q=template&type=${type}&boardId=${id}`),
+    onSuccess: () => refreshBoards(),
+    onSettled: () => router.push(`/projects/board/${id}`),
+  });
+
+  return createTemplateMutation;
 };
 
 // update

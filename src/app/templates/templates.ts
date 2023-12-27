@@ -1,4 +1,5 @@
 export const todosTemplate = {
+  type: "todos",
   title: "To Dos",
   description:
     "Efficiently manage your tasks with the To Dos Template. Customize columns, and effortlessly move tasks through different stages with a simple drag-and-drop interface. Stay organized and boost productivity with this intuitive task management tool.",
@@ -28,6 +29,7 @@ export const todosTemplate = {
 };
 
 export const weeklyPlannerTemplate = {
+  type: "weeklyPlanner",
   title: "Weekly Planner",
   description:
     "Streamline your weekly planning with the Weekly Planner template Visualize your week, prioritize tasks, and boost productivity with this user-friendly template.",

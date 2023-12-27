@@ -36,6 +36,7 @@ interface ColumnTemplateProps {
 }
 
 interface TemplateProps {
+  type: "todos" | "weeklyPlanner";
   title: string;
   description: string;
   columns: ColumnTemplateProps[];
