@@ -12,7 +12,9 @@ export const useCreateBoardMutation = (props: {
   const createBoardMutation = useMutation({
     mutationFn: async () =>
       await axios.post(`/api/board?q=create&id=${id}&title=${title}`),
-    onSuccess: () => refreshBoards(),
+    onSuccess: () => {
+      refreshBoards();
+    },
   });
 
   return createBoardMutation;
@@ -28,7 +30,9 @@ export const useCreateTemplateMutation = (props: {
   const createTemplateMutation = useMutation({
     mutationFn: async () =>
       await axios.post(`/api/board?q=template&type=${type}&boardId=${id}`),
-    onSuccess: () => refreshBoards(),
+    onSuccess: () => {
+      refreshBoards();
+    },
   });
 
   return createTemplateMutation;
