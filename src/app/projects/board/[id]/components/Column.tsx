@@ -42,7 +42,7 @@ const Column = (props: ColumnProps) => {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col first-of-type:pl-12 last-of-type:pr-12">
       <div className="mb-4 w-80 flex items-center justify-between gap-x-4">
         <span className="text-sm text-zinc-300 font-medium">{title}</span>
         <div className="flex items-center">
