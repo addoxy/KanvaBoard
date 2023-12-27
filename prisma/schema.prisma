@@ -46,6 +46,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   boards        Board[]
+  workspaceName String    @default("My Workspace")
 }
 
 model VerificationToken {

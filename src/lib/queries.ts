@@ -25,6 +25,22 @@ interface Board {
   columns: Column[];
 }
 
+export const useGetWorkspaceName = () => {
+  const {
+    data: workspaceName,
+    status,
+    refetch: refreshWorkspaceName,
+  } = useQuery({
+    queryKey: ["workspace"],
+    queryFn: async () => {
+      const { data } = await axios.get("/api/user?q=workspace");
+      return JSON.parse(data) as string;
+    },
+  });
+
+  return { workspaceName, status, refreshWorkspaceName };
+};
+
 export const useGetBoards = () => {
   const {
     data: boards,

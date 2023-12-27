@@ -1,5 +1,6 @@
 "use client";
 
+import { useGetWorkspaceName } from "@/lib/queries";
 import { cn } from "@/utils/utils";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { signOut, useSession } from "next-auth/react";
@@ -11,11 +12,12 @@ import { ProfileSkeleton } from "./LoadingSkeleton";
 const ProfileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
+  const { workspaceName, status } = useGetWorkspaceName();
 
   return (
     <DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
-      {!session?.user?.image && <ProfileSkeleton />}
-      {session?.user?.image && (
+      {(!session?.user?.image || status === "pending") && <ProfileSkeleton />}
+      {session?.user?.image && status === "success" && (
         <DropdownMenu.Trigger asChild>
           <button
             className={cn(
@@ -30,8 +32,7 @@ const ProfileMenu = () => {
               alt="pfp"
               className="mr-3 rounded-lg"
             />
-            {/* Default name of workspace, can be changed */}
-            My Workspace
+            {workspaceName}
           </button>
         </DropdownMenu.Trigger>
       )}

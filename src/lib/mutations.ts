@@ -22,6 +22,21 @@ export const useCreateBoardMutation = (props: {
 };
 
 // update
+export const useUpdateWorkspaceNameMutation = (props: {
+  newName: string;
+  refreshWorkspaceName: () => void;
+}) => {
+  const { newName, refreshWorkspaceName } = props;
+
+  const favoriteBoardMutation = useMutation({
+    mutationFn: async () =>
+      await axios.put(`/api/user?q=workspace&newName=${newName}`),
+    onSuccess: () => refreshWorkspaceName(),
+  });
+
+  return favoriteBoardMutation;
+};
+
 export const useUpdateFavoriteMutation = (props: {
   id: string;
   favorite: boolean;
