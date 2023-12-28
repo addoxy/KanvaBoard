@@ -1,7 +1,7 @@
 import { cn } from "@/utils/utils";
 
 interface SpacerProps {
-  variant: "sm" | "md" | "lg" | "xl";
+  variant: "xs" | "sm" | "md" | "lg" | "xl";
 }
 
 const Spacer = (props: SpacerProps) => {
@@ -9,6 +9,7 @@ const Spacer = (props: SpacerProps) => {
   return (
     <div
       className={cn(
+        variant === "xs" && "mt-6",
         variant === "sm" && "mt-10",
         variant === "md" && "mt-16",
         variant === "lg" && "mt-20",

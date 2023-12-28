@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/Button";
+import Input from "@/components/Input";
 import Spacer from "@/components/Spacer";
 import Title from "@/components/Title";
 import { useUpdateWorkspaceNameMutation } from "@/lib/mutations";
@@ -26,11 +27,14 @@ const GeneralSection = () => {
         <span className="text-sm text-zinc-400 mb-3">Workspace Name</span>
         {status === "pending" && <LoadingInput />}
         {status === "success" && (
-          <input
-            className="w-100 text-sm py-2 px-3 text-zinc-300 bg-zinc-800/50 border border-zinc-700/25 rounded-md mb-6"
-            defaultValue={workspaceName}
-            onChange={(e) => setNewName(e.target.value)}
-          />
+          <>
+            <Input
+              variant="lg"
+              defaultValue={workspaceName}
+              setValue={setNewName}
+            />
+            <Spacer variant="xs" />
+          </>
         )}
         <Button
           variant="md"

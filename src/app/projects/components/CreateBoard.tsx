@@ -1,4 +1,5 @@
 import { CrossIcon } from "@/components/Icons";
+import Input from "@/components/Input";
 import Title from "@/components/Title";
 import { useCreateBoardMutation } from "@/lib/mutations";
 import { useGetBoards } from "@/lib/queries";
@@ -42,11 +43,7 @@ const CreateBoard = (props: CreateBoardProps) => {
           </div>
           <div className="flex flex-col gap-y-3 mb-6">
             <span className="text-zinc-500 font-medium">Name</span>
-            <input
-              onChange={(e) => setTitle(e.target.value)}
-              value={title}
-              className="bg-zinc-700/25 border border-zinc-700/50 text-zinc-300 text-sm rounded-lg px-4 py-2 w-full focus:outline-zinc-600 focus:outline-none"
-            />
+            <Input variant="full" value={title} setValue={setTitle} />
           </div>
           <button
             onClick={() => {
