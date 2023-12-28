@@ -5,7 +5,7 @@ import { cn } from "@/utils/utils";
 interface ButtonProps {
   variant: "md" | "lg" | "xl";
   text: string;
-  handleClick: () => void;
+  handleClick?: () => void;
 }
 
 const Button = (props: ButtonProps) => {
