@@ -1,11 +1,4 @@
-interface Template {
-  type: "todos" | "weeklyPlanner";
-  title: string;
-  description: string;
-  columns: ColumnTemplateProps[];
-}
-
-export const todosTemplate: Template = {
+export const todosTemplate: TemplateProps = {
   type: "todos",
   title: "To Dos",
   description:
@@ -35,7 +28,7 @@ export const todosTemplate: Template = {
   ],
 };
 
-export const weeklyPlannerTemplate: Template = {
+export const weeklyPlannerTemplate: TemplateProps = {
   type: "weeklyPlanner",
   title: "Weekly Planner",
   description:
