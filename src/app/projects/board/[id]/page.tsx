@@ -1,7 +1,7 @@
 "use client";
 
 import PageWrapper from "@/components/PageWrapper";
-import { useGetBoards } from "@/lib/queries";
+import { useGetBoard } from "@/lib/queries";
 import { notFound } from "next/navigation";
 import Board from "./components/Board";
 import LoadingSkeleton from "./components/LoadingSkeleton";
@@ -16,17 +16,17 @@ interface PageProps {
 
 export default function BoardPage(props: PageProps) {
   const { params } = props;
-  const { boards, status } = useGetBoards();
-  const currentBoard = boards?.find((board) => board.id === params.id);
+  const id = params.id;
+  const { board, status } = useGetBoard({ id });
 
-  if (status === "success" && !currentBoard) {
+  if (status === "success" && !board) {
     notFound();
   }
 
   return (
     <PageWrapper>
-      {!currentBoard && <LoadingSkeleton />}
-      {currentBoard && <Board {...currentBoard} />}
+      {status === "pending" && <LoadingSkeleton />}
+      {status === "success" && board && <Board {...board} />}
     </PageWrapper>
   );
 }

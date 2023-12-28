@@ -15,6 +15,7 @@ interface ProjectCardProps {
 const ProjectCard = (props: ProjectCardProps) => {
   const { id, name, lastViewed, href, favorite } = props;
   const { refreshBoards } = useGetBoards();
+
   const updateViewedAtMutation = useUpdateViewedAtMutation({
     id,
     refreshBoards,

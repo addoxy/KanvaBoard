@@ -2,7 +2,6 @@ import { CrossIcon } from "@/components/Icons";
 import Title from "@/components/Title";
 import { useCreateBoardMutation } from "@/lib/mutations";
 import { useGetBoards } from "@/lib/queries";
-import { createId } from "@paralleldrive/cuid2";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 
@@ -18,7 +17,6 @@ const CreateBoard = (props: CreateBoardProps) => {
   const { refreshBoards } = useGetBoards();
 
   const createBoardMutation = useCreateBoardMutation({
-    id: createId(),
     title: title,
     refreshBoards,
   });

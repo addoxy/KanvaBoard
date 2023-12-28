@@ -31,19 +31,11 @@ export async function GET_BOARDS(req: Request, res: Response) {
         where: {
           userId: prismaUser.id,
         },
-        include: {
-          columns: {
-            orderBy: {
-              order: "asc",
-            },
-            include: {
-              tasks: {
-                orderBy: {
-                  order: "asc",
-                },
-              },
-            },
-          },
+        select: {
+          id: true,
+          title: true,
+          favorite: true,
+          viewedAt: true,
         },
         orderBy: {
           viewedAt: "desc",
@@ -61,7 +53,7 @@ export async function GET_BOARDS(req: Request, res: Response) {
 
     if (boardId) {
       try {
-        const boards = await prisma.board.findMany({
+        const board = await prisma.board.findUnique({
           where: {
             id: boardId,
           },
@@ -81,7 +73,7 @@ export async function GET_BOARDS(req: Request, res: Response) {
           },
         });
 
-        return SendResponse(JSON.stringify(boards), 200);
+        return SendResponse(JSON.stringify(board), 200);
       } catch (error) {
         return SendResponse("Unable to fetch board", 500);
       }

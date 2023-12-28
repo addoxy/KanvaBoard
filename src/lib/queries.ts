@@ -64,10 +64,10 @@ export const useGetBoards = () => {
 export const useGetBoard = (props: { id: string }) => {
   const { id } = props;
   const { data: board, status } = useQuery({
-    queryKey: ["boards"],
+    queryKey: ["board", id],
     queryFn: async () => {
       const { data } = await axios.get(`/api/board?q=board&boardId=${id}`);
-      return JSON.parse(data) as Board[];
+      return JSON.parse(data) as Board;
     },
   });
 

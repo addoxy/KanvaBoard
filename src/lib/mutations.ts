@@ -1,17 +1,23 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 // create
 export const useCreateBoardMutation = (props: {
-  id: string;
   title: string;
   refreshBoards: () => void;
 }) => {
-  const { title, id, refreshBoards } = props;
+  const { title, refreshBoards } = props;
+  const router = useRouter();
 
   const createBoardMutation = useMutation({
-    mutationFn: async () =>
-      await axios.post(`/api/board?q=create&id=${id}&title=${title}`),
+    mutationFn: async () => {
+      const { data } = await axios.post(`/api/board?q=create&title=${title}`);
+
+      if (data) {
+        router.push(`/projects/board/${JSON.parse(data)}`);
+      }
+    },
     onSuccess: () => {
       refreshBoards();
     },
@@ -21,15 +27,20 @@ export const useCreateBoardMutation = (props: {
 };
 
 export const useCreateTemplateMutation = (props: {
-  id: string;
   type: "todos" | "weeklyPlanner";
   refreshBoards: () => void;
 }) => {
-  const { id, type, refreshBoards } = props;
+  const { type, refreshBoards } = props;
+  const router = useRouter();
 
   const createTemplateMutation = useMutation({
-    mutationFn: async () =>
-      await axios.post(`/api/board?q=template&type=${type}&boardId=${id}`),
+    mutationFn: async () => {
+      const { data } = await axios.post(`/api/board?q=template&type=${type}`);
+
+      if (data) {
+        router.push(`/projects/board/${JSON.parse(data)}`);
+      }
+    },
     onSuccess: () => {
       refreshBoards();
     },

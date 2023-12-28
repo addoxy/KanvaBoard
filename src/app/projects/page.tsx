@@ -13,7 +13,7 @@ import ProjectHeader from "./components/ProjectHeader";
 import SearchBar from "./components/SearchBar";
 
 export default function ProjectsPage() {
-  const { boards, status, refreshBoards } = useGetBoards();
+  const { boards, status } = useGetBoards();
 
   const [query, setQuery] = useState<string>("");
 

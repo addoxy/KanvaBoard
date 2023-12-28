@@ -27,19 +27,17 @@ export async function POST_BOARDS(req: Request, res: Response) {
 
   if (query === "create") {
     const title = searchParams.get("title");
-    const id = searchParams.get("id");
 
-    if (title && id) {
+    if (title) {
       try {
-        await prisma.board.create({
+        const newBoard = await prisma.board.create({
           data: {
-            id: id,
             title: title,
             userId: prismaUser.id,
           },
         });
 
-        return SendResponse("Successfully created a new project", 200);
+        return SendResponse(JSON.stringify(newBoard.id), 200);
       } catch (error) {
         return SendResponse("Unable to create a project", 500);
       }
@@ -48,9 +46,8 @@ export async function POST_BOARDS(req: Request, res: Response) {
 
   if (query === "template") {
     const template = searchParams.get("type");
-    const boardId = searchParams.get("boardId");
 
-    if ((template === "todos" || template === "weeklyPlanner") && boardId) {
+    if (template === "todos" || template === "weeklyPlanner") {
       const todoTemplate = {
         title: "To Dos",
         columns: [
@@ -111,9 +108,8 @@ export async function POST_BOARDS(req: Request, res: Response) {
         template === "todos" ? todoTemplate : weeklyPlannerTemplate;
 
       try {
-        await prisma.board.create({
+        const newBoard = await prisma.board.create({
           data: {
-            id: boardId,
             userId: prismaUser.id,
             title: requiredTemplate.title,
             columns: {
@@ -124,14 +120,10 @@ export async function POST_BOARDS(req: Request, res: Response) {
           },
         });
 
-        return SendResponse("Successfully created a template Board", 200);
+        return SendResponse(JSON.stringify(newBoard.id), 200);
       } catch (error) {
         return SendResponse("Unable to create a template Board", 500);
       }
-    }
-
-    if (!boardId) {
-      return SendResponse("You did not provide a board ID", 400);
     }
 
     return SendResponse("You did not provide a valid template", 400);

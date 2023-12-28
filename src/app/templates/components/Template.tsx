@@ -4,16 +4,16 @@ import Button from "@/components/Button";
 import Title from "@/components/Title";
 import { useCreateTemplateMutation } from "@/lib/mutations";
 import { useGetBoards } from "@/lib/queries";
-import { createId } from "@paralleldrive/cuid2";
+import { useRouter } from "next/navigation";
 import TemplateContainer from "./TemplateContainer";
 
 const Template = (props: TemplateProps) => {
   const { type, title, description, columns } = props;
+  const router = useRouter();
 
   const { refreshBoards } = useGetBoards();
 
   const createTemplateMutation = useCreateTemplateMutation({
-    id: createId(),
     type,
     refreshBoards,
   });
