@@ -14,7 +14,7 @@ const Textarea = (props: TextareaProps) => {
       defaultValue={defaultValue}
       value={value}
       onChange={(e) => setValue(e.target.value)}
-      className="resize-none bg-zinc-700/25 border border-zinc-700/50 text-zinc-300 text-sm px-5 py-4 rounded-lg focus:outline-zinc-600 focus:outline-none"
+      className="resize-none text-zinc-300 text-sm px-5 py-4 border-zinc-700/30 border bg-zinc-800/40 rounded-md focus:outline-zinc-700 focus:outline-none"
     />
   );
 };

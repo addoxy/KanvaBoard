@@ -16,11 +16,11 @@ const Button = (props: ButtonProps) => {
     <button
       disabled={disabled}
       className={cn(
-        "bg-violet-700 text-zinc-300 text-sm shrink-0",
+        "bg-violet-700 text-zinc-300 text-sm shrink-0 font-medium",
         variant === "full" && "w-full rounded-lg h-10",
-        variant === "delete" && "w-full rounded-lg h-10 bg-zinc-600",
-        variant === "xl" && "w-44 h-11 rounded-lg font-medium",
-        variant === "lg" && "w-36 h-9 rounded-lg font-medium",
+        variant === "delete" && "w-full rounded-lg h-10 bg-zinc-700",
+        variant === "xl" && "w-44 h-11 rounded-lg",
+        variant === "lg" && "w-36 h-9 rounded-lg",
         variant === "md" && "w-22 h-8 rounded-md"
       )}
       onClick={handleClick}

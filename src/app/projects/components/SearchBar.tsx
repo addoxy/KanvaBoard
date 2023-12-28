@@ -16,7 +16,7 @@ const SearchBar = (props: SearchProps) => {
       <Combobox
         as="div"
         disabled={!isEnabled}
-        className="rounded-lg border border-zinc-700/50 bg-zinc-800/50"
+        className="rounded-lg border border-zinc-700/40 bg-zinc-800/40"
       >
         <div className="flex items-center px-4">
           <SearchIcon className="w-4 h-4 text-zinc-500 mr-3" />

@@ -13,7 +13,7 @@ const Input = (props: InputProps) => {
   return (
     <input
       className={cn(
-        "text-sm py-2 px-3 text-zinc-300 bg-zinc-800/50 border border-zinc-700/25 rounded-md focus:outline-zinc-600 focus:outline-none",
+        "text-sm py-2 px-3 text-zinc-300 border-zinc-700/30 border bg-zinc-800/40 rounded-md focus:outline-zinc-700 focus:outline-none",
         variant === "full" && "w-full",
         variant === "lg" && "w-100",
         variant === "xl" && "w-120"

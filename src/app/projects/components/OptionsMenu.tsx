@@ -32,12 +32,12 @@ const OptionsMenu = (props: OptionsMenuProps) => {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
         <button>
-          <ThreeDotsIcon className="w-6 h-6 text-zinc-300" />
+          <ThreeDotsIcon className="w-6 h-6 text-zinc-400" />
         </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content
-          className="w-50 bg-zinc-800 border border-zinc-700 rounded-md flex flex-col"
+          className="w-50 bg-zinc-925 border border-zinc-800 rounded-md flex flex-col"
           align="end"
         >
           <DropdownMenu.Item>
@@ -72,7 +72,7 @@ const OptionItem = (props: OptionItem) => {
   return (
     <button
       onClick={handleClick}
-      className="h-11 px-4 text-sm w-full text-left text-zinc-400 hover:bg-zinc-700 hover:text-zinc-300"
+      className="h-11 px-4 text-sm w-full text-left text-zinc-400 hover:bg-zinc-800 hover:text-zinc-300"
     >
       {text}
     </button>
