@@ -1,6 +1,8 @@
 "use client";
 
 import { CrossIcon } from "@/components/Icons";
+import Spacer from "@/components/Spacer";
+import Textarea from "@/components/Textarea";
 import Title from "@/components/Title";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
@@ -30,12 +32,8 @@ const Task = (props: TaskProps) => {
               <CrossIcon className="w-8 h-8 text-zinc-300" />
             </button>
           </div>
-          <textarea
-            rows={3}
-            onChange={(e) => setContent(e.target.value)}
-            value={content}
-            className="resize-none bg-zinc-700/25 border border-zinc-700/50 text-zinc-300 mb-6 text-sm px-5 py-4 rounded-lg focus:outline-zinc-600 focus:outline-none"
-          />
+          <Textarea rows={3} value={content} setValue={setContent} />
+          <Spacer variant="xs" />
           <div className="flex justify-between">
             <button
               onClick={() => {
