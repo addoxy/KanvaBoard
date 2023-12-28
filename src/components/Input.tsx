@@ -12,8 +12,10 @@ const Input = (props: InputProps) => {
 
   return (
     <input
+      autoFocus
+      placeholder="Untitled"
       className={cn(
-        "text-sm py-2 px-3 text-zinc-300 border-zinc-700/30 border bg-zinc-800/40 rounded-md focus:outline-zinc-700 focus:outline-none",
+        "text-sm py-2 px-3 text-zinc-300 border-zinc-700/30 border bg-zinc-800/40 rounded-md focus:outline-zinc-700 focus:outline-none placeholder:text-zinc-600",
         variant === "full" && "w-full",
         variant === "lg" && "w-100",
         variant === "xl" && "w-120"
