@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/Button";
+import Spacer from "@/components/Spacer";
 import Title from "@/components/Title";
 import { useUpdateWorkspaceNameMutation } from "@/lib/mutations";
 import { useGetWorkspaceName } from "@/lib/queries";
@@ -17,9 +18,10 @@ const GeneralSection = () => {
   });
 
   return (
-    <>
-      <Title text="Preferences" variant="xl" className="mb-14" />
-      <div className="flex flex-col pb-18 border-b border-b-zinc-700/50">
+    <div className="flex flex-col">
+      <Title text="Preferences" variant="xl" />
+      <Spacer variant="lg" />
+      <div className="flex flex-col">
         <Title text="General" variant="lg" className="mb-6" />
         <span className="text-sm text-zinc-400 mb-3">Workspace Name</span>
         {status === "pending" && <LoadingInput />}
@@ -36,7 +38,7 @@ const GeneralSection = () => {
           handleClick={() => updateWorkspaceNameMutation.mutate()}
         />
       </div>
-    </>
+    </div>
   );
 };
 
