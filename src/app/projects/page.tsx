@@ -90,7 +90,7 @@ export default function ProjectsPage() {
           boards &&
           boards.length === 0 && (
             <div className="text-md py-10 text-center text-zinc-400">
-              You have no boards yet. Click on the &quot;+ New Board&quot;
+              You have no boards yet. Click on the &quot;+ New Project&quot;
               button to create a new board.
             </div>
           )}
