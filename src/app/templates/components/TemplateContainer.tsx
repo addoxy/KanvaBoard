@@ -34,7 +34,7 @@ const Column = (props: ColumnTemplateProps) => {
           </button>
         </div>
       </div>
-      <div className="flex w-80 flex-col gap-y-2 rounded-lg border border-zinc-800/30 bg-zinc-850 p-4">
+      <div className="flex w-80 flex-col gap-y-2 rounded-lg border border-zinc-700/20 bg-zinc-800/40 p-4">
         {tasks.map((task, i) => (
           <Task content={task.content} key={i} />
         ))}
@@ -51,7 +51,7 @@ const Task = (props: TaskTemplateProps) => {
 
   return (
     <div>
-      <p className="cursor-pointer rounded-lg border border-zinc-700/20 bg-zinc-700/30 p-3 text-sm text-zinc-300">
+      <p className="cursor-pointer rounded-lg border border-zinc-700/20 bg-zinc-700/40 p-3 text-sm text-zinc-300">
         {content}
       </p>
     </div>

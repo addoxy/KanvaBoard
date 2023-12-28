@@ -18,7 +18,7 @@ const Task = (props: TaskProps) => {
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Trigger asChild>
-        <p className="cursor-pointer rounded-lg border border-zinc-700/20 bg-zinc-700/30 p-3 text-sm text-zinc-300">
+        <p className="cursor-pointer rounded-lg border border-zinc-600/20 bg-zinc-700/30 p-3 text-sm text-zinc-300">
           {props.content}
         </p>
       </Dialog.Trigger>
