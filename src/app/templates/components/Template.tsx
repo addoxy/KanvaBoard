@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/Button";
+import Spacer from "@/components/Spacer";
 import Title from "@/components/Title";
 import { useCreateTemplateMutation } from "@/lib/mutations";
 import { useGetBoards } from "@/lib/queries";
@@ -19,8 +20,8 @@ const Template = (props: TemplateProps) => {
   });
 
   return (
-    <div className="flex flex-col mt-14">
-      <div className="flex justify-between mb-7 items-center">
+    <div className="flex flex-col">
+      <div className="flex justify-between items-center">
         <Title text={title} variant="lg" />
         <Button
           text="Get Template"
@@ -30,7 +31,9 @@ const Template = (props: TemplateProps) => {
           }}
         />
       </div>
+      <Spacer variant="sm" />
       <TemplateDescription>{description}</TemplateDescription>
+      <Spacer variant="sm" />
       <TemplateContainer columns={columns} />
     </div>
   );
@@ -38,9 +41,7 @@ const Template = (props: TemplateProps) => {
 
 const TemplateDescription = ({ children }: { children: React.ReactNode }) => {
   return (
-    <p className="text-sm text-zinc-400 font-normal leading-6 mb-11">
-      {children}
-    </p>
+    <p className="text-sm text-zinc-400 font-normal leading-6">{children}</p>
   );
 };
 
