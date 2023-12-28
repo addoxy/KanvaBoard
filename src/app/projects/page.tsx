@@ -1,6 +1,7 @@
 "use client";
 
 import PageWrapper from "@/components/PageWrapper";
+import Spacer from "@/components/Spacer";
 import Title from "@/components/Title";
 import { Table, TableBody } from "@/components/otherui/Table";
 import { useGetBoards } from "@/lib/queries";
@@ -25,12 +26,14 @@ export default function ProjectsPage() {
 
   return (
     <PageWrapper>
-      <div className="flex flex-col pb-20">
-        <Title text="Projects" variant="xl" className="mb-10" />
-        <div className="flex gap-x-2 items-center mb-20">
+      <div className="flex flex-col">
+        <Title text="Projects" variant="xl" />
+        <Spacer variant="sm" />
+        <div className="flex gap-x-2 items-center">
           <SearchBar isEnabled={status === "success"} setQuery={setQuery} />
           <CreateBoard isEnabled={status === "success"} />
         </div>
+        <Spacer variant="lg" />
         {status === "pending" && <LoadingSkeleton />}
         {status == "error" && <span>There was an error</span>}
         {status === "success" &&
@@ -83,17 +86,24 @@ export default function ProjectsPage() {
             </Table>
           )}
         {status === "success" && query && filteredOptions?.length === 0 && (
-          <p className="py-16 text-center text-zinc-400">No results found</p>
+          <>
+            <Spacer variant="md" />
+            <p className="text-center text-zinc-400">No results found</p>
+          </>
         )}
         {status === "success" &&
           query.length === 0 &&
           boards &&
           boards.length === 0 && (
-            <div className="text-md py-10 text-center text-zinc-400">
-              You have no boards yet. Click on the &quot;+ New Project&quot;
-              button to create a new board.
-            </div>
+            <>
+              <Spacer variant="md" />
+              <div className="text-md text-center text-zinc-400">
+                You have no boards yet. Click on the &quot;+ New Project&quot;
+                button to create a new board.
+              </div>
+            </>
           )}
+        <Spacer variant="lg" />
       </div>
     </PageWrapper>
   );

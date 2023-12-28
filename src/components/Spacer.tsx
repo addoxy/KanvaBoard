@@ -9,7 +9,7 @@ const Spacer = (props: SpacerProps) => {
   return (
     <div
       className={cn(
-        variant === "sm" && "mt-8",
+        variant === "sm" && "mt-10",
         variant === "md" && "mt-16",
         variant === "lg" && "mt-20",
         variant === "xl" && "mt-32"
