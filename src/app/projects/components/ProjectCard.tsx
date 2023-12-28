@@ -24,7 +24,11 @@ const ProjectCard = (props: ProjectCardProps) => {
   return (
     <TableRow className="text-zinc-400 hover:bg-zinc-800/20 border-b-zinc-700/30">
       <TableCell className="pl-6 py-7 text-sm 600 w-7/12">
-        <Link onClick={() => updateViewedAtMutation.mutate()} href={href}>
+        <Link
+          className="line-clamp-1"
+          onClick={() => updateViewedAtMutation.mutate()}
+          href={href}
+        >
           {name}
         </Link>
       </TableCell>

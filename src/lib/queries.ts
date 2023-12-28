@@ -1,30 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-interface Task {
-  id: string;
-  content: string | null;
-  order: number;
-  columnId: string;
-}
-
-interface Column {
-  id: string;
-  title: string;
-  order: number;
-  boardId: string;
-  tasks: Task[];
-}
-
-interface Board {
-  id: string;
-  title: string;
-  viewedAt: Date;
-  usedId: string | null;
-  favorite: boolean;
-  columns: Column[];
-}
-
 export const useGetWorkspaceName = () => {
   const {
     data: workspaceName,
@@ -50,7 +26,7 @@ export const useGetBoards = () => {
     queryKey: ["boards"],
     queryFn: async () => {
       const { data } = await axios.get("/api/board?q=boards");
-      return JSON.parse(data) as Board[];
+      return JSON.parse(data) as BoardProps[];
     },
   });
 
@@ -67,7 +43,7 @@ export const useGetBoard = (props: { id: string }) => {
     queryKey: ["board", id],
     queryFn: async () => {
       const { data } = await axios.get(`/api/board?q=board&boardId=${id}`);
-      return JSON.parse(data) as Board;
+      return JSON.parse(data) as BoardProps;
     },
   });
 

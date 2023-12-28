@@ -30,7 +30,7 @@ const Board = (props: BoardProps) => {
   return (
     <div className="h-full flex flex-col">
       <div className="flex justify-between items-center mb-16">
-        <Title text={title} variant="xl" />
+        <Title text={title} variant="xl" className="line-clamp-1" />
         <Button
           text="+ New Column"
           variant="lg"

@@ -44,7 +44,9 @@ const Column = (props: ColumnProps) => {
   return (
     <div className="flex flex-col first-of-type:pl-12 last-of-type:pr-12 pb-4">
       <div className="mb-4 w-80 flex items-center justify-between">
-        <span className="text-sm text-zinc-300 font-medium">{title}</span>
+        <span className="text-sm text-zinc-300 font-medium line-clamp-1">
+          {title}
+        </span>
         <div className="flex items-center">
           <button className="hover:bg-zinc-700/50 rounded-md mr-2 p-2">
             <DragIcon className="w-2 h-2 text-zinc-300" />
