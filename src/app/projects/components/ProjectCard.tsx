@@ -34,7 +34,7 @@ const ProjectCard = (props: ProjectCardProps) => {
       </TableCell>
       <TableCell className="py-7 text-sm 600 w-4/12">{lastViewed}</TableCell>
       <TableCell className="py-7 w-1/12">
-        <OptionsMenu favorite={favorite} id={id} />
+        <OptionsMenu boardName={name} favorite={favorite} id={id} />
       </TableCell>
     </TableRow>
   );

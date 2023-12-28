@@ -2,7 +2,7 @@ import { cn } from "@/utils/utils";
 
 interface TitleProps {
   text: string;
-  variant: "xl" | "lg";
+  variant: "lg" | "ml" | "xl";
   className?: string;
 }
 
@@ -13,6 +13,7 @@ const Title = (props: TitleProps) => {
       className={cn(
         "font-medium text-zinc-300",
         variant === "xl" && "text-2xl",
+        variant === "ml" && "text-xl",
         variant === "lg" && "text-base",
         className
       )}
