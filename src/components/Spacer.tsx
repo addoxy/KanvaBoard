@@ -12,7 +12,7 @@ const Spacer = (props: SpacerProps) => {
         variant === "sm" && "mt-8",
         variant === "md" && "mt-16",
         variant === "lg" && "mt-20",
-        variant === "xl" && "mt-30"
+        variant === "xl" && "mt-32"
       )}
     />
   );
