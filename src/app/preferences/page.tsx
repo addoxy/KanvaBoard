@@ -1,5 +1,6 @@
 "use client";
 
+import Divider from "@/components/Divider";
 import PageWrapper from "@/components/PageWrapper";
 import Spacer from "@/components/Spacer";
 import GeneralSection from "./components/GeneralSection";
@@ -10,6 +11,8 @@ export default function page() {
     <PageWrapper>
       <div className="flex flex-col px-48">
         <GeneralSection />
+        <Spacer variant="lg" />
+        <Divider />
         <Spacer variant="lg" />
         <ThemeSection />
         <Spacer variant="lg" />
