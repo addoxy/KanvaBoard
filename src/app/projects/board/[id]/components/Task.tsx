@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/Button";
 import { CrossIcon } from "@/components/Icons";
 import Spacer from "@/components/Spacer";
 import Textarea from "@/components/Textarea";
@@ -34,25 +35,23 @@ const Task = (props: TaskProps) => {
           </div>
           <Textarea rows={3} value={content} setValue={setContent} />
           <Spacer variant="xs" />
-          <div className="flex justify-between">
-            <button
-              onClick={() => {
+          <div className="justify-between gap-x-3 w-full grid grid-cols-2 grid-rows-1">
+            <Button
+              text="Delete"
+              variant="delete"
+              handleClick={() => {
+                handleEditTask(id);
+                setIsOpen(false);
+              }}
+            />
+            <Button
+              text="Save"
+              variant="full"
+              handleClick={() => {
                 handleDeleteTask(id);
                 setIsOpen(false);
               }}
-              className="w-64 bg-zinc-600 text-zinc-100 text-sm py-3 rounded-lg"
-            >
-              Delete
-            </button>
-            <button
-              onClick={() => {
-                handleEditTask(id, content);
-                setIsOpen(false);
-              }}
-              className="w-64 bg-violet-600 text-zinc-100 text-sm py-3 rounded-lg"
-            >
-              Save
-            </button>
+            />
           </div>
         </Dialog.Content>
       </Dialog.Portal>

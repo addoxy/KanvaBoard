@@ -1,3 +1,4 @@
+import Button from "@/components/Button";
 import { CrossIcon } from "@/components/Icons";
 import Input from "@/components/Input";
 import Title from "@/components/Title";
@@ -45,15 +46,14 @@ const CreateBoard = (props: CreateBoardProps) => {
             <span className="text-zinc-500 font-medium">Name</span>
             <Input variant="full" value={title} setValue={setTitle} />
           </div>
-          <button
-            onClick={() => {
+          <Button
+            variant="full"
+            text="Save"
+            handleClick={() => {
               createBoardMutation.mutate();
               setIsOpen(false);
             }}
-            className="bg-violet-600 w-full text-zinc-100 text-sm py-3 rounded-lg"
-          >
-            Save
-          </button>
+          />
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

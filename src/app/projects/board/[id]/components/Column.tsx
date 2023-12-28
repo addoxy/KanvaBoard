@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/Button";
 import { CrossIcon, DragIcon } from "@/components/Icons";
 import Spacer from "@/components/Spacer";
 import Textarea from "@/components/Textarea";
@@ -103,17 +104,16 @@ const AddTask = (props: AddTaskProps) => {
           <Textarea rows={3} value={content} setValue={setContent} />
           <Spacer variant="xs" />
           <div className="flex justify-between">
-            <button
+            <Button
+              text="Save"
+              variant="full"
               disabled={content.length === 0}
-              onClick={() => {
+              handleClick={() => {
                 handleSetTasks(content);
                 setIsOpen(false);
                 setContent("");
               }}
-              className="bg-violet-600 w-full text-zinc-100 text-sm py-3 rounded-lg disabled:cursor-not-allowed"
-            >
-              Save
-            </button>
+            />
           </div>
         </Dialog.Content>
       </Dialog.Portal>
