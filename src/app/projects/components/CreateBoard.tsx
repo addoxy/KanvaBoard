@@ -43,7 +43,12 @@ const CreateBoard = (props: CreateBoardProps) => {
         </div>
         <div className="flex flex-col gap-y-3 mb-6">
           <span className="text-zinc-500 font-medium">Name</span>
-          <Input variant="full" value={title} setValue={setTitle} />
+          <Input
+            autoFocus={true}
+            variant="full"
+            value={title}
+            setValue={setTitle}
+          />
         </div>
         <Button
           variant="full"

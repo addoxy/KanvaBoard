@@ -29,6 +29,7 @@ const GeneralSection = () => {
         {status === "success" && (
           <>
             <Input
+              autoFocus={false}
               variant="lg"
               defaultValue={workspaceName}
               setValue={setNewName}
