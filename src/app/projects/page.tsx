@@ -99,7 +99,7 @@ export default function ProjectsPage() {
               <Spacer variant="md" />
               <div className="text-md text-center text-zinc-400">
                 You have no boards yet. Click on the &quot;+ New Project&quot;
-                button to create a new board.
+                button to create a new board or get one of the templates.
               </div>
             </>
           )}
