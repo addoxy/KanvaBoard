@@ -52,12 +52,12 @@ const Column = (props: ColumnProps) => {
           {title}
         </span>
         <div className="flex items-center">
-          <button className="hover:bg-zinc-700/50 rounded-md mr-2 p-2">
+          <button className="hover:bg-zinc-700/50 rounded-md mr-2 p-2 transition-all delay-100 duration-200 ease-in-out">
             <DragIcon className="w-2 h-2 text-zinc-300" />
           </button>
           <button
             onClick={() => handleDeleteColumn(id)}
-            className="hover:bg-zinc-700/50 rounded-md"
+            className="hover:bg-zinc-700/50 rounded-md transition-all delay-100 duration-200 ease-in-out"
           >
             <CrossIcon className="w-6 h-6 text-zinc-300" />
           </button>
