@@ -21,7 +21,7 @@ const ProfileMenu = () => {
         <DropdownMenu.Trigger asChild>
           <button
             className={cn(
-              "w-44 hover:bg-zinc-800 flex text-zinc-300 py-2 px-2 justify-center rounded-lg text-sm items-center",
+              "w-44 hover:bg-zinc-800 flex text-zinc-300 py-2 px-2 justify-center rounded-lg text-sm items-center transition-all delay-100 duration-200 ease-in-out",
               isOpen && "bg-zinc-800"
             )}
           >
@@ -40,7 +40,7 @@ const ProfileMenu = () => {
         <DropdownMenu.Content
           align="center"
           sideOffset={8}
-          className="w-44 shadow-md bg-zinc-800 border border-zinc-700/25 rounded-lg overflow-hidden pt-3"
+          className="w-44 shadow-md bg-zinc-800 border border-zinc-700/25 rounded-lg overflow-hidden pt-3 data-[side=bottom]:animate-slideUpAndFade"
         >
           <DropdownMenu.Item className="flex flex-col outline-none px-4 border-b border-b-zinc-700/50">
             <span className="truncate text-zinc-300 mb-1 text-sm">

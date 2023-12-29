@@ -19,7 +19,7 @@ const NavItem = (props: NavItemProps) => {
     <Link
       href={href}
       className={cn(
-        "text-zinc-500 text-sm font-normal py-3 w-44 rounded-lg flex items-center pl-5 pr-3",
+        "text-zinc-500 text-sm font-normal py-3 w-44 rounded-lg flex items-center pl-5 pr-3 transition-all delay-100 duration-200 ease-in-out",
         pathname === `${href}`
           ? "bg-violet-700 text-zinc-300"
           : "hover:bg-zinc-800/50 hover:text-zinc-300",
