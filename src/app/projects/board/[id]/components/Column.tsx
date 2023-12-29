@@ -86,7 +86,7 @@ const AddTask = (props: AddTaskProps) => {
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Trigger asChild>
-        <button className="text-zinc-400 text-sm text-left h-11 hover:bg-zinc-800/70 pl-3 rounded-lg hover:text-zinc-300">
+        <button className="text-zinc-400 text-sm text-left h-11 hover:bg-zinc-700/30 transition-all delay-100 duration-200 ease-in-out pl-3 rounded-lg hover:text-zinc-300">
           + Add Task
         </button>
       </Dialog.Trigger>
