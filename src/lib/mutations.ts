@@ -92,10 +92,29 @@ export const useUpdateFavoriteMutation = (props: {
   const { id, favorite, refreshBoards } = props;
 
   const favoriteBoardMutation = useMutation({
-    mutationFn: async () =>
-      await axios.put(
+    mutationFn: async () => {
+      const favoriteBoardPromise = axios.put(
         `/api/board?q=favorite&boardId=${id}&isFavorited=${favorite}`
-      ),
+      );
+
+      if (favorite) {
+        notifyPromise(favoriteBoardPromise, {
+          loading: "Removing from favorites...",
+          success: "Removed from favorites",
+          error: "Unable to remove from favorites",
+        });
+      }
+
+      if (!favorite) {
+        notifyPromise(favoriteBoardPromise, {
+          loading: "Adding to favorites...",
+          success: "Added to favorites",
+          error: "Unable to add to favorites",
+        });
+      }
+
+      return favoriteBoardPromise;
+    },
     onSuccess: () => refreshBoards(),
   });
 
