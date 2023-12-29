@@ -11,7 +11,7 @@ import { cn } from "@/utils/utils";
 import * as Dialog from "@radix-ui/react-dialog";
 import { UseMutationResult } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Column from "./Column";
 
 interface Board extends BoardProps {
@@ -74,9 +74,11 @@ interface CreateColumnDialogProps {
 const CreateColumnDialog = (props: CreateColumnDialogProps) => {
   const { children, title, setTitle, isOpen, setIsOpen, mutationFn } = props;
 
-  if (mutationFn.isSuccess) {
-    setIsOpen(false);
-  }
+  useEffect(() => {
+    if (mutationFn.isSuccess || mutationFn.isError) {
+      setIsOpen(false);
+    }
+  }, [mutationFn.isSuccess, mutationFn.isError, setIsOpen]);
 
   return (
     <Dialog.Root
