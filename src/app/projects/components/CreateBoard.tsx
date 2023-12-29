@@ -33,7 +33,7 @@ const CreateBoard = (props: CreateBoardProps) => {
       </Dialog.Trigger>
       <DialogBox variant="xl">
         <div className="flex justify-between items-center mb-6">
-          <Title text={`Creating a Board`} variant="lg" />
+          <Title text="Create a board" variant="lg" />
           <button
             onClick={() => setIsOpen(false)}
             className="hover:bg-zinc-700/20 rounded-md transition-all delay-100 duration-200 ease-in-out disabled:cursor-not-allowed"
