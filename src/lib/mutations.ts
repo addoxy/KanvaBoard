@@ -45,14 +45,23 @@ export const useCreateTemplateMutation = (props: {
 
   const createTemplateMutation = useMutation({
     mutationFn: async () => {
-      const { data } = await axios.post(`/api/board?q=template&type=${type}`);
+      const createTemplatePromise = axios.post(
+        `/api/board?q=template&type=${type}`
+      );
 
-      if (data) {
-        router.push(`/projects/board/${JSON.parse(data)}`);
-      }
+      notifyPromise(createTemplatePromise, {
+        loading: "Cloning template...",
+        success: "Created the template",
+        error: "Unable to clone template",
+      });
+
+      return createTemplatePromise;
     },
-    onSuccess: () => {
+    onSuccess: (result) => {
       refreshBoards();
+      const res = JSON.parse(result.data);
+      const boardId = res.boardId;
+      router.push(`/projects/board/${boardId}`);
     },
   });
 

@@ -126,7 +126,13 @@ export async function POST_BOARDS(req: Request, res: Response) {
           },
         });
 
-        return SendResponse(JSON.stringify(newBoard.id), 200);
+        return SendResponse(
+          JSON.stringify({
+            message: "Successfully created a board",
+            boardId: newBoard.id,
+          }),
+          200
+        );
       } catch (error) {
         return SendResponse("Unable to create a template Board", 500);
       }

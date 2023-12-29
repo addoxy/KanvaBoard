@@ -5,12 +5,10 @@ import Spacer from "@/components/Spacer";
 import Title from "@/components/Title";
 import { useCreateTemplateMutation } from "@/lib/mutations";
 import { useGetBoards } from "@/lib/queries";
-import { useRouter } from "next/navigation";
 import TemplateContainer from "./TemplateContainer";
 
 const Template = (props: TemplateProps) => {
   const { type, title, description, columns } = props;
-  const router = useRouter();
 
   const { refreshBoards } = useGetBoards();
 
@@ -25,6 +23,7 @@ const Template = (props: TemplateProps) => {
         <Title text={title} variant="lg" />
         <Button
           text="Get Template"
+          disabled={createTemplateMutation.isPending}
           variant="lg"
           handleClick={() => {
             createTemplateMutation.mutate();
