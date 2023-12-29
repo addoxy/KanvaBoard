@@ -75,13 +75,24 @@ export const useUpdateWorkspaceNameMutation = (props: {
 }) => {
   const { newName, refreshWorkspaceName } = props;
 
-  const favoriteBoardMutation = useMutation({
-    mutationFn: async () =>
-      await axios.put(`/api/user?q=workspace&newName=${newName}`),
+  const updateWorkspaceNameMutation = useMutation({
+    mutationFn: async () => {
+      const updateWorkspaceNamePromise = axios.put(
+        `/api/user?q=workspace&newName=${newName}`
+      );
+
+      notifyPromise(updateWorkspaceNamePromise, {
+        loading: "Updating workspace name...",
+        success: "Updated workspace name",
+        error: "Unable to update workspace name",
+      });
+
+      return updateWorkspaceNamePromise;
+    },
     onSuccess: () => refreshWorkspaceName(),
   });
 
-  return favoriteBoardMutation;
+  return updateWorkspaceNameMutation;
 };
 
 export const useUpdateFavoriteMutation = (props: {

@@ -1,6 +1,8 @@
 import { cn } from "@/utils/utils";
+import { RefObject } from "react";
 
 interface InputProps {
+  reference?: RefObject<HTMLInputElement>;
   autoFocus?: boolean;
   defaultValue?: string;
   value?: string;
@@ -9,10 +11,12 @@ interface InputProps {
 }
 
 const Input = (props: InputProps) => {
-  const { autoFocus, defaultValue, value, setValue, variant } = props;
+  const { reference, autoFocus, defaultValue, value, setValue, variant } =
+    props;
 
   return (
     <input
+      ref={reference}
       autoFocus={autoFocus}
       placeholder="Untitled"
       className={cn(
