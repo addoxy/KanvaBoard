@@ -6,6 +6,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
+import { ClipLoader } from "react-spinners";
 import { SignoutIcon } from "../Icons";
 import { ProfileSkeleton } from "./LoadingSkeleton";
 
@@ -13,6 +14,7 @@ const ProfileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
   const { workspaceName, status } = useGetWorkspaceName();
+  const [userIsSigningOut, setUserIsSigningOut] = useState(false);
 
   return (
     <DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -50,15 +52,27 @@ const ProfileMenu = () => {
               {session?.user?.email}
             </span>
           </DropdownMenu.Item>
-          <DropdownMenu.Item className="outline-none">
+          <DropdownMenu.Item
+            onSelect={(e) => e.preventDefault()}
+            className="outline-none"
+          >
             <button
-              onClick={() => signOut({ callbackUrl: "/signout" })}
-              className={
-                "text-zinc-500 w-full font-medium flex items-center text-sm h-10  hover:bg-zinc-700 hover:text-zinc-400 px-4"
-              }
+              onClick={() => {
+                setUserIsSigningOut(true);
+                signOut({ callbackUrl: "/signout" });
+              }}
+              className={cn(
+                "text-zinc-500 w-full font-medium flex items-center text-sm h-10 hover:bg-zinc-700/40 hover:text-zinc-400 px-4",
+                userIsSigningOut && "justify-center"
+              )}
             >
-              <SignoutIcon className="w-4 h-4 mr-3 shrink-0" />
-              Sign Out
+              {userIsSigningOut && <ClipLoader color="#8b5cf6" size={24} />}
+              {!userIsSigningOut && (
+                <>
+                  <SignoutIcon className="w-4 h-4 mr-3 shrink-0" />
+                  Sign Out
+                </>
+              )}
             </button>
           </DropdownMenu.Item>
         </DropdownMenu.Content>
