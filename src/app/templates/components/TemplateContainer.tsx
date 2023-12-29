@@ -26,10 +26,10 @@ const Column = (props: ColumnTemplateProps) => {
       <div className="mb-4 w-80 flex items-center justify-between gap-x-4">
         <span className="text-sm text-zinc-300 font-medium">{title}</span>
         <div className="flex items-center">
-          <button className="hover:bg-zinc-700/50 rounded-md mr-2 p-2">
+          <button className="hover:bg-zinc-700/50 rounded-md mr-2 p-2 transition-all delay-100 duration-200 ease-in-out">
             <DragIcon className="w-2 h-2 text-zinc-300" />
           </button>
-          <button className="hover:bg-zinc-700/50 rounded-md">
+          <button className="hover:bg-zinc-700/50 rounded-md transition-all delay-100 duration-200 ease-in-out">
             <CrossIcon className="w-6 h-6 text-zinc-300" />
           </button>
         </div>
@@ -38,7 +38,7 @@ const Column = (props: ColumnTemplateProps) => {
         {tasks.map((task, i) => (
           <Task content={task.content} key={i} />
         ))}
-        <button className="text-zinc-400 text-sm text-left h-11 hover:bg-zinc-800/70 pl-3 rounded-lg hover:text-zinc-300">
+        <button className="text-zinc-400 text-sm text-left h-11 hover:bg-zinc-700/30 pl-3 rounded-lg hover:text-zinc-300 transition-all delay-100 duration-200 ease-in-out">
           + Add Task
         </button>
       </div>
