@@ -11,39 +11,10 @@ import { useState } from "react";
 import Task from "./Task";
 
 const Column = (props: ColumnProps) => {
-  const { id, handleDeleteColumn } = props;
+  const { id } = props;
 
   const [title, setTitle] = useState(props.title);
   const [tasks, setTasks] = useState(props.tasks);
-
-  function handleSetTasks(content: string) {
-    setTasks([
-      ...tasks,
-      {
-        id: "newid",
-        content: content,
-        handleEditTask: handleEditTask,
-        handleDeleteTask: handleDeleteTask,
-        columnTitle: title,
-      },
-    ]);
-  }
-
-  function handleEditTask(taskId: string, newContent: string) {
-    setTasks(
-      tasks.map((task) => {
-        if (task.id === taskId) {
-          return { ...task, content: newContent };
-        } else {
-          return task;
-        }
-      })
-    );
-  }
-
-  function handleDeleteTask(taskId: string) {
-    setTasks(tasks.filter((task) => task.id !== taskId));
-  }
 
   return (
     <div className="flex flex-col first-of-type:pl-12 last-of-type:pr-12 pb-4">
@@ -55,10 +26,7 @@ const Column = (props: ColumnProps) => {
           <button className="hover:bg-zinc-700/50 rounded-md mr-2 p-2 transition-all delay-100 duration-200 ease-in-out">
             <DragIcon className="w-2 h-2 text-zinc-300" />
           </button>
-          <button
-            onClick={() => handleDeleteColumn(id)}
-            className="hover:bg-zinc-700/50 rounded-md transition-all delay-100 duration-200 ease-in-out"
-          >
+          <button className="hover:bg-zinc-700/50 rounded-md transition-all delay-100 duration-200 ease-in-out">
             <CrossIcon className="w-6 h-6 text-zinc-300" />
           </button>
         </div>
@@ -67,24 +35,29 @@ const Column = (props: ColumnProps) => {
         {tasks.map((task) => (
           <Task {...task} key={task.id} />
         ))}
-        <AddTask columnTitle={title} handleSetTasks={handleSetTasks} />
+        <AddTask columnTitle={title} />
       </div>
     </div>
   );
 };
 
 interface AddTaskProps {
-  handleSetTasks: (content: string) => void;
   columnTitle: string;
 }
 
 const AddTask = (props: AddTaskProps) => {
-  const { columnTitle, handleSetTasks } = props;
+  const { columnTitle } = props;
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState("");
 
   return (
-    <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog.Root
+      open={isOpen}
+      onOpenChange={(value) => {
+        setIsOpen(value);
+        setContent("");
+      }}
+    >
       <Dialog.Trigger asChild>
         <button className="text-zinc-400 text-sm text-left h-11 hover:bg-zinc-700/30 transition-all delay-100 duration-200 ease-in-out pl-3 rounded-lg hover:text-zinc-300">
           + Add Task
@@ -113,9 +86,7 @@ const AddTask = (props: AddTaskProps) => {
             variant="full"
             disabled={content.length === 0}
             handleClick={() => {
-              handleSetTasks(content);
               setIsOpen(false);
-              setContent("");
             }}
           />
         </div>

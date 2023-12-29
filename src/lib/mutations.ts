@@ -68,6 +68,16 @@ export const useCreateTemplateMutation = (props: {
   return createTemplateMutation;
 };
 
+export const useCreateColumnMutation = (props: { boardId: string }) => {
+  const { boardId } = props;
+
+  const createColumnMutation = useMutation({
+    mutationFn: async () => await axios.post(`/api/column?boardId=${boardId}`),
+  });
+
+  return createColumnMutation;
+};
+
 // update
 export const useUpdateWorkspaceNameMutation = (props: {
   newName: string;

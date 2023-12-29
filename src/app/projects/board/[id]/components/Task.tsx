@@ -9,11 +9,15 @@ import Title from "@/components/Title";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 
-const Task = (props: TaskProps) => {
-  const { id, handleEditTask, handleDeleteTask, columnTitle } = props;
+interface Task extends TaskProps {
+  columnTitle: string;
+}
+
+const Task = (props: Task) => {
+  const { id, columnTitle } = props;
 
   const [isOpen, setIsOpen] = useState(false);
-  const [content, setContent] = useState(props.content);
+  const [content, setContent] = useState(props.content || "");
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -44,7 +48,6 @@ const Task = (props: TaskProps) => {
             text="Delete"
             variant="delete"
             handleClick={() => {
-              handleEditTask(id);
               setIsOpen(false);
             }}
           />
@@ -52,7 +55,6 @@ const Task = (props: TaskProps) => {
             text="Save"
             variant="full"
             handleClick={() => {
-              handleDeleteTask(id);
               setIsOpen(false);
             }}
           />
