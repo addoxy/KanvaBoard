@@ -16,7 +16,7 @@ const Button = (props: ButtonProps) => {
     <button
       disabled={disabled}
       className={cn(
-        "bg-violet-700 text-zinc-300 text-sm shrink-0 font-medium transition-all delay-100 duration-200 ease-in-out hover:bg-purple-700",
+        "bg-violet-700 text-zinc-300 text-sm shrink-0 font-medium transition-all delay-100 duration-200 ease-in-out hover:bg-purple-700 disabled:cursor-not-allowed",
         variant === "full" && "w-full rounded-lg h-10",
         variant === "delete" &&
           "w-full rounded-lg h-10 bg-zinc-700 hover:bg-zinc-800",

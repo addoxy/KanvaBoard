@@ -1,3 +1,4 @@
+import { notifyPromise } from "@/utils/notify";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -12,14 +13,23 @@ export const useCreateBoardMutation = (props: {
 
   const createBoardMutation = useMutation({
     mutationFn: async () => {
-      const { data } = await axios.post(`/api/board?q=create&title=${title}`);
+      const createBoardPromise = axios.post(
+        `/api/board?q=create&title=${title}`
+      );
 
-      if (data) {
-        router.push(`/projects/board/${JSON.parse(data)}`);
-      }
+      notifyPromise(createBoardPromise, {
+        loading: "Creating project...",
+        success: "Created the project",
+        error: "Unable to create a project",
+      });
+
+      return createBoardPromise;
     },
-    onSuccess: () => {
+    onSuccess: (result) => {
       refreshBoards();
+      const res = JSON.parse(result.data);
+      const boardId = res.boardId;
+      router.push(`/projects/board/${boardId}`);
     },
   });
 

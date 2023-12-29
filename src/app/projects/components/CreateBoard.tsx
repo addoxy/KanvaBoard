@@ -52,10 +52,10 @@ const CreateBoard = (props: CreateBoardProps) => {
         </div>
         <Button
           variant="full"
+          disabled={createBoardMutation.isPending}
           text="Save"
           handleClick={() => {
             createBoardMutation.mutate();
-            setIsOpen(false);
           }}
         />
       </DialogBox>
