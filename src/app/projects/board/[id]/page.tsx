@@ -17,7 +17,7 @@ interface PageProps {
 export default function BoardPage(props: PageProps) {
   const { params } = props;
   const id = params.id;
-  const { board, status } = useGetBoard({ id });
+  const { board, status, refreshBoard } = useGetBoard({ id });
 
   if (status === "success" && !board) {
     notFound();
@@ -26,7 +26,9 @@ export default function BoardPage(props: PageProps) {
   return (
     <PageWrapper>
       {status === "pending" && <LoadingSkeleton />}
-      {status === "success" && board && <Board {...board} />}
+      {status === "success" && board && (
+        <Board {...board} refreshBoard={refreshBoard} />
+      )}
     </PageWrapper>
   );
 }

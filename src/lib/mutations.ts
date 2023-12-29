@@ -68,11 +68,31 @@ export const useCreateTemplateMutation = (props: {
   return createTemplateMutation;
 };
 
-export const useCreateColumnMutation = (props: { boardId: string }) => {
-  const { boardId } = props;
+export const useCreateColumnMutation = (props: {
+  boardId: string;
+  title: string;
+  order: number;
+  refreshBoard: () => void;
+}) => {
+  const { boardId, title, order, refreshBoard } = props;
 
   const createColumnMutation = useMutation({
-    mutationFn: async () => await axios.post(`/api/column?boardId=${boardId}`),
+    mutationFn: async () => {
+      const createColumnPromise = axios.post(
+        `/api/column?title=${title}&boardId=${boardId}&order=${order}`
+      );
+
+      notifyPromise(createColumnPromise, {
+        loading: "Creating column...",
+        success: "Created the column",
+        error: "Unable to create column",
+      });
+
+      return createColumnPromise;
+    },
+    onSuccess: () => {
+      refreshBoard();
+    },
   });
 
   return createColumnMutation;

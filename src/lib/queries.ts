@@ -39,7 +39,11 @@ export const useGetBoards = () => {
 
 export const useGetBoard = (props: { id: string }) => {
   const { id } = props;
-  const { data: board, status } = useQuery({
+  const {
+    data: board,
+    status,
+    refetch: refreshBoard,
+  } = useQuery({
     queryKey: ["board", id],
     queryFn: async () => {
       const { data } = await axios.get(`/api/board?q=board&boardId=${id}`);
@@ -50,5 +54,6 @@ export const useGetBoard = (props: { id: string }) => {
   return {
     board,
     status,
+    refreshBoard,
   };
 };
