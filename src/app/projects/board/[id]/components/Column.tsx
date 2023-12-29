@@ -65,7 +65,7 @@ const AddTask = (props: AddTaskProps) => {
       </Dialog.Trigger>
       <DialogBox variant="xl">
         <div className="flex justify-between items-center mb-6">
-          <Title text={`Adding a Task in ${columnTitle}`} variant="lg" />
+          <Title text={`Add a Task in ${columnTitle}`} variant="lg" />
           <button
             onClick={() => setIsOpen(false)}
             className="hover:bg-zinc-700/20 rounded-md transition-all delay-100 duration-200 ease-in-out"
