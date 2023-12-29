@@ -83,6 +83,10 @@ interface DeleteDialogProps {
 const DeleteDialog = (props: DeleteDialogProps) => {
   const { isOpen, setIsOpen, boardName, mutateFn } = props;
 
+  if (mutateFn.isSuccess || mutateFn.isError) {
+    setIsOpen(false);
+  }
+
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Trigger asChild>
@@ -122,10 +126,10 @@ const DeleteDialog = (props: DeleteDialogProps) => {
           <Spacer variant="sm" />
           <Button
             variant="full"
+            disabled={mutateFn.isPending}
             text="Delete Board"
             handleClick={() => {
               mutateFn.mutate();
-              setIsOpen(false);
             }}
           />
         </div>

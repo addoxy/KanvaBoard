@@ -116,7 +116,18 @@ export const useDeleteBoardMutation = (props: {
   const { id, refreshBoards } = props;
 
   const deleteBoardMutation = useMutation({
-    mutationFn: async () => await axios.delete(`/api/board?id=${id}`),
+    mutationFn: async () => {
+      const deleteBoardPromise = axios.delete(`/api/board?id=${id}`);
+
+      notifyPromise(deleteBoardPromise, {
+        loading: "Deleting project...",
+        success: "Deleted the project",
+        error: "Unable to delete the project",
+      });
+
+      return deleteBoardPromise;
+    },
+
     onSuccess: () => refreshBoards(),
   });
 
