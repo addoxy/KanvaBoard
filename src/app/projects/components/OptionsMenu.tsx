@@ -47,7 +47,7 @@ const OptionsMenu = (props: OptionsMenuProps) => {
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content
-          className="w-50 bg-zinc-925 border border-zinc-800 rounded-md flex flex-col"
+          className="w-50 bg-zinc-925 border border-zinc-800 rounded-md flex flex-col data-[side=bottom]:animate-slideUpAndFade"
           align="end"
         >
           <DropdownMenu.Item>
