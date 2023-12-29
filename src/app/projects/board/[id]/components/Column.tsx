@@ -95,7 +95,7 @@ const AddTask = (props: AddTaskProps) => {
           <Title text={`Adding a Task in ${columnTitle}`} variant="lg" />
           <button
             onClick={() => setIsOpen(false)}
-            className="hover:bg-zinc-700/20 rounded-md"
+            className="hover:bg-zinc-700/20 rounded-md transition-all delay-100 duration-200 ease-in-out"
           >
             <CrossIcon className="w-8 h-8 text-zinc-300" />
           </button>

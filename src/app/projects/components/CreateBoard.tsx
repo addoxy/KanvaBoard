@@ -36,7 +36,7 @@ const CreateBoard = (props: CreateBoardProps) => {
           <Title text={`Creating a Board`} variant="lg" />
           <button
             onClick={() => setIsOpen(false)}
-            className="hover:bg-zinc-700/20 rounded-md"
+            className="hover:bg-zinc-700/20 rounded-md transition-all delay-100 duration-200 ease-in-out"
           >
             <CrossIcon className="w-8 h-8 text-zinc-300" />
           </button>
