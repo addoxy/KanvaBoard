@@ -1,6 +1,7 @@
 "use client";
 
 import { useGetBoards } from "@/lib/queries";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { FavoriteSkeleton } from "./LoadingSkeleton";
 import NavHeader from "./NavHeader";
 import NavItem from "./NavItem";
@@ -8,6 +9,7 @@ import ProfileMenu from "./ProfileMenu";
 
 const Sidebar = () => {
   const { boards, status } = useGetBoards();
+  const [animationParent] = useAutoAnimate();
 
   const links = [
     { name: "Projects", href: "/projects" },
@@ -34,7 +36,10 @@ const Sidebar = () => {
           ))}
         </div>
         <NavHeader name="Favorites" className="mb-6 ml-8" />
-        <div className="flex flex-col gap-y-1 items-center">
+        <div
+          className="flex flex-col gap-y-1 items-center"
+          ref={animationParent}
+        >
           {status === "pending" && <FavoriteSkeleton />}
           {status === "success" &&
             boards?.map((board) => {
