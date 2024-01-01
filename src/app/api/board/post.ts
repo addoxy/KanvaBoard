@@ -70,11 +70,11 @@ export async function POST_BOARDS(req: Request, res: Response) {
         },
         {
           title: "In Progress",
-          order: 1,
+          order: 2,
         },
         {
           title: "Done",
-          order: 1,
+          order: 3,
         },
       ],
     };
