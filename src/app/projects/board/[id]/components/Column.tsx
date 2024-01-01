@@ -1,22 +1,67 @@
 "use client";
 
 import { CrossIcon, DragIcon } from "@/components/Icons";
-import { useState } from "react";
+import { useUpdateColumnTitleMutation } from "@/lib/mutations";
+import { notify } from "@/utils/notify";
+import { useRef, useState } from "react";
 import AddTaskDialog from "./AddTaskDialog";
 import Task from "./Task";
 
 const Column = (props: ColumnProps) => {
-  const { id } = props;
+  const { id, title } = props;
 
-  const [title, setTitle] = useState(props.title);
+  const [editMode, setEditMode] = useState(false);
+  const [columnTitle, setColumnTitle] = useState(title);
   const [tasks, setTasks] = useState(props.tasks);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const updateColumnTitleMutation = useUpdateColumnTitleMutation({
+    id,
+    newTitle: columnTitle,
+  });
+
+  function handleTitle() {
+    if (inputRef.current?.value.length === 0 || !inputRef.current?.value) {
+      notify("Column Title can't be empty", "warning");
+      return;
+    }
+
+    if (inputRef.current.value === columnTitle) return;
+    console.log("updated");
+
+    setColumnTitle(inputRef.current?.value);
+    updateColumnTitleMutation.mutate();
+  }
 
   return (
     <div className="flex flex-col first-of-type:pl-12 last-of-type:pr-12 pb-4">
-      <div className="mb-4 w-80 flex items-center justify-between">
-        <span className="text-sm text-zinc-300 font-medium line-clamp-1">
-          {title}
-        </span>
+      <div className="mb-4 w-80 pt-1 flex items-center gap-x-3 justify-between">
+        {!editMode && (
+          <span
+            onClick={() => setEditMode(true)}
+            className="text-sm text-zinc-300 font-medium line-clamp-1"
+          >
+            {columnTitle}
+          </span>
+        )}
+        {editMode && (
+          <input
+            autoFocus
+            defaultValue={columnTitle}
+            onBlur={() => {
+              handleTitle();
+              setEditMode(false);
+            }}
+            ref={inputRef}
+            onKeyDown={(e) => {
+              if (e.key === "Escape" || e.key === "Enter") {
+                inputRef.current && inputRef.current.blur();
+              }
+            }}
+            className="h-full py-4 w-full rounded-lg px-2 font-medium text-zinc-300 bg-zinc-800 text-sm outline-none -my-4 truncate"
+          />
+        )}
         <div className="flex items-center">
           <button className="hover:bg-zinc-700/50 rounded-md mr-2 p-2 transition-all delay-100 duration-200 ease-in-out">
             <DragIcon className="w-2 h-2 text-zinc-300" />

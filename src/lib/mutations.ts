@@ -194,6 +194,25 @@ export const useUpdateBoardTitleMutation = (props: {
   return updateBoardTitleMutation;
 };
 
+export const useUpdateColumnTitleMutation = (props: {
+  id: string;
+  newTitle: string;
+}) => {
+  const { id, newTitle } = props;
+
+  const updateColumnTitleMutation = useMutation({
+    mutationFn: async () =>
+      await axios.put(
+        `/api/column?q=title&columnId=${id}&newTitle=${newTitle}`
+      ),
+    onError: () => {
+      notify("Unable to update column title", "failure");
+    },
+  });
+
+  return updateColumnTitleMutation;
+};
+
 // delete
 export const useDeleteBoardMutation = (props: {
   id: string;
