@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { SendResponse } from "@/utils/api";
+import { errors } from "@/utils/error";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/authOptions";
 
@@ -7,7 +8,7 @@ export async function GET_BOARDS(req: Request, res: Response) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return SendResponse("You have to be logged in to do this", 401);
+    return SendResponse(errors.unauthorized, 401);
   }
 
   const user = session.user;
@@ -19,7 +20,7 @@ export async function GET_BOARDS(req: Request, res: Response) {
   });
 
   if (!prismaUser) {
-    return SendResponse("You do not have a valid account", 403);
+    return SendResponse(errors.forbidden, 403);
   }
 
   const { searchParams } = new URL(req.url);
@@ -44,44 +45,43 @@ export async function GET_BOARDS(req: Request, res: Response) {
 
       return SendResponse(JSON.stringify(boards), 200);
     } catch (error) {
-      return SendResponse("Unable to fetch your boards", 500);
+      return SendResponse("Unable to fetch your projects", 500);
     }
   }
 
   if (query === "board") {
     const boardId = searchParams.get("boardId");
 
-    if (boardId) {
-      try {
-        const board = await prisma.board.findUnique({
-          where: {
-            id: boardId,
-          },
-          include: {
-            columns: {
-              orderBy: {
-                order: "asc",
-              },
-              include: {
-                tasks: {
-                  orderBy: {
-                    order: "asc",
-                  },
+    if (!boardId) {
+      return SendResponse(errors.badRequest, 400);
+    }
+
+    try {
+      const board = await prisma.board.findUnique({
+        where: {
+          id: boardId,
+        },
+        include: {
+          columns: {
+            orderBy: {
+              order: "asc",
+            },
+            include: {
+              tasks: {
+                orderBy: {
+                  order: "asc",
                 },
               },
             },
           },
-        });
+        },
+      });
 
-        return SendResponse(JSON.stringify(board), 200);
-      } catch (error) {
-        return SendResponse("Unable to fetch board", 500);
-      }
-    }
-
-    if (!boardId) {
-      return SendResponse("You did not send a board ID", 400);
+      return SendResponse(JSON.stringify(board), 200);
+    } catch (error) {
+      return SendResponse("Unable to fetch this project", 500);
     }
   }
-  return SendResponse("You sent an invalid query", 400);
+
+  return SendResponse(errors.badRequest, 400);
 }

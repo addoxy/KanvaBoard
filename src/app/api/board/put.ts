@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { SendResponse } from "@/utils/api";
+import { errors } from "@/utils/error";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/authOptions";
 
@@ -7,7 +8,7 @@ export async function PUT_BOARDS(req: Request, res: Response) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return SendResponse("You have to be logged in to do this", 401);
+    return SendResponse(errors.unauthorized, 401);
   }
 
   const user = session.user;
@@ -19,7 +20,7 @@ export async function PUT_BOARDS(req: Request, res: Response) {
   });
 
   if (!prismaUser) {
-    return SendResponse("You do not have a valid account", 403);
+    return SendResponse(errors.forbidden, 403);
   }
 
   const { searchParams } = new URL(req.url);
@@ -29,46 +30,51 @@ export async function PUT_BOARDS(req: Request, res: Response) {
     const boardId = searchParams.get("boardId");
     const isFavorited = searchParams.get("isFavorited");
 
-    if (boardId && isFavorited) {
-      const favoriteStatus = JSON.parse(isFavorited);
-      try {
-        await prisma.board.update({
-          where: {
-            id: boardId,
-          },
-          data: {
-            favorite: !favoriteStatus,
-          },
-        });
-        return SendResponse("Successfully added board to favorites", 200);
-      } catch (error) {
-        return SendResponse("Unable to add board to favorites", 500);
-      }
+    if (!boardId || !isFavorited) {
+      return SendResponse(errors.badRequest, 400);
     }
-    return SendResponse("You did not provide a board ID", 400);
+
+    const favoriteStatus = JSON.parse(isFavorited);
+
+    try {
+      await prisma.board.update({
+        where: {
+          id: boardId,
+        },
+        data: {
+          favorite: !favoriteStatus,
+        },
+      });
+      return SendResponse(
+        "Successfully updated favorite status of project",
+        200
+      );
+    } catch (error) {
+      return SendResponse("Unable to update favorite status of project", 500);
+    }
   }
 
   if (query === "recent") {
     const boardId = searchParams.get("boardId");
 
-    if (boardId) {
-      try {
-        await prisma.board.update({
-          where: {
-            id: boardId,
-          },
-          data: {
-            viewedAt: new Date(),
-          },
-        });
-        return SendResponse(
-          "Successfully updated the view date of the board",
-          200
-        );
-      } catch (error) {
-        return SendResponse("You did not provide a board ID", 400);
-      }
+    if (!boardId) {
+      return SendResponse(errors.badRequest, 400);
+    }
+
+    try {
+      await prisma.board.update({
+        where: {
+          id: boardId,
+        },
+        data: {
+          viewedAt: new Date(),
+        },
+      });
+      return SendResponse("Successfully updated the view date of project", 200);
+    } catch (error) {
+      return SendResponse("Unable to update the view date of project", 500);
     }
   }
-  return SendResponse("You did not provide a valid query", 400);
+
+  return SendResponse(errors.badRequest, 400);
 }
