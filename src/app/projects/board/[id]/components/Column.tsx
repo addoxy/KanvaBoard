@@ -54,7 +54,7 @@ const Column = (props: Column) => {
         {!editMode && (
           <span
             onClick={() => setEditMode(true)}
-            className="text-sm text-zinc-300 font-medium line-clamp-1"
+            className="text-sm text-zinc-300 font-medium line-clamp-1 cursor-pointer"
           >
             {columnTitle}
           </span>

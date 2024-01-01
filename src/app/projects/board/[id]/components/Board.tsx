@@ -57,6 +57,7 @@ const Board = (props: Board) => {
             text={boardTitle}
             variant="xl"
             onClick={() => setEditMode(true)}
+            className="cursor-pointer"
           />
         )}
         {editMode && (
