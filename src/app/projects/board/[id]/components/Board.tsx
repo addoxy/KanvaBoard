@@ -2,9 +2,13 @@
 
 import Spacer from "@/components/Spacer";
 import Title from "@/components/Title";
-import { useCreateColumnMutation } from "@/lib/mutations";
+import {
+  useCreateColumnMutation,
+  useUpdateBoardTitleMutation,
+} from "@/lib/mutations";
+import { notify } from "@/utils/notify";
 import { cn } from "@/utils/utils";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Column from "./Column";
 import CreateColumnDialog from "./CreateColumnDialog";
 
@@ -15,7 +19,16 @@ interface Board extends BoardProps {
 const Board = (props: Board) => {
   const { id, refreshBoard, title, columns } = props;
 
+  const [editMode, setEditMode] = useState(false);
+  const [boardTitle, setBoardTitle] = useState(title);
   const [newColumnTitle, setNewColumnTitle] = useState("");
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const updateBoardTitleMutation = useUpdateBoardTitleMutation({
+    id,
+    newTitle: boardTitle,
+  });
 
   const createColumnMutation = useCreateColumnMutation({
     boardId: id,
@@ -24,10 +37,45 @@ const Board = (props: Board) => {
     order: columns.length + 1,
   });
 
+  function handleTitle() {
+    if (inputRef.current?.value.length === 0 || !inputRef.current?.value) {
+      notify("Board Title can't be empty", "warning");
+      return;
+    }
+
+    if (inputRef.current.value === boardTitle) return;
+
+    setBoardTitle(inputRef.current?.value);
+    updateBoardTitleMutation.mutate();
+  }
+
   return (
     <div className="h-full flex flex-col">
-      <div className="flex justify-between items-center">
-        <Title text={title} variant="xl" className="line-clamp-1" />
+      <div className="flex justify-between gap-x-10 items-center">
+        {!editMode && (
+          <Title
+            text={boardTitle}
+            variant="xl"
+            onClick={() => setEditMode(true)}
+          />
+        )}
+        {editMode && (
+          <input
+            autoFocus
+            defaultValue={boardTitle}
+            onBlur={() => {
+              handleTitle();
+              setEditMode(false);
+            }}
+            ref={inputRef}
+            onKeyDown={(e) => {
+              if (e.key === "Escape" || e.key === "Enter") {
+                inputRef.current && inputRef.current.blur();
+              }
+            }}
+            className="h-8 w-full rounded-lg px-2 font-medium text-zinc-300 bg-zinc-800 text-2xl outline-none py-5 cursor-pointer -my-3 truncate"
+          />
+        )}
         <CreateColumnDialog
           title={newColumnTitle}
           setTitle={setNewColumnTitle}

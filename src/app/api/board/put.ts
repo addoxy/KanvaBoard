@@ -76,5 +76,29 @@ export async function PUT_BOARDS(req: Request, res: Response) {
     }
   }
 
+  if (query === "title") {
+    const boardId = searchParams.get("boardId");
+    const newTitle = searchParams.get("newTitle");
+
+    if (!boardId || !newTitle) {
+      return SendResponse(errors.badRequest, 400);
+    }
+
+    try {
+      await prisma.board.update({
+        where: {
+          id: boardId,
+        },
+        data: {
+          title: newTitle,
+        },
+      });
+
+      return SendResponse("Successfully updated project title", 200);
+    } catch (error) {
+      return SendResponse("Unable to update project title", 500);
+    }
+  }
+
   return SendResponse(errors.badRequest, 400);
 }

@@ -1,4 +1,4 @@
-import { notifyPromise } from "@/utils/notify";
+import { notify, notifyPromise } from "@/utils/notify";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -175,6 +175,23 @@ export const useUpdateViewedAtMutation = (props: {
   });
 
   return favoriteBoardMutation;
+};
+
+export const useUpdateBoardTitleMutation = (props: {
+  id: string;
+  newTitle: string;
+}) => {
+  const { id, newTitle } = props;
+
+  const updateBoardTitleMutation = useMutation({
+    mutationFn: async () =>
+      await axios.put(`/api/board?q=title&boardId=${id}&newTitle=${newTitle}`),
+    onError: () => {
+      notify("Unable to update board title", "failure");
+    },
+  });
+
+  return updateBoardTitleMutation;
 };
 
 // delete
