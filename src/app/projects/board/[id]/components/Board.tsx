@@ -11,7 +11,7 @@ import { cn } from "@/utils/utils";
 import * as Dialog from "@radix-ui/react-dialog";
 import { UseMutationResult } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Column from "./Column";
 
 interface Board extends BoardProps {
@@ -21,7 +21,6 @@ interface Board extends BoardProps {
 const Board = (props: Board) => {
   const { id, refreshBoard, title, columns } = props;
 
-  const [isOpen, setIsOpen] = useState(false);
   const [newColumnTitle, setNewColumnTitle] = useState("");
 
   const createColumnMutation = useCreateColumnMutation({
@@ -36,8 +35,6 @@ const Board = (props: Board) => {
       <div className="flex justify-between items-center">
         <Title text={title} variant="xl" className="line-clamp-1" />
         <CreateColumnDialog
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
           title={newColumnTitle}
           setTitle={setNewColumnTitle}
           mutationFn={createColumnMutation}
@@ -66,19 +63,13 @@ interface CreateColumnDialogProps {
   children: React.ReactNode;
   title: string;
   setTitle: (title: string) => void;
-  isOpen: boolean;
-  setIsOpen: (value: boolean) => void;
   mutationFn: UseMutationResult<AxiosResponse<any, any>, Error, void, unknown>;
 }
 
 const CreateColumnDialog = (props: CreateColumnDialogProps) => {
-  const { children, title, setTitle, isOpen, setIsOpen, mutationFn } = props;
+  const { children, title, setTitle, mutationFn } = props;
 
-  useEffect(() => {
-    if (mutationFn.isSuccess || mutationFn.isError) {
-      setIsOpen(false);
-    }
-  }, [mutationFn.isSuccess, mutationFn.isError, setIsOpen]);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <Dialog.Root
