@@ -94,7 +94,7 @@ const Board = (props: Board) => {
       <Spacer variant="lg" />
       <div className="flex gap-x-6 -mr-12 -ml-12 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round overflow-x-auto h-full">
         {columns.map((column) => (
-          <Column {...column} key={column.id} />
+          <Column {...column} key={column.id} refreshBoard={refreshBoard} />
         ))}
       </div>
     </div>

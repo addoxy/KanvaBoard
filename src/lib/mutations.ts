@@ -238,3 +238,28 @@ export const useDeleteBoardMutation = (props: {
 
   return deleteBoardMutation;
 };
+
+export const useDeleteColumnMutation = (props: {
+  id: string;
+  refreshBoard: () => void;
+}) => {
+  const { id, refreshBoard } = props;
+
+  const deleteColumnMutation = useMutation({
+    mutationFn: async () => {
+      const deleteBoardPromise = axios.delete(`/api/column?id=${id}`);
+
+      notifyPromise(deleteBoardPromise, {
+        loading: "Deleting column...",
+        success: "Deleted the column",
+        error: "Unable to delete the column",
+      });
+
+      return deleteBoardPromise;
+    },
+
+    onSuccess: () => refreshBoard(),
+  });
+
+  return deleteColumnMutation;
+};

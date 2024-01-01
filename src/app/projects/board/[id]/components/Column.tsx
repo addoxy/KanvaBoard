@@ -1,24 +1,38 @@
 "use client";
 
-import { CrossIcon, DragIcon } from "@/components/Icons";
-import { useUpdateColumnTitleMutation } from "@/lib/mutations";
+import { DragIcon } from "@/components/Icons";
+import {
+  useDeleteColumnMutation,
+  useUpdateColumnTitleMutation,
+} from "@/lib/mutations";
 import { notify } from "@/utils/notify";
 import { useRef, useState } from "react";
 import AddTaskDialog from "./AddTaskDialog";
+import DeleteColumnDialog from "./DeleteColumnDialog";
 import Task from "./Task";
 
-const Column = (props: ColumnProps) => {
-  const { id, title } = props;
+interface Column extends ColumnProps {
+  refreshBoard: () => void;
+}
+
+const Column = (props: Column) => {
+  const { id, title, refreshBoard } = props;
 
   const [editMode, setEditMode] = useState(false);
   const [columnTitle, setColumnTitle] = useState(title);
   const [tasks, setTasks] = useState(props.tasks);
+  const [isOpen, setIsOpen] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
   const updateColumnTitleMutation = useUpdateColumnTitleMutation({
     id,
     newTitle: columnTitle,
+  });
+
+  const deleteColumnMutation = useDeleteColumnMutation({
+    id,
+    refreshBoard,
   });
 
   function handleTitle() {
@@ -66,9 +80,12 @@ const Column = (props: ColumnProps) => {
           <button className="hover:bg-zinc-700/50 rounded-md mr-2 p-2 transition-all delay-100 duration-200 ease-in-out">
             <DragIcon className="w-2 h-2 text-zinc-300" />
           </button>
-          <button className="hover:bg-zinc-700/50 rounded-md transition-all delay-100 duration-200 ease-in-out">
-            <CrossIcon className="w-6 h-6 text-zinc-300" />
-          </button>
+          <DeleteColumnDialog
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            columnName={title}
+            mutateFn={deleteColumnMutation}
+          />
         </div>
       </div>
       <div className="flex w-80 flex-col gap-y-2 rounded-lg border border-zinc-700/20 bg-zinc-800/40 p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round">
