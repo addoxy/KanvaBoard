@@ -19,7 +19,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cn("debug-screens bg-zinc-900", inter.className)}>
+      <body
+        className={cn(
+          "bg-zinc-900",
+          inter.className,
+          process.env.NODE_ENV === "development" && "debug-screens"
+        )}
+      >
         <Toaster position="top-right" />
         <Providers>{children}</Providers>
       </body>
