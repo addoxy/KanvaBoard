@@ -31,7 +31,6 @@ export async function PUT_TASKS(req: Request, res: Response) {
     return SendResponse(errors.badRequest, 400);
   }
 
-  console.log("arrived");
   try {
     await prisma.task.update({
       where: {
