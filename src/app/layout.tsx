@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import Providers from "@/utils/providers";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import { cn } from "../utils/utils";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn("debug-screens bg-zinc-900", inter.className)}>
+        <Toaster position="top-right" />
         <Providers>{children}</Providers>
       </body>
     </html>
