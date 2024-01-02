@@ -243,6 +243,31 @@ export const useUpdateColumnTitleMutation = (props: {
   return updateColumnTitleMutation;
 };
 
+export const useUpdateTaskMutation = (props: {
+  id: string;
+  newContent: string;
+  refreshBoard: () => void;
+}) => {
+  const { id, newContent, refreshBoard } = props;
+
+  const updateTaskMutation = useMutation({
+    mutationFn: async () => {
+      const updateTaskPromise = axios.put(
+        `/api/task?id=${id}&newContent=${newContent}`
+      );
+
+      notifyPromise(updateTaskPromise, {
+        loading: "Updating task...",
+        success: "Updated the task",
+        error: "Unable to update task",
+      });
+    },
+    onSuccess: () => refreshBoard(),
+  });
+
+  return updateTaskMutation;
+};
+
 // delete
 export const useDeleteBoardMutation = (props: {
   id: string;

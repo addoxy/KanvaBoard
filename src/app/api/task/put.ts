@@ -28,9 +28,10 @@ export async function PUT_TASKS(req: Request, res: Response) {
   const id = searchParams.get("id");
 
   if (!newContent || !id) {
-    return SendResponse(errors.badRequest, 200);
+    return SendResponse(errors.badRequest, 400);
   }
 
+  console.log("arrived");
   try {
     await prisma.task.update({
       where: {

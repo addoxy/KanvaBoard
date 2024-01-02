@@ -6,7 +6,7 @@ import { CrossIcon } from "@/components/Icons";
 import Spacer from "@/components/Spacer";
 import Textarea from "@/components/Textarea";
 import Title from "@/components/Title";
-import { useDeleteTaskMutation } from "@/lib/mutations";
+import { useDeleteTaskMutation, useUpdateTaskMutation } from "@/lib/mutations";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useEffect, useState } from "react";
 import DeleteTaskDialog from "./DeleteTaskDialog";
@@ -28,11 +28,27 @@ const Task = (props: Task) => {
     refreshBoard,
   });
 
+  const updateTaskMutation = useUpdateTaskMutation({
+    id,
+    newContent: content,
+    refreshBoard,
+  });
+
   useEffect(() => {
     if (deleteTaskMutation.isSuccess || deleteTaskMutation.isError) {
       setIsOpen(false);
     }
   }, [deleteTaskMutation.isSuccess, deleteTaskMutation.isError, setIsOpen]);
+
+  useEffect(() => {
+    if (updateTaskMutation.isSuccess || updateTaskMutation.isError) {
+      setIsDeleteOpen(false);
+    }
+  }, [
+    updateTaskMutation.isSuccess,
+    updateTaskMutation.isError,
+    setIsDeleteOpen,
+  ]);
 
   return (
     <>
@@ -73,9 +89,9 @@ const Task = (props: Task) => {
             <Button
               text="Save"
               variant="full"
-              disabled={deleteTaskMutation.isPending}
+              disabled={updateTaskMutation.isPending}
               handleClick={() => {
-                setIsOpen(false);
+                updateTaskMutation.mutate();
               }}
             />
           </div>

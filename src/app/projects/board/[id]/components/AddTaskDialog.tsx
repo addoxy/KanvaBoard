@@ -45,7 +45,8 @@ const AddTaskDialog = (props: AddTaskProps) => {
           <Title text={`Add a Task in ${columnTitle}`} variant="lg" />
           <button
             onClick={() => setIsOpen(false)}
-            className="hover:bg-zinc-700/20 rounded-md transition-all delay-100 duration-200 ease-in-out"
+            className="hover:bg-zinc-700/20 rounded-md transition-all delay-100 duration-200 ease-in-out disabled:cursor-not-allowed"
+            disabled={createTaskMutation.isPending}
           >
             <CrossIcon className="w-8 h-8 text-zinc-300" />
           </button>
@@ -61,7 +62,7 @@ const AddTaskDialog = (props: AddTaskProps) => {
           <Button
             text="Save"
             variant="full"
-            disabled={content.length === 0}
+            disabled={content.length === 0 || createTaskMutation.isPending}
             handleClick={() => {
               createTaskMutation.mutate();
             }}
