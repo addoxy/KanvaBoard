@@ -16,11 +16,10 @@ interface Column extends ColumnProps {
 }
 
 const Column = (props: Column) => {
-  const { id, title, refreshBoard } = props;
+  const { id, title, tasks, refreshBoard } = props;
 
   const [editMode, setEditMode] = useState(false);
   const [columnTitle, setColumnTitle] = useState(title);
-  const [tasks, setTasks] = useState(props.tasks);
   const [isOpen, setIsOpen] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -92,7 +91,12 @@ const Column = (props: Column) => {
         {tasks.map((task) => (
           <Task {...task} key={task.id} />
         ))}
-        <AddTaskDialog columnTitle={title} />
+        <AddTaskDialog
+          columnId={id}
+          columnTitle={title}
+          order={tasks.length + 1}
+          refreshBoard={refreshBoard}
+        />
       </div>
     </div>
   );

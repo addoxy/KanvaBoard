@@ -98,6 +98,36 @@ export const useCreateColumnMutation = (props: {
   return createColumnMutation;
 };
 
+export const useCreateTaskMutation = (props: {
+  columnId: string;
+  content: string;
+  order: number;
+  refreshBoard: () => void;
+}) => {
+  const { columnId, content, order, refreshBoard } = props;
+
+  const createTaskMutation = useMutation({
+    mutationFn: async () => {
+      const createTaskPromise = axios.post(
+        `/api/task?columnId=${columnId}&content=${content}&order=${order}`
+      );
+
+      notifyPromise(createTaskPromise, {
+        loading: "Creating task...",
+        success: "Created the task",
+        error: "Unable to create task",
+      });
+
+      return createTaskPromise;
+    },
+    onSuccess: () => {
+      refreshBoard();
+    },
+  });
+
+  return createTaskMutation;
+};
+
 // update
 export const useUpdateWorkspaceNameMutation = (props: {
   newName: string;
@@ -247,15 +277,15 @@ export const useDeleteColumnMutation = (props: {
 
   const deleteColumnMutation = useMutation({
     mutationFn: async () => {
-      const deleteBoardPromise = axios.delete(`/api/column?id=${id}`);
+      const deleteColumnPromise = axios.delete(`/api/column?id=${id}`);
 
-      notifyPromise(deleteBoardPromise, {
+      notifyPromise(deleteColumnPromise, {
         loading: "Deleting column...",
         success: "Deleted the column",
         error: "Unable to delete the column",
       });
 
-      return deleteBoardPromise;
+      return deleteColumnPromise;
     },
 
     onSuccess: () => refreshBoard(),

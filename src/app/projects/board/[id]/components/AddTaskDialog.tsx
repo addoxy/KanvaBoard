@@ -4,17 +4,28 @@ import { CrossIcon } from "@/components/Icons";
 import Spacer from "@/components/Spacer";
 import Textarea from "@/components/Textarea";
 import Title from "@/components/Title";
+import { useCreateTaskMutation } from "@/lib/mutations";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 
 interface AddTaskProps {
+  columnId: string;
   columnTitle: string;
+  order: number;
+  refreshBoard: () => void;
 }
 
 const AddTaskDialog = (props: AddTaskProps) => {
-  const { columnTitle } = props;
+  const { columnId, columnTitle, order, refreshBoard } = props;
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState("");
+
+  const createTaskMutation = useCreateTaskMutation({
+    columnId,
+    content,
+    order,
+    refreshBoard,
+  });
 
   return (
     <Dialog.Root
@@ -52,7 +63,7 @@ const AddTaskDialog = (props: AddTaskProps) => {
             variant="full"
             disabled={content.length === 0}
             handleClick={() => {
-              setIsOpen(false);
+              createTaskMutation.mutate();
             }}
           />
         </div>
