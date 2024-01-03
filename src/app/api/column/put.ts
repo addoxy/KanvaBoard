@@ -50,5 +50,34 @@ export async function PUT_COLUMNS(req: Request, res: Response) {
     }
   }
 
+  if (query === "reorder") {
+    const boardId = searchParams.get("boardId");
+    const columns = searchParams.get("columns");
+
+    if (!boardId || !columns) {
+      return SendResponse(errors.badRequest, 400);
+    }
+
+    try {
+      const newColumns = JSON.parse(columns);
+      console.log(newColumns);
+
+      for (let i = 0; i < newColumns.length; i++) {
+        await prisma.column.update({
+          where: {
+            id: newColumns[i].id,
+          },
+          data: {
+            order: i + 1,
+          },
+        });
+      }
+
+      return SendResponse("Successfully reordered columns", 200);
+    } catch (error) {
+      return SendResponse("Unable to update column order", 500);
+    }
+  }
+
   return SendResponse(errors.badRequest, 400);
 }

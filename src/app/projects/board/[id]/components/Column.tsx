@@ -6,6 +6,9 @@ import {
   useUpdateColumnTitleMutation,
 } from "@/lib/mutations";
 import { notify } from "@/utils/notify";
+import { cn } from "@/utils/utils";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { useRef, useState } from "react";
 import AddTaskDialog from "./AddTaskDialog";
 import DeleteColumnDialog from "./DeleteColumnDialog";
@@ -13,14 +16,46 @@ import Task from "./Task";
 
 interface Column extends ColumnProps {
   refreshBoard: () => void;
+  index: number;
+  length: number;
 }
 
 const Column = (props: Column) => {
-  const { id, title, tasks, refreshBoard } = props;
+  const { id, title, tasks, refreshBoard, index, length } = props;
+  console.log(index);
+  console.log(length);
 
   const [editMode, setEditMode] = useState(false);
   const [columnTitle, setColumnTitle] = useState(title);
   const [isOpen, setIsOpen] = useState(false);
+
+  const sortableProps = {
+    ...props,
+    id,
+    title,
+    tasks,
+    refreshBoard,
+  };
+
+  const {
+    setNodeRef,
+    attributes,
+    listeners,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: id,
+    data: {
+      type: "Column",
+      sortableProps,
+    },
+  });
+
+  const style = {
+    transition,
+    transform: CSS.Translate.toString(transform),
+  };
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -47,8 +82,22 @@ const Column = (props: Column) => {
     updateColumnTitleMutation.mutate();
   }
 
+  if (isDragging) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={style}
+        {...listeners}
+        {...attributes}
+        className={cn(
+          "flex shrink-0 flex-col w-80 h-120 rounded-lg bg-zinc-800/30"
+        )}
+      ></div>
+    );
+  }
+
   return (
-    <div className="flex flex-col first-of-type:pl-12 last-of-type:pr-12 pb-4">
+    <div ref={setNodeRef} style={style} className="flex flex-col pb-4 h-full">
       <div className="mb-4 w-80 pt-1 flex items-center gap-x-3 justify-between">
         {!editMode && (
           <span
@@ -72,11 +121,15 @@ const Column = (props: Column) => {
                 inputRef.current && inputRef.current.blur();
               }
             }}
-            className="h-full py-4 w-full rounded-lg px-2 font-medium text-zinc-300 bg-zinc-800 text-sm outline-none -my-4 truncate"
+            className="h-8 py-4 w-full rounded-lg px-2 font-medium text-zinc-300 bg-zinc-800 text-sm outline-none -my-4 truncate"
           />
         )}
         <div className="flex items-center">
-          <button className="hover:bg-zinc-700/50 rounded-md mr-2 p-2 transition-all delay-100 duration-200 ease-in-out">
+          <button
+            {...listeners}
+            {...attributes}
+            className="hover:bg-zinc-700/50 rounded-md mr-2 p-2 transition-all delay-100 duration-200 ease-in-out"
+          >
             <DragIcon className="w-2 h-2 text-zinc-300" />
           </button>
           <DeleteColumnDialog

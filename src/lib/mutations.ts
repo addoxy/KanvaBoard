@@ -268,6 +268,26 @@ export const useUpdateTaskMutation = (props: {
   return updateTaskMutation;
 };
 
+export const useUpdateColumnOrderMutation = (props: {
+  boardId: string;
+  columns: ColumnProps[];
+}) => {
+  const { boardId, columns } = props;
+
+  const updateColumnOrderMutation = useMutation({
+    mutationFn: async () =>
+      await axios.put(
+        `/api/column?q=reorder&boardId=${boardId}&columns=${JSON.stringify(
+          columns
+        )}`
+      ),
+
+    onError: () => notify("Unable to reorder columns", "warning"),
+  });
+
+  return updateColumnOrderMutation;
+};
+
 // delete
 export const useDeleteBoardMutation = (props: {
   id: string;
