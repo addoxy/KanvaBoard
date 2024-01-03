@@ -166,7 +166,6 @@ const Board = (props: Board) => {
                 <Column
                   {...column}
                   length={columns.length}
-                  index={i}
                   refreshBoard={refreshBoard}
                 />
               </div>
@@ -176,12 +175,7 @@ const Board = (props: Board) => {
         {createPortal(
           <DragOverlay>
             {activeColumn && (
-              <Column
-                {...activeColumn}
-                length={columns.length}
-                index={activeColumn.order}
-                refreshBoard={refreshBoard}
-              />
+              <Column {...activeColumn} refreshBoard={refreshBoard} />
             )}
           </DragOverlay>,
           document.body

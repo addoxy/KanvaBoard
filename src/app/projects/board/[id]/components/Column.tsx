@@ -16,14 +16,10 @@ import Task from "./Task";
 
 interface Column extends ColumnProps {
   refreshBoard: () => void;
-  index: number;
-  length: number;
 }
 
 const Column = (props: Column) => {
-  const { id, title, tasks, refreshBoard, index, length } = props;
-  console.log(index);
-  console.log(length);
+  const { id, title, tasks, refreshBoard } = props;
 
   const [editMode, setEditMode] = useState(false);
   const [columnTitle, setColumnTitle] = useState(title);
@@ -31,10 +27,9 @@ const Column = (props: Column) => {
 
   const sortableProps = {
     ...props,
-    id,
-    title,
-    tasks,
-    refreshBoard,
+    id: id,
+    title: columnTitle,
+    tasks: tasks,
   };
 
   const {
