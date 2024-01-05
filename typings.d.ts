@@ -2,30 +2,32 @@ interface IconProps {
   className: string;
 }
 
-interface TaskProps {
+interface Task {
   id: string;
   content: string | null;
   order: number;
   columnId: string;
-  boardId: string;
+  refreshBoard: () => void;
+  columnTitle?: string;
 }
 
-interface ColumnProps {
+interface Column {
   id: string;
   title: string;
   order: number;
   boardId: string;
   tasks: Task[];
+  refreshBoard: () => void;
 }
 
-interface BoardProps {
+interface Board {
   id: string;
   title: string;
   viewedAt: Date;
   usedId: string | null;
   favorite: boolean;
   columns: Column[];
-  tasks: TaskProps[];
+  refreshBoard: () => void;
 }
 
 interface TaskTemplateProps {

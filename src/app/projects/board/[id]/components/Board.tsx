@@ -11,41 +11,37 @@ import { cn } from "@/utils/utils";
 import {
   DndContext,
   DragEndEvent,
-  DragOverEvent,
+  DragMoveEvent,
   DragOverlay,
   DragStartEvent,
+  KeyboardSensor,
+  PointerSensor,
+  UniqueIdentifier,
   closestCorners,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
-import { SortableContext, arrayMove } from "@dnd-kit/sortable";
+import {
+  SortableContext,
+  arrayMove,
+  sortableKeyboardCoordinates,
+} from "@dnd-kit/sortable";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import Column from "./Column";
-import Task from "./Task";
 import CreateColumnDialog from "./dialogs/CreateColumnDialog";
-
-interface Board extends BoardProps {
-  refreshBoard: () => void;
-}
 
 const Board = (props: Board) => {
   useEffect(() => {
     setColumns(props.columns);
   }, [props.columns]);
 
-  useEffect(() => {
-    setTasks(props.tasks);
-  }, [props.tasks]);
-
   const { id, refreshBoard, title } = props;
 
   const [columns, setColumns] = useState(props.columns);
-  const [tasks, setTasks] = useState(props.tasks);
   const [editMode, setEditMode] = useState(false);
   const [boardTitle, setBoardTitle] = useState(title);
   const [newColumnTitle, setNewColumnTitle] = useState("");
-
-  const [activeColumn, setActiveColumn] = useState<ColumnProps | null>(null);
-  const [activeTask, setActiveTask] = useState<TaskProps | null>(null);
+  const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
 
   const columnsId = useMemo(
     () => columns.map((column) => column.id),
@@ -78,85 +74,239 @@ const Board = (props: Board) => {
     updateBoardTitleMutation.mutate();
   }
 
-  function onDragStart(event: DragStartEvent) {
-    if (event.active.data.current?.type === "Column") {
-      setActiveColumn(event.active.data.current.sortableProps);
-      return;
+  function findItems(id: UniqueIdentifier | undefined, type: string) {
+    if (type === "Column") {
+      return columns.find((column) => column.id === id);
     }
-
-    if (event.active.data.current?.type === "Task") {
-      setActiveTask(event.active.data.current.sortableProps);
-      return;
+    if (type === "Task") {
+      return columns.find((column) =>
+        column.tasks.find((task) => task.id === id)
+      );
     }
   }
 
-  function onDragEnd(event: DragEndEvent) {
-    setActiveColumn(null);
-    setActiveTask(null);
+  // DND Handlers
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
+  function handleDragStart(event: DragStartEvent) {
+    const { active } = event;
+    const { id } = active;
+    setActiveId(id);
+  }
+
+  const handleDragMove = (event: DragMoveEvent) => {
     const { active, over } = event;
-    if (!over) return;
 
-    const activeId = active.id;
-    const overId = over.id;
+    // Handle Items Sorting
+    if (
+      active.data.current?.type === "Task" &&
+      over?.data.current?.type === "Task" &&
+      active &&
+      over &&
+      active.id !== over.id
+    ) {
+      // Find the active container and over container
+      const activeItem = findItems(active.id, "Task");
+      const overItem = findItems(over.id, "Task");
 
-    if (activeId === overId) return;
+      // If the active or over container is not found, return
+      if (!activeItem || !overItem) return;
 
-    const isActiveAColumn = active.data.current?.type === "Column";
+      // Find the index of the active and over container
+      const activeColumnIndex = columns.findIndex(
+        (column) => column.id === activeItem.id
+      );
+      const overColumnIndex = columns.findIndex(
+        (column) => column.id === overItem.id
+      );
 
-    if (isActiveAColumn) {
-      setColumns((columns) => {
-        const activeColumnIndex = columns.findIndex(
-          (col) => col.id === activeId
+      // Find the index of the active and over item
+      const activeTaskIndex = activeItem.tasks.findIndex(
+        (task) => task.id === active.id
+      );
+      const overTaskIndex = overItem.tasks.findIndex(
+        (task) => task.id === over.id
+      );
+
+      // In the same container
+      if (activeColumnIndex === overColumnIndex) {
+        let newColumns = [...columns];
+        newColumns[activeColumnIndex].tasks = arrayMove(
+          newColumns[activeColumnIndex].tasks,
+          activeTaskIndex,
+          overTaskIndex
         );
 
-        const overColumnIndex = columns.findIndex((col) => col.id === overId);
-
-        return arrayMove(columns, activeColumnIndex, overColumnIndex);
-      });
-      return;
+        setColumns(newColumns);
+      } else {
+        // In different containers
+        let newColumns = [...columns];
+        const [removedTask] = newColumns[activeColumnIndex].tasks.splice(
+          activeTaskIndex,
+          1
+        );
+        newColumns[overColumnIndex].tasks.splice(overTaskIndex, 0, removedTask);
+        setColumns(newColumns);
+      }
     }
-  }
 
-  function onDragOver(event: DragOverEvent) {
+    // Handling Item Drop Into a Container
+    if (
+      active.data.current?.type === "Task" &&
+      over?.data.current?.type === "Column" &&
+      active &&
+      over &&
+      active.id !== over.id
+    ) {
+      // Find the active and over container
+      const activeItem = findItems(active.id, "Task");
+      const overItem = findItems(over.id, "Column");
+
+      // If the active or over container is not found, return
+      if (!activeItem || !overItem) return;
+
+      // Find the index of the active and over container
+      const activeColumnIndex = columns.findIndex(
+        (column) => column.id === activeItem.id
+      );
+      const overColumnIndex = columns.findIndex(
+        (column) => column.id === overItem.id
+      );
+
+      // Find the index of the active and over item
+      const activeTaskIndex = activeItem.tasks.findIndex(
+        (task) => task.id === active.id
+      );
+
+      // Remove the active item from the active container and add it to the over container
+      let newColumns = [...columns];
+      const [removedTask] = newColumns[activeColumnIndex].tasks.splice(
+        activeTaskIndex,
+        1
+      );
+      newColumns[overColumnIndex].tasks.push(removedTask);
+      setColumns(newColumns);
+    }
+  };
+
+  // This is the function that handles the sorting of the containers and items when the user is done dragging.
+  function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
-    if (!over) return;
 
-    const activeId = active.id;
-    const overId = over.id;
-
-    if (activeId === overId) return;
-
-    const isActiveATask = active.data.current?.type === "Task";
-    const isOverATask = over.data.current?.type === "Task";
-
-    if (!isActiveATask) return;
-
-    // dropping a Task over another Task
-    if (isActiveATask && isOverATask) {
-      setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((t) => t.id === activeId);
-        const overIndex = tasks.findIndex((t) => t.id === overId);
-
-        if (tasks[activeIndex].columnId != tasks[overIndex].columnId) {
-          tasks[activeIndex].columnId = tasks[overIndex].columnId;
-          return arrayMove(tasks, activeIndex, overIndex + 1);
-        }
-
-        return arrayMove(tasks, activeIndex, overIndex);
-      });
+    // Handling Container Sorting
+    if (
+      active.data.current?.type === "Column" &&
+      over?.data.current?.type === "Column" &&
+      active &&
+      over &&
+      active.id !== over.id
+    ) {
+      // Find the index of the active and over container
+      const activeColumnIndex = columns.findIndex(
+        (column) => column.id === active.id
+      );
+      const overColumnIndex = columns.findIndex(
+        (column) => column.id === over.id
+      );
+      // Swap the active and over container
+      let newColumns = [...columns];
+      newColumns = arrayMove(newColumns, activeColumnIndex, overColumnIndex);
+      setColumns(newColumns);
     }
 
-    const isOverAColumn = over.data.current?.type === "Column";
+    // Handling item Sorting
+    if (
+      active.data.current?.type === "Task" &&
+      over?.data.current?.type === "Task" &&
+      active &&
+      over &&
+      active.id !== over.id
+    ) {
+      // Find the active and over container
+      const activeItem = findItems(active.id, "Task");
+      const overItem = findItems(over.id, "Task");
 
-    // dropping a Task over a column
-    if (isActiveATask && isOverAColumn) {
-      setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((t) => t.id === activeId);
-        tasks[activeIndex].columnId = overId as string;
-        return arrayMove(tasks, activeIndex, activeIndex);
-      });
+      // If the active or over container is not found, return
+      if (!activeItem || !overItem) return;
+
+      // Find the index of the active and over container
+      const activeColumnIndex = columns.findIndex(
+        (column) => column.id === activeItem.id
+      );
+      const overColumnIndex = columns.findIndex(
+        (column) => column.id === overItem.id
+      );
+
+      // Find the index of the active and over item
+      const activeTaskIndex = activeItem.tasks.findIndex(
+        (task) => task.id === active.id
+      );
+      const overTaskIndex = overItem.tasks.findIndex(
+        (task) => task.id === over.id
+      );
+
+      // In the same container
+      if (activeColumnIndex === overColumnIndex) {
+        let newColumns = [...columns];
+        newColumns[activeColumnIndex].tasks = arrayMove(
+          newColumns[activeColumnIndex].tasks,
+          activeTaskIndex,
+          overTaskIndex
+        );
+        setColumns(newColumns);
+      } else {
+        // In different containers
+        let newColumns = [...columns];
+        const [removedTask] = newColumns[activeColumnIndex].tasks.splice(
+          activeTaskIndex,
+          1
+        );
+        newColumns[overColumnIndex].tasks.splice(overTaskIndex, 0, removedTask);
+        setColumns(newColumns);
+      }
     }
+
+    // Handling item dropping into Container
+    if (
+      active.data.current?.type === "Task" &&
+      over?.data.current?.type === "Container" &&
+      active &&
+      over &&
+      active.id !== over.id
+    ) {
+      // Find the active and over container
+      const activeItem = findItems(active.id, "Task");
+      const overItem = findItems(over.id, "Column");
+
+      // If the active or over container is not found, return
+      if (!activeItem || !overItem) return;
+      // Find the index of the active and over container
+      const activeColumnIndex = columns.findIndex(
+        (column) => column.id === activeItem.id
+      );
+      const overColumnIndex = columns.findIndex(
+        (column) => column.id === overItem.id
+      );
+
+      // Find the index of the active and over item
+      const activeTaskIndex = activeItem.tasks.findIndex(
+        (task) => task.id === active.id
+      );
+
+      let newColumns = [...columns];
+      const [removedTask] = newColumns[activeColumnIndex].tasks.splice(
+        activeTaskIndex,
+        1
+      );
+      newColumns[overColumnIndex].tasks.push(removedTask);
+      setColumns(newColumns);
+    }
+    setActiveId(null);
   }
 
   return (
@@ -204,36 +354,28 @@ const Board = (props: Board) => {
       </div>
       <Spacer variant="lg" />
       <DndContext
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDragOver={onDragOver}
+        sensors={sensors}
         collisionDetection={closestCorners}
+        onDragStart={handleDragStart}
+        onDragMove={handleDragMove}
+        onDragEnd={handleDragEnd}
       >
         <div className="flex gap-x-6 -mr-12 -ml-12 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round overflow-x-auto h-full">
-          <SortableContext items={columnsId}>
+          <SortableContext items={columns.map((column) => column.id)}>
             {columns.map((column, i) => (
               <div
                 key={column.id}
                 className="first-of-type:pl-12 last-of-type:pr-12 h-fit"
               >
-                <Column
-                  {...column}
-                  tasks={tasks.filter((task) => task.columnId === column.id)}
-                  refreshBoard={refreshBoard}
-                />
+                <Column {...column} refreshBoard={refreshBoard} />
               </div>
             ))}
           </SortableContext>
         </div>
-        {createPortal(
-          <DragOverlay>
-            {activeColumn && (
-              <Column {...activeColumn} refreshBoard={refreshBoard} />
-            )}
-            {activeTask && <Task {...activeTask} refreshBoard={refreshBoard} />}
-          </DragOverlay>,
-          document.body
-        )}
+        <DragOverlay>
+          {/* {activeTask && <Task {...activeTask} />}
+          {activeColumn && <Column {...activeColumn} />} */}
+        </DragOverlay>
       </DndContext>
     </div>
   );

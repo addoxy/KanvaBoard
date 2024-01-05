@@ -66,10 +66,12 @@ export async function GET_BOARDS(req: Request, res: Response) {
             orderBy: {
               order: "asc",
             },
-          },
-          tasks: {
-            orderBy: {
-              order: "asc",
+            include: {
+              tasks: {
+                orderBy: {
+                  order: "asc",
+                },
+              },
             },
           },
         },

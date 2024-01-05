@@ -7,16 +7,12 @@ import Spacer from "@/components/Spacer";
 import Textarea from "@/components/Textarea";
 import Title from "@/components/Title";
 import { useDeleteTaskMutation, useUpdateTaskMutation } from "@/lib/mutations";
+import { cn } from "@/utils/utils";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useEffect, useState } from "react";
 import DeleteTaskDialog from "./dialogs/DeleteTaskDialog";
-
-interface Task extends TaskProps {
-  columnTitle?: string;
-  refreshBoard: () => void;
-}
 
 const Task = (props: Task) => {
   const { id, columnTitle, refreshBoard } = props;
@@ -78,18 +74,6 @@ const Task = (props: Task) => {
     setIsDeleteOpen,
   ]);
 
-  if (isDragging) {
-    return (
-      <div
-        ref={setNodeRef}
-        style={style}
-        {...attributes}
-        {...listeners}
-        className="rounded-lg border border-zinc-700/20 bg-zinc-800/40 h-[46px]"
-      />
-    );
-  }
-
   return (
     <>
       <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -100,7 +84,12 @@ const Task = (props: Task) => {
           {...listeners}
           asChild
         >
-          <p className="cursor-pointer rounded-lg border border-zinc-600/20 bg-zinc-750 p-3 text-sm text-zinc-300">
+          <p
+            className={cn(
+              "cursor-pointer rounded-lg border border-zinc-600/20 bg-zinc-750 p-3 text-sm text-zinc-300",
+              isDragging && "opacity-50"
+            )}
+          >
             {props.content}
           </p>
         </Dialog.Trigger>
