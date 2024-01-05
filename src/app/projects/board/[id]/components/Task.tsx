@@ -9,7 +9,7 @@ import Title from "@/components/Title";
 import { useDeleteTaskMutation, useUpdateTaskMutation } from "@/lib/mutations";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useEffect, useState } from "react";
-import DeleteTaskDialog from "./DeleteTaskDialog";
+import DeleteTaskDialog from "./dialogs/DeleteTaskDialog";
 
 interface Task extends TaskProps {
   columnTitle: string;

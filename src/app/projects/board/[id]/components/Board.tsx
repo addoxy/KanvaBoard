@@ -10,7 +10,7 @@ import { notify } from "@/utils/notify";
 import { cn } from "@/utils/utils";
 import { useEffect, useRef, useState } from "react";
 import Column from "./Column";
-import CreateColumnDialog from "./CreateColumnDialog";
+import CreateColumnDialog from "./dialogs/CreateColumnDialog";
 
 interface Board extends BoardProps {
   refreshBoard: () => void;
