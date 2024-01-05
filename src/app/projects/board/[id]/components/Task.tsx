@@ -7,12 +7,14 @@ import Spacer from "@/components/Spacer";
 import Textarea from "@/components/Textarea";
 import Title from "@/components/Title";
 import { useDeleteTaskMutation, useUpdateTaskMutation } from "@/lib/mutations";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useEffect, useState } from "react";
 import DeleteTaskDialog from "./dialogs/DeleteTaskDialog";
 
 interface Task extends TaskProps {
-  columnTitle: string;
+  columnTitle?: string;
   refreshBoard: () => void;
 }
 
@@ -22,6 +24,32 @@ const Task = (props: Task) => {
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState(props.content || "");
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  const sortableProps = {
+    ...props,
+    id: id,
+    content: content,
+  };
+
+  const {
+    setNodeRef,
+    attributes,
+    listeners,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: id,
+    data: {
+      type: "Task",
+      sortableProps,
+    },
+  });
+
+  const style = {
+    transition,
+    transform: CSS.Translate.toString(transform),
+  };
 
   const deleteTaskMutation = useDeleteTaskMutation({
     id,
@@ -50,10 +78,28 @@ const Task = (props: Task) => {
     setIsDeleteOpen,
   ]);
 
+  if (isDragging) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
+        className="rounded-lg border border-zinc-700/20 bg-zinc-800/40 h-[46px]"
+      />
+    );
+  }
+
   return (
     <>
       <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
-        <Dialog.Trigger asChild>
+        <Dialog.Trigger
+          ref={setNodeRef}
+          style={style}
+          {...attributes}
+          {...listeners}
+          asChild
+        >
           <p className="cursor-pointer rounded-lg border border-zinc-600/20 bg-zinc-750 p-3 text-sm text-zinc-300">
             {props.content}
           </p>
@@ -97,12 +143,14 @@ const Task = (props: Task) => {
           </div>
         </DialogBox>
       </Dialog.Root>
-      <DeleteTaskDialog
-        isOpen={isDeleteOpen}
-        setIsOpen={setIsDeleteOpen}
-        columnName={columnTitle}
-        mutateFn={deleteTaskMutation}
-      />
+      {columnTitle && (
+        <DeleteTaskDialog
+          isOpen={isDeleteOpen}
+          setIsOpen={setIsDeleteOpen}
+          columnName={columnTitle}
+          mutateFn={deleteTaskMutation}
+        />
+      )}
     </>
   );
 };

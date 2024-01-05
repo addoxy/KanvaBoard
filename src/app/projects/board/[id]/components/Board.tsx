@@ -8,8 +8,19 @@ import {
 } from "@/lib/mutations";
 import { notify } from "@/utils/notify";
 import { cn } from "@/utils/utils";
-import { useEffect, useRef, useState } from "react";
+import {
+  DndContext,
+  DragEndEvent,
+  DragOverEvent,
+  DragOverlay,
+  DragStartEvent,
+  closestCorners,
+} from "@dnd-kit/core";
+import { SortableContext, arrayMove } from "@dnd-kit/sortable";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Column from "./Column";
+import Task from "./Task";
 import CreateColumnDialog from "./dialogs/CreateColumnDialog";
 
 interface Board extends BoardProps {
@@ -32,6 +43,14 @@ const Board = (props: Board) => {
   const [editMode, setEditMode] = useState(false);
   const [boardTitle, setBoardTitle] = useState(title);
   const [newColumnTitle, setNewColumnTitle] = useState("");
+
+  const [activeColumn, setActiveColumn] = useState<ColumnProps | null>(null);
+  const [activeTask, setActiveTask] = useState<TaskProps | null>(null);
+
+  const columnsId = useMemo(
+    () => columns.map((column) => column.id),
+    [columns]
+  );
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -57,6 +76,87 @@ const Board = (props: Board) => {
 
     setBoardTitle(inputRef.current?.value);
     updateBoardTitleMutation.mutate();
+  }
+
+  function onDragStart(event: DragStartEvent) {
+    if (event.active.data.current?.type === "Column") {
+      setActiveColumn(event.active.data.current.sortableProps);
+      return;
+    }
+
+    if (event.active.data.current?.type === "Task") {
+      setActiveTask(event.active.data.current.sortableProps);
+      return;
+    }
+  }
+
+  function onDragEnd(event: DragEndEvent) {
+    setActiveColumn(null);
+    setActiveTask(null);
+
+    const { active, over } = event;
+    if (!over) return;
+
+    const activeId = active.id;
+    const overId = over.id;
+
+    if (activeId === overId) return;
+
+    const isActiveAColumn = active.data.current?.type === "Column";
+
+    if (isActiveAColumn) {
+      setColumns((columns) => {
+        const activeColumnIndex = columns.findIndex(
+          (col) => col.id === activeId
+        );
+
+        const overColumnIndex = columns.findIndex((col) => col.id === overId);
+
+        return arrayMove(columns, activeColumnIndex, overColumnIndex);
+      });
+      return;
+    }
+  }
+
+  function onDragOver(event: DragOverEvent) {
+    const { active, over } = event;
+    if (!over) return;
+
+    const activeId = active.id;
+    const overId = over.id;
+
+    if (activeId === overId) return;
+
+    const isActiveATask = active.data.current?.type === "Task";
+    const isOverATask = over.data.current?.type === "Task";
+
+    if (!isActiveATask) return;
+
+    // dropping a Task over another Task
+    if (isActiveATask && isOverATask) {
+      setTasks((tasks) => {
+        const activeIndex = tasks.findIndex((t) => t.id === activeId);
+        const overIndex = tasks.findIndex((t) => t.id === overId);
+
+        if (tasks[activeIndex].columnId != tasks[overIndex].columnId) {
+          tasks[activeIndex].columnId = tasks[overIndex].columnId;
+          return arrayMove(tasks, activeIndex, overIndex + 1);
+        }
+
+        return arrayMove(tasks, activeIndex, overIndex);
+      });
+    }
+
+    const isOverAColumn = over.data.current?.type === "Column";
+
+    // dropping a Task over a column
+    if (isActiveATask && isOverAColumn) {
+      setTasks((tasks) => {
+        const activeIndex = tasks.findIndex((t) => t.id === activeId);
+        tasks[activeIndex].columnId = overId as string;
+        return arrayMove(tasks, activeIndex, activeIndex);
+      });
+    }
   }
 
   return (
@@ -103,20 +203,38 @@ const Board = (props: Board) => {
         </CreateColumnDialog>
       </div>
       <Spacer variant="lg" />
-      <div className="flex gap-x-6 -mr-12 -ml-12 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round overflow-x-auto h-full">
-        {columns.map((column, i) => (
-          <div
-            key={column.id}
-            className="first-of-type:pl-12 last-of-type:pr-12 h-fit"
-          >
-            <Column
-              {...column}
-              tasks={tasks.filter((task) => task.columnId === column.id)}
-              refreshBoard={refreshBoard}
-            />
-          </div>
-        ))}
-      </div>
+      <DndContext
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        onDragOver={onDragOver}
+        collisionDetection={closestCorners}
+      >
+        <div className="flex gap-x-6 -mr-12 -ml-12 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round overflow-x-auto h-full">
+          <SortableContext items={columnsId}>
+            {columns.map((column, i) => (
+              <div
+                key={column.id}
+                className="first-of-type:pl-12 last-of-type:pr-12 h-fit"
+              >
+                <Column
+                  {...column}
+                  tasks={tasks.filter((task) => task.columnId === column.id)}
+                  refreshBoard={refreshBoard}
+                />
+              </div>
+            ))}
+          </SortableContext>
+        </div>
+        {createPortal(
+          <DragOverlay>
+            {activeColumn && (
+              <Column {...activeColumn} refreshBoard={refreshBoard} />
+            )}
+            {activeTask && <Task {...activeTask} refreshBoard={refreshBoard} />}
+          </DragOverlay>,
+          document.body
+        )}
+      </DndContext>
     </div>
   );
 };

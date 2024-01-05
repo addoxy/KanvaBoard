@@ -6,7 +6,9 @@ import {
   useUpdateColumnTitleMutation,
 } from "@/lib/mutations";
 import { notify } from "@/utils/notify";
-import { useRef, useState } from "react";
+import { SortableContext, useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { useMemo, useRef, useState } from "react";
 import Task from "./Task";
 import AddTaskDialog from "./dialogs/AddTaskDialog";
 import DeleteColumnDialog from "./dialogs/DeleteColumnDialog";
@@ -22,7 +24,37 @@ const Column = (props: Column) => {
   const [columnTitle, setColumnTitle] = useState(title);
   const [isOpen, setIsOpen] = useState(false);
 
+  const tasksId = useMemo(() => tasks.map((task) => task.id), [tasks]);
+
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const sortableProps = {
+    ...props,
+    id: id,
+    title: title,
+    tasks: tasks,
+  };
+
+  const {
+    setNodeRef,
+    attributes,
+    listeners,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: id,
+    data: {
+      type: "Column",
+      sortableProps,
+    },
+    disabled: editMode,
+  });
+
+  const style = {
+    transition,
+    transform: CSS.Translate.toString(transform),
+  };
 
   const updateColumnTitleMutation = useUpdateColumnTitleMutation({
     id,
@@ -46,8 +78,18 @@ const Column = (props: Column) => {
     updateColumnTitleMutation.mutate();
   }
 
+  if (isDragging) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={style}
+        className="w-80 rounded-lg bg-zinc-800/20 h-100"
+      />
+    );
+  }
+
   return (
-    <div className="flex flex-col pb-4 h-full">
+    <div ref={setNodeRef} style={style} className="flex flex-col pb-4 h-full">
       <div className="mb-4 w-80 pt-1 flex items-center gap-x-3 justify-between">
         {!editMode && (
           <span
@@ -75,7 +117,11 @@ const Column = (props: Column) => {
           />
         )}
         <div className="flex items-center">
-          <button className="hover:bg-zinc-700/50 rounded-md mr-2 p-2 transition-all delay-100 duration-200 ease-in-out">
+          <button
+            {...attributes}
+            {...listeners}
+            className="hover:bg-zinc-700/50 rounded-md mr-2 p-2 transition-all delay-100 duration-200 ease-in-out"
+          >
             <DragIcon className="w-2 h-2 text-zinc-300" />
           </button>
           <DeleteColumnDialog
@@ -87,16 +133,18 @@ const Column = (props: Column) => {
         </div>
       </div>
       <div className="flex w-80 flex-col gap-y-2 rounded-lg border border-zinc-700/20 bg-zinc-800/40 p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round">
-        {tasks.map((task: TaskProps) => {
-          return (
-            <Task
-              {...task}
-              key={task.id}
-              columnTitle={title}
-              refreshBoard={refreshBoard}
-            />
-          );
-        })}
+        <SortableContext items={tasksId}>
+          {tasks.map((task: TaskProps) => {
+            return (
+              <Task
+                {...task}
+                key={task.id}
+                columnTitle={title}
+                refreshBoard={refreshBoard}
+              />
+            );
+          })}
+        </SortableContext>
         <AddTaskDialog
           boardId={boardId}
           columnId={id}
