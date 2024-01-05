@@ -24,11 +24,12 @@ export async function POST_TASKS(req: Request, res: Response) {
   }
 
   const { searchParams } = new URL(req.url);
+  const boardId = searchParams.get("boardId");
   const columnId = searchParams.get("columnId");
   const content = searchParams.get("content");
   const order = searchParams.get("order");
 
-  if (!columnId || !content || !order) {
+  if (!boardId || !columnId || !content || !order) {
     return SendResponse(errors.badRequest, 400);
   }
 
@@ -38,6 +39,7 @@ export async function POST_TASKS(req: Request, res: Response) {
         order: parseInt(order),
         content: content,
         columnId: columnId,
+        boardId: boardId,
       },
     });
 

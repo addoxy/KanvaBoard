@@ -5,27 +5,14 @@ import Title from "@/components/Title";
 import {
   useCreateColumnMutation,
   useUpdateBoardTitleMutation,
-  useUpdateColumnOrderMutation,
 } from "@/lib/mutations";
 import { notify } from "@/utils/notify";
 import { cn } from "@/utils/utils";
-import {
-  DndContext,
-  DragEndEvent,
-  DragOverlay,
-  DragStartEvent,
-} from "@dnd-kit/core";
-import { SortableContext, arrayMove } from "@dnd-kit/sortable";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useRef, useState } from "react";
 import Column from "./Column";
 import CreateColumnDialog from "./CreateColumnDialog";
 
 interface Board extends BoardProps {
-  refreshBoard: () => void;
-}
-
-interface DraggableColumnProps extends ColumnProps {
   refreshBoard: () => void;
 }
 
@@ -34,25 +21,17 @@ const Board = (props: Board) => {
     setColumns(props.columns);
   }, [props.columns]);
 
+  useEffect(() => {
+    setTasks(props.tasks);
+  }, [props.tasks]);
+
   const { id, refreshBoard, title } = props;
 
   const [columns, setColumns] = useState(props.columns);
+  const [tasks, setTasks] = useState(props.tasks);
   const [editMode, setEditMode] = useState(false);
   const [boardTitle, setBoardTitle] = useState(title);
   const [newColumnTitle, setNewColumnTitle] = useState("");
-  const columnsId = useMemo(
-    () => columns.map((column) => column.id),
-    [columns]
-  );
-
-  const updateColumnOrderMutation = useUpdateColumnOrderMutation({
-    boardId: id,
-    columns,
-  });
-
-  const [activeColumn, setActiveColumn] = useState<DraggableColumnProps | null>(
-    null
-  );
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -78,37 +57,6 @@ const Board = (props: Board) => {
 
     setBoardTitle(inputRef.current?.value);
     updateBoardTitleMutation.mutate();
-  }
-
-  function onDragStart(e: DragStartEvent) {
-    if (e.active.data.current?.type === "Column") {
-      setActiveColumn(e.active.data.current.sortableProps);
-      return;
-    }
-  }
-
-  async function onDragEnd(e: DragEndEvent) {
-    const { active, over } = e;
-    if (!over) return;
-
-    const activeColumnId = active.id;
-    const overColumnId = over.id;
-
-    if (activeColumnId === overColumnId) return;
-
-    const activeColumnIndex = columns.findIndex(
-      (column) => column.id === activeColumnId
-    );
-
-    const overColumnIndex = columns.findIndex(
-      (column) => column.id === overColumnId
-    );
-
-    setColumns((columns) => {
-      return arrayMove(columns, activeColumnIndex, overColumnIndex);
-    });
-
-    updateColumnOrderMutation.mutate();
   }
 
   return (
@@ -155,32 +103,20 @@ const Board = (props: Board) => {
         </CreateColumnDialog>
       </div>
       <Spacer variant="lg" />
-      <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
-        <div className="flex gap-x-6 -mr-12 -ml-12 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round overflow-x-auto h-full">
-          <SortableContext items={columnsId}>
-            {columns.map((column, i) => (
-              <div
-                key={column.id}
-                className="first-of-type:pl-12 last-of-type:pr-12"
-              >
-                <Column
-                  {...column}
-                  length={columns.length}
-                  refreshBoard={refreshBoard}
-                />
-              </div>
-            ))}
-          </SortableContext>
-        </div>
-        {createPortal(
-          <DragOverlay>
-            {activeColumn && (
-              <Column {...activeColumn} refreshBoard={refreshBoard} />
-            )}
-          </DragOverlay>,
-          document.body
-        )}
-      </DndContext>
+      <div className="flex gap-x-6 -mr-12 -ml-12 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round overflow-x-auto h-full">
+        {columns.map((column, i) => (
+          <div
+            key={column.id}
+            className="first-of-type:pl-12 last-of-type:pr-12 h-fit"
+          >
+            <Column
+              {...column}
+              tasks={tasks.filter((task) => task.columnId === column.id)}
+              refreshBoard={refreshBoard}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

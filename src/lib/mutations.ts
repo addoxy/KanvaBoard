@@ -99,17 +99,18 @@ export const useCreateColumnMutation = (props: {
 };
 
 export const useCreateTaskMutation = (props: {
+  boardId: string;
   columnId: string;
   content: string;
   order: number;
   refreshBoard: () => void;
 }) => {
-  const { columnId, content, order, refreshBoard } = props;
+  const { boardId, columnId, content, order, refreshBoard } = props;
 
   const createTaskMutation = useMutation({
     mutationFn: async () => {
       const createTaskPromise = axios.post(
-        `/api/task?columnId=${columnId}&content=${content}&order=${order}`
+        `/api/task?boardId=${boardId}&columnId=${columnId}&content=${content}&order=${order}`
       );
 
       notifyPromise(createTaskPromise, {
@@ -253,7 +254,7 @@ export const useUpdateTaskMutation = (props: {
   const updateTaskMutation = useMutation({
     mutationFn: async () => {
       const updateTaskPromise = axios.put(
-        `/api/task?id=${id}&newContent=${newContent}`
+        `/api/task?q=update&id=${id}&newContent=${newContent}`
       );
 
       notifyPromise(updateTaskPromise, {
@@ -286,6 +287,43 @@ export const useUpdateColumnOrderMutation = (props: {
   });
 
   return updateColumnOrderMutation;
+};
+
+export const useUpdateTaskOrderMutation = () => {
+  const updateTaskOrderMutation = useMutation({
+    mutationFn: async (variables: TaskProps[]) => {
+      await axios.put(
+        `/api/task?q=reorderSame&tasks=${JSON.stringify(variables)}`
+      );
+    },
+  });
+
+  return updateTaskOrderMutation;
+};
+
+interface RequiredProps {
+  taskId: string;
+  oldColumnId: string;
+  newColumnId: string;
+  oldOrder: number;
+  newOrder: number;
+}
+
+export const useUpdateTaskOrderCMutation = () => {
+  const updateTaskOrderCMutation = useMutation({
+    mutationFn: async (variables: RequiredProps) => {
+      const { taskId, oldColumnId, newColumnId, oldOrder, newOrder } =
+        variables;
+
+      const updateTaskOrderCPromise = axios.put(
+        `/api/task?q=reorderC&taskId=${taskId}&oldColumnId=${oldColumnId}&newColumnId=${newColumnId}&oldOrder=${oldOrder}&newOrder=${newOrder}`
+      );
+
+      return updateTaskOrderCPromise;
+    },
+  });
+
+  return updateTaskOrderCMutation;
 };
 
 // delete

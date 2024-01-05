@@ -9,6 +9,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useState } from "react";
 
 interface AddTaskProps {
+  boardId: string;
   columnId: string;
   columnTitle: string;
   order: number;
@@ -16,11 +17,12 @@ interface AddTaskProps {
 }
 
 const AddTaskDialog = (props: AddTaskProps) => {
-  const { columnId, columnTitle, order, refreshBoard } = props;
+  const { boardId, columnId, columnTitle, order, refreshBoard } = props;
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState("");
 
   const createTaskMutation = useCreateTaskMutation({
+    boardId,
     columnId,
     content,
     order,

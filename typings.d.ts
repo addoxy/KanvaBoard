@@ -7,6 +7,7 @@ interface TaskProps {
   content: string | null;
   order: number;
   columnId: string;
+  boardId: string;
 }
 
 interface ColumnProps {
@@ -24,6 +25,7 @@ interface BoardProps {
   usedId: string | null;
   favorite: boolean;
   columns: Column[];
+  tasks: TaskProps[];
 }
 
 interface TaskTemplateProps {
