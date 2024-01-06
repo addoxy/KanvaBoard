@@ -8,6 +8,7 @@ import {
 import { notify } from "@/utils/notify";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useMemo, useRef, useState } from "react";
 import Task from "./Task";
 import AddTaskDialog from "./dialogs/AddTaskDialog";
@@ -19,6 +20,7 @@ const Column = (props: Column) => {
   const [editMode, setEditMode] = useState(false);
   const [columnTitle, setColumnTitle] = useState(title);
   const [isOpen, setIsOpen] = useState(false);
+  const [animationParent] = useAutoAnimate();
 
   const tasksId = useMemo(() => tasks.map((task) => task.id), [tasks]);
 

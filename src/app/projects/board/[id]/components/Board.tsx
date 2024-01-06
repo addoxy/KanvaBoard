@@ -285,7 +285,7 @@ const Board = (props: Board) => {
     // Handling item dropping into Container
     if (
       active.data.current?.type === "Task" &&
-      over?.data.current?.type === "Container" &&
+      over?.data.current?.type === "Column" &&
       active &&
       over &&
       active.id !== over.id
