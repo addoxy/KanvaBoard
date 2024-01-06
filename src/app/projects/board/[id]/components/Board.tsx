@@ -228,6 +228,8 @@ const Board = (props: Board) => {
       let newColumns = [...columns];
       newColumns = arrayMove(newColumns, activeColumnIndex, overColumnIndex);
       setColumns(newColumns);
+
+      // !! reorder the columns here in database
     }
 
     // Handling item Sorting
@@ -270,6 +272,7 @@ const Board = (props: Board) => {
           overTaskIndex
         );
         setColumns(newColumns);
+        // !! reorder the tasks in the same column here in database
       } else {
         // In different containers
         let newColumns = [...columns];
@@ -279,6 +282,9 @@ const Board = (props: Board) => {
         );
         newColumns[overColumnIndex].tasks.splice(overTaskIndex, 0, removedTask);
         setColumns(newColumns);
+        // !! delete - just change the columnId and adjust the orders of previous column
+        // !! delete the task from the old column here in database
+        // !! add it to the new column in the correct place here in database
       }
     }
 
@@ -316,6 +322,8 @@ const Board = (props: Board) => {
       );
       newColumns[overColumnIndex].tasks.push(removedTask);
       setColumns(newColumns);
+      // !! delete the task from the old column here in database
+      // !! push it to the end of the new column here in database
     }
     setActiveId(null);
     setActiveColumn(null);

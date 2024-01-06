@@ -39,7 +39,6 @@ export async function POST_TASKS(req: Request, res: Response) {
         order: parseInt(order),
         content: content,
         columnId: columnId,
-        boardId: boardId,
       },
     });
 
