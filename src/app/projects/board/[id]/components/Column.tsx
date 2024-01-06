@@ -6,7 +6,6 @@ import {
   useUpdateColumnTitleMutation,
 } from "@/lib/mutations";
 import { notify } from "@/utils/notify";
-import { cn } from "@/utils/utils";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useRef, useState } from "react";
@@ -75,12 +74,20 @@ const Column = (props: Column) => {
     updateColumnTitleMutation.mutate();
   }
 
+  if (isDragging) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
+        className="w-80 rounded-lg bg-zinc-800/20 h-100"
+      />
+    );
+  }
+
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={cn("flex flex-col pb-4 h-full", isDragging && "opacity-50")}
-    >
+    <div ref={setNodeRef} style={style} className="flex flex-col pb-4 h-full">
       <div className="mb-4 w-80 pt-1 flex items-center gap-x-3 justify-between">
         {!editMode && (
           <span

@@ -28,6 +28,7 @@ import {
 } from "@dnd-kit/sortable";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Column from "./Column";
+import Task from "./Task";
 import CreateColumnDialog from "./dialogs/CreateColumnDialog";
 
 const Board = (props: Board) => {
@@ -42,6 +43,8 @@ const Board = (props: Board) => {
   const [boardTitle, setBoardTitle] = useState(title);
   const [newColumnTitle, setNewColumnTitle] = useState("");
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
+  const [activeColumn, setActiveColumn] = useState<Column | null>(null);
+  const [activeTask, setActiveTask] = useState<Task | null>(null);
 
   const columnsId = useMemo(
     () => columns.map((column) => column.id),
@@ -97,6 +100,14 @@ const Board = (props: Board) => {
     const { active } = event;
     const { id } = active;
     setActiveId(id);
+
+    if (event.active.data.current?.type === "Column") {
+      setActiveColumn(event.active.data.current?.sortableProps);
+    }
+
+    if (event.active.data.current?.type === "Task") {
+      setActiveTask(event.active.data.current?.sortableProps);
+    }
   }
 
   const handleDragMove = (event: DragMoveEvent) => {
@@ -307,6 +318,8 @@ const Board = (props: Board) => {
       setColumns(newColumns);
     }
     setActiveId(null);
+    setActiveColumn(null);
+    setActiveTask(null);
   }
 
   return (
@@ -373,8 +386,8 @@ const Board = (props: Board) => {
           </SortableContext>
         </div>
         <DragOverlay>
-          {/* {activeTask && <Task {...activeTask} />}
-          {activeColumn && <Column {...activeColumn} />} */}
+          {activeTask && <Task {...activeTask} />}
+          {activeColumn && <Column {...activeColumn} />}
         </DragOverlay>
       </DndContext>
     </div>
