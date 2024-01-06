@@ -271,7 +271,7 @@ export const useUpdateTaskMutation = (props: {
 
 export const useUpdateColumnOrderMutation = (props: {
   boardId: string;
-  columns: ColumnProps[];
+  columns: Column[];
 }) => {
   const { boardId, columns } = props;
 
@@ -291,7 +291,7 @@ export const useUpdateColumnOrderMutation = (props: {
 
 export const useUpdateTaskOrderMutation = () => {
   const updateTaskOrderMutation = useMutation({
-    mutationFn: async (variables: TaskProps[]) => {
+    mutationFn: async (variables: Task[]) => {
       await axios.put(
         `/api/task?q=reorderSame&tasks=${JSON.stringify(variables)}`
       );
