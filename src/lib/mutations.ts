@@ -292,6 +292,74 @@ export const useUpdateColumnOrderMutation = () => {
   return updateColumnOrderMutation;
 };
 
+interface TaskReorderProps {
+  columnId: string | UniqueIdentifier;
+  activeTaskId: string | UniqueIdentifier;
+  activeOrder: number;
+  overOrder: number;
+}
+
+export const useTaskReorderSameMutation = () => {
+  const taskReorderSameMutation = useMutation({
+    mutationFn: async (variables: TaskReorderProps) => {
+      const { columnId, activeTaskId, activeOrder, overOrder } = variables;
+      const taskReorderSamePromise = axios.put(
+        `/api/task?q=reorderSame&columnId=${columnId}&activeTaskId=${activeTaskId}&activeOrder=${activeOrder}&overOrder=${overOrder}`
+      );
+
+      return taskReorderSamePromise;
+    },
+  });
+
+  return taskReorderSameMutation;
+};
+
+interface DropTaskInColumnProps {
+  taskId: string | UniqueIdentifier;
+  activeOrder: number;
+  oldColumnId: string | UniqueIdentifier;
+  newColumnId: string | UniqueIdentifier;
+}
+
+export const useDropTaskInColumnMutation = () => {
+  const dropTaskInColumnMutation = useMutation({
+    mutationFn: async (variables: DropTaskInColumnProps) => {
+      const { taskId, activeOrder, oldColumnId, newColumnId } = variables;
+      const dropTaskInColumnPromise = axios.put(
+        `/api/task?q=dropInColumn&taskId=${taskId}&activeOrder=${activeOrder}&oldColumnId=${oldColumnId}&newColumnId=${newColumnId}`
+      );
+
+      return dropTaskInColumnPromise;
+    },
+  });
+
+  return dropTaskInColumnMutation;
+};
+
+interface TaskReorderDifferentProps {
+  taskId: string | UniqueIdentifier;
+  oldColumnId: string | UniqueIdentifier;
+  newColumnId: string | UniqueIdentifier;
+  activeOrder: number;
+  overOrder: number;
+}
+
+export const useTaskReorderDifferentMutation = () => {
+  const taskReorderDifferentMutation = useMutation({
+    mutationFn: async (variables: TaskReorderDifferentProps) => {
+      const { taskId, oldColumnId, newColumnId, activeOrder, overOrder } =
+        variables;
+      const taskReorderDifferentPromise = axios.put(
+        `/api/task?q=dropDifferent&taskId=${taskId}&activeOrder=${activeOrder}&overOrder=${overOrder}&oldColumnId=${oldColumnId}&newColumnId=${newColumnId}`
+      );
+
+      return taskReorderDifferentPromise;
+    },
+  });
+
+  return taskReorderDifferentMutation;
+};
+
 // delete
 export const useDeleteBoardMutation = (props: {
   id: string;

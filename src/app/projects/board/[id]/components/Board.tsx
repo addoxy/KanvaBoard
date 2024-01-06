@@ -4,6 +4,9 @@ import Spacer from "@/components/Spacer";
 import Title from "@/components/Title";
 import {
   useCreateColumnMutation,
+  useDropTaskInColumnMutation,
+  useTaskReorderDifferentMutation,
+  useTaskReorderSameMutation,
   useUpdateBoardTitleMutation,
   useUpdateColumnOrderMutation,
 } from "@/lib/mutations";
@@ -32,6 +35,28 @@ import Column from "./Column";
 import Task from "./Task";
 import CreateColumnDialog from "./dialogs/CreateColumnDialog";
 
+interface SameColumnTaskProps {
+  columnId: string | UniqueIdentifier;
+  activeTaskId: string | UniqueIdentifier;
+  activeOrder: number;
+  overOrder: number;
+}
+
+interface DiffColumnTaskProps {
+  taskId: string | UniqueIdentifier;
+  oldColumnId: string | UniqueIdentifier;
+  newColumnId: string | UniqueIdentifier;
+  activeOrder: number;
+  overOrder: number;
+}
+
+interface SoloColumnProps {
+  taskId: string | UniqueIdentifier;
+  activeOrder: number;
+  oldColumnId: string | UniqueIdentifier;
+  newColumnId: string | UniqueIdentifier;
+}
+
 const Board = (props: Board) => {
   useEffect(() => {
     setColumns(props.columns);
@@ -45,6 +70,13 @@ const Board = (props: Board) => {
   const [newColumnTitle, setNewColumnTitle] = useState("");
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
+  const [sameColumnTask, setSameColumnTask] =
+    useState<SameColumnTaskProps | null>(null);
+  const [diffColumnTask, setDiffColumnTask] =
+    useState<DiffColumnTaskProps | null>(null);
+  const [soloColumnTask, setSoloColumnTask] = useState<SoloColumnProps | null>(
+    null
+  );
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -61,6 +93,9 @@ const Board = (props: Board) => {
   });
 
   const updateColumnOrderMutation = useUpdateColumnOrderMutation();
+  const dropTaskInColumnMutation = useDropTaskInColumnMutation();
+  const taskReorderSameMutation = useTaskReorderSameMutation();
+  const taskReorderDifferentMutation = useTaskReorderDifferentMutation();
 
   function handleTitle() {
     if (inputRef.current?.value.length === 0 || !inputRef.current?.value) {
@@ -87,7 +122,11 @@ const Board = (props: Board) => {
 
   // DND Handlers
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 3,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -145,8 +184,18 @@ const Board = (props: Board) => {
           activeTaskIndex,
           overTaskIndex
         );
-
         setColumns(newColumns);
+
+        const variables = {
+          columnId: activeItem.id,
+          activeTaskId: active.id,
+          activeOrder: activeTaskIndex + 1,
+          overOrder: overTaskIndex + 1,
+        };
+
+        setSameColumnTask(variables);
+        setDiffColumnTask(null);
+        setSoloColumnTask(null);
       } else {
         // In different containers
         let newColumns = [...columns];
@@ -156,6 +205,18 @@ const Board = (props: Board) => {
         );
         newColumns[overColumnIndex].tasks.splice(overTaskIndex, 0, removedTask);
         setColumns(newColumns);
+
+        const variables = {
+          taskId: active.id,
+          oldColumnId: activeItem.id,
+          newColumnId: overItem.id,
+          activeOrder: activeTaskIndex + 1,
+          overOrder: overTaskIndex + 1,
+        };
+
+        setSameColumnTask(null);
+        setDiffColumnTask(variables);
+        setSoloColumnTask(null);
       }
     }
 
@@ -195,6 +256,17 @@ const Board = (props: Board) => {
       );
       newColumns[overColumnIndex].tasks.push(removedTask);
       setColumns(newColumns);
+
+      const variables = {
+        taskId: active.id,
+        activeOrder: activeTaskIndex + 1,
+        oldColumnId: activeItem.id,
+        newColumnId: overItem.id,
+      };
+
+      setSameColumnTask(null);
+      setDiffColumnTask(null);
+      setSoloColumnTask(variables);
     }
   };
 
@@ -235,99 +307,21 @@ const Board = (props: Board) => {
       updateColumnOrderMutation.mutate(variables);
     }
 
-    // Handling item Sorting
-    if (
-      active.data.current?.type === "Task" &&
-      over?.data.current?.type === "Task" &&
-      active &&
-      over &&
-      active.id !== over.id
-    ) {
-      // Find the active and over container
-      const activeItem = findItems(active.id, "Task");
-      const overItem = findItems(over.id, "Task");
-
-      // If the active or over container is not found, return
-      if (!activeItem || !overItem) return;
-
-      // Find the index of the active and over container
-      const activeColumnIndex = columns.findIndex(
-        (column) => column.id === activeItem.id
-      );
-      const overColumnIndex = columns.findIndex(
-        (column) => column.id === overItem.id
-      );
-
-      // Find the index of the active and over item
-      const activeTaskIndex = activeItem.tasks.findIndex(
-        (task) => task.id === active.id
-      );
-      const overTaskIndex = overItem.tasks.findIndex(
-        (task) => task.id === over.id
-      );
-
-      // In the same container
-      if (activeColumnIndex === overColumnIndex) {
-        let newColumns = [...columns];
-        newColumns[activeColumnIndex].tasks = arrayMove(
-          newColumns[activeColumnIndex].tasks,
-          activeTaskIndex,
-          overTaskIndex
-        );
-        setColumns(newColumns);
-        // !! reorder the tasks in the same column here in database
-      } else {
-        // In different containers
-        let newColumns = [...columns];
-        const [removedTask] = newColumns[activeColumnIndex].tasks.splice(
-          activeTaskIndex,
-          1
-        );
-        newColumns[overColumnIndex].tasks.splice(overTaskIndex, 0, removedTask);
-        setColumns(newColumns);
-        // !! delete - just change the columnId and adjust the orders of previous column
-        // !! delete the task from the old column here in database
-        // !! add it to the new column in the correct place here in database
-      }
+    if (sameColumnTask) {
+      console.log("same column");
+      taskReorderSameMutation.mutate(sameColumnTask);
     }
 
-    // Handling item dropping into Container
-    if (
-      active.data.current?.type === "Task" &&
-      over?.data.current?.type === "Column" &&
-      active &&
-      over &&
-      active.id !== over.id
-    ) {
-      // Find the active and over container
-      const activeItem = findItems(active.id, "Task");
-      const overItem = findItems(over.id, "Column");
-
-      // If the active or over container is not found, return
-      if (!activeItem || !overItem) return;
-      // Find the index of the active and over container
-      const activeColumnIndex = columns.findIndex(
-        (column) => column.id === activeItem.id
-      );
-      const overColumnIndex = columns.findIndex(
-        (column) => column.id === overItem.id
-      );
-
-      // Find the index of the active and over item
-      const activeTaskIndex = activeItem.tasks.findIndex(
-        (task) => task.id === active.id
-      );
-
-      let newColumns = [...columns];
-      const [removedTask] = newColumns[activeColumnIndex].tasks.splice(
-        activeTaskIndex,
-        1
-      );
-      newColumns[overColumnIndex].tasks.push(removedTask);
-      setColumns(newColumns);
-      // !! delete the task from the old column here in database
-      // !! push it to the end of the new column here in database
+    if (diffColumnTask) {
+      console.log("different columns");
+      taskReorderDifferentMutation.mutate(diffColumnTask);
     }
+
+    if (soloColumnTask) {
+      console.log("solo column");
+      dropTaskInColumnMutation.mutate(soloColumnTask);
+    }
+
     setActiveColumn(null);
     setActiveTask(null);
   }
