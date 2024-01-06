@@ -131,10 +131,11 @@ export async function PUT_TASKS(req: Request, res: Response) {
     console.log("placing task in solo column");
     const taskId = searchParams.get("taskId");
     const activeOrder = searchParams.get("activeOrder");
+    const overOrder = searchParams.get("overOrder");
     const oldColumnId = searchParams.get("oldColumnId");
     const newColumnId = searchParams.get("newColumnId");
 
-    if (!taskId || !activeOrder || !oldColumnId || !newColumnId) {
+    if (!taskId || !activeOrder || !oldColumnId || !newColumnId || !overOrder) {
       console.log("query: dropInColumn, missing stuff");
       return SendResponse(errors.badRequest, 400);
     }
@@ -160,7 +161,7 @@ export async function PUT_TASKS(req: Request, res: Response) {
           },
           data: {
             columnId: newColumnId,
-            order: 1,
+            order: parseInt(overOrder),
           },
         }),
       ]);

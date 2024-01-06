@@ -53,6 +53,7 @@ interface DiffColumnTaskProps {
 interface SoloColumnProps {
   taskId: string | UniqueIdentifier;
   activeOrder: number;
+  overOrder: number;
   oldColumnId: string | UniqueIdentifier;
   newColumnId: string | UniqueIdentifier;
 }
@@ -92,10 +93,16 @@ const Board = (props: Board) => {
     order: columns.length + 1,
   });
 
-  const updateColumnOrderMutation = useUpdateColumnOrderMutation();
-  const dropTaskInColumnMutation = useDropTaskInColumnMutation();
-  const taskReorderSameMutation = useTaskReorderSameMutation();
-  const taskReorderDifferentMutation = useTaskReorderDifferentMutation();
+  const updateColumnOrderMutation = useUpdateColumnOrderMutation({
+    refreshBoard,
+  });
+  const dropTaskInColumnMutation = useDropTaskInColumnMutation({
+    refreshBoard,
+  });
+  const taskReorderSameMutation = useTaskReorderSameMutation({ refreshBoard });
+  const taskReorderDifferentMutation = useTaskReorderDifferentMutation({
+    refreshBoard,
+  });
 
   function handleTitle() {
     if (inputRef.current?.value.length === 0 || !inputRef.current?.value) {
@@ -260,6 +267,7 @@ const Board = (props: Board) => {
       const variables = {
         taskId: active.id,
         activeOrder: activeTaskIndex + 1,
+        overOrder: columns[overColumnIndex].tasks.length + 1,
         oldColumnId: activeItem.id,
         newColumnId: overItem.id,
       };
@@ -324,6 +332,9 @@ const Board = (props: Board) => {
 
     setActiveColumn(null);
     setActiveTask(null);
+    setSameColumnTask(null);
+    setDiffColumnTask(null);
+    setSoloColumnTask(null);
   }
 
   return (
@@ -374,7 +385,7 @@ const Board = (props: Board) => {
         sensors={sensors}
         collisionDetection={closestCorners}
         onDragStart={handleDragStart}
-        onDragMove={handleDragMove}
+        onDragOver={handleDragMove}
         onDragEnd={handleDragEnd}
       >
         <div className="flex gap-x-6 -mr-12 -ml-12 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round overflow-x-auto h-full">

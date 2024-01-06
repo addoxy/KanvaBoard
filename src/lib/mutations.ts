@@ -277,7 +277,10 @@ interface ColumnOrderVariables {
   overOrder: number;
 }
 
-export const useUpdateColumnOrderMutation = () => {
+export const useUpdateColumnOrderMutation = (props: {
+  refreshBoard: () => void;
+}) => {
+  const { refreshBoard } = props;
   const updateColumnOrderMutation = useMutation({
     mutationFn: async (variables: ColumnOrderVariables) => {
       const { boardId, activeColumnId, activeOrder, overOrder } = variables;
@@ -287,6 +290,7 @@ export const useUpdateColumnOrderMutation = () => {
 
       return updateColumnOrderPromise;
     },
+    onSuccess: () => refreshBoard(),
   });
 
   return updateColumnOrderMutation;
@@ -299,7 +303,11 @@ interface TaskReorderProps {
   overOrder: number;
 }
 
-export const useTaskReorderSameMutation = () => {
+export const useTaskReorderSameMutation = (props: {
+  refreshBoard: () => void;
+}) => {
+  const { refreshBoard } = props;
+
   const taskReorderSameMutation = useMutation({
     mutationFn: async (variables: TaskReorderProps) => {
       const { columnId, activeTaskId, activeOrder, overOrder } = variables;
@@ -309,6 +317,7 @@ export const useTaskReorderSameMutation = () => {
 
       return taskReorderSamePromise;
     },
+    // onSuccess: () => refreshBoard(),
   });
 
   return taskReorderSameMutation;
@@ -317,20 +326,27 @@ export const useTaskReorderSameMutation = () => {
 interface DropTaskInColumnProps {
   taskId: string | UniqueIdentifier;
   activeOrder: number;
+  overOrder: number;
   oldColumnId: string | UniqueIdentifier;
   newColumnId: string | UniqueIdentifier;
 }
 
-export const useDropTaskInColumnMutation = () => {
+export const useDropTaskInColumnMutation = (props: {
+  refreshBoard: () => void;
+}) => {
+  const { refreshBoard } = props;
+
   const dropTaskInColumnMutation = useMutation({
     mutationFn: async (variables: DropTaskInColumnProps) => {
-      const { taskId, activeOrder, oldColumnId, newColumnId } = variables;
+      const { taskId, activeOrder, overOrder, oldColumnId, newColumnId } =
+        variables;
       const dropTaskInColumnPromise = axios.put(
-        `/api/task?q=dropInColumn&taskId=${taskId}&activeOrder=${activeOrder}&oldColumnId=${oldColumnId}&newColumnId=${newColumnId}`
+        `/api/task?q=dropInColumn&taskId=${taskId}&activeOrder=${activeOrder}&overOrder=${overOrder}&oldColumnId=${oldColumnId}&newColumnId=${newColumnId}`
       );
 
       return dropTaskInColumnPromise;
     },
+    // onSuccess: () => refreshBoard(),
   });
 
   return dropTaskInColumnMutation;
@@ -344,7 +360,11 @@ interface TaskReorderDifferentProps {
   overOrder: number;
 }
 
-export const useTaskReorderDifferentMutation = () => {
+export const useTaskReorderDifferentMutation = (props: {
+  refreshBoard: () => void;
+}) => {
+  const { refreshBoard } = props;
+
   const taskReorderDifferentMutation = useMutation({
     mutationFn: async (variables: TaskReorderDifferentProps) => {
       const { taskId, oldColumnId, newColumnId, activeOrder, overOrder } =
@@ -355,6 +375,7 @@ export const useTaskReorderDifferentMutation = () => {
 
       return taskReorderDifferentPromise;
     },
+    // onSuccess: () => refreshBoard(),
   });
 
   return taskReorderDifferentMutation;
