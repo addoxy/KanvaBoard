@@ -26,7 +26,7 @@ export const useGetBoards = () => {
     queryKey: ["boards"],
     queryFn: async () => {
       const { data } = await axios.get("/api/board?q=boards");
-      return JSON.parse(data) as BoardProps[];
+      return JSON.parse(data) as Board[];
     },
   });
 
@@ -47,7 +47,7 @@ export const useGetBoard = (props: { id: string }) => {
     queryKey: ["board", id],
     queryFn: async () => {
       const { data } = await axios.get(`/api/board?q=board&boardId=${id}`);
-      return JSON.parse(data) as BoardProps;
+      return JSON.parse(data) as Board;
     },
   });
 
