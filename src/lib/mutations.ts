@@ -1,4 +1,5 @@
 import { notify, notifyPromise } from "@/utils/notify";
+import { UniqueIdentifier } from "@dnd-kit/core";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -269,61 +270,26 @@ export const useUpdateTaskMutation = (props: {
   return updateTaskMutation;
 };
 
-export const useUpdateColumnOrderMutation = (props: {
+interface ColumnOrderVariables {
   boardId: string;
-  columns: Column[];
-}) => {
-  const { boardId, columns } = props;
+  activeColumnId: string | UniqueIdentifier;
+  activeOrder: number;
+  overOrder: number;
+}
 
+export const useUpdateColumnOrderMutation = () => {
   const updateColumnOrderMutation = useMutation({
-    mutationFn: async () =>
-      await axios.put(
-        `/api/column?q=reorder&boardId=${boardId}&columns=${JSON.stringify(
-          columns
-        )}`
-      ),
+    mutationFn: async (variables: ColumnOrderVariables) => {
+      const { boardId, activeColumnId, activeOrder, overOrder } = variables;
+      const updateColumnOrderPromise = axios.put(
+        `/api/column?q=reorder&boardId=${boardId}&activeColumnId=${activeColumnId}&activeOrder=${activeOrder}&overOrder=${overOrder}`
+      );
 
-    onError: () => notify("Unable to reorder columns", "warning"),
+      return updateColumnOrderPromise;
+    },
   });
 
   return updateColumnOrderMutation;
-};
-
-export const useUpdateTaskOrderMutation = () => {
-  const updateTaskOrderMutation = useMutation({
-    mutationFn: async (variables: Task[]) => {
-      await axios.put(
-        `/api/task?q=reorderSame&tasks=${JSON.stringify(variables)}`
-      );
-    },
-  });
-
-  return updateTaskOrderMutation;
-};
-
-interface RequiredProps {
-  taskId: string;
-  oldColumnId: string;
-  newColumnId: string;
-  oldOrder: number;
-  newOrder: number;
-}
-
-export const useUpdateTaskOrderCMutation = () => {
-  const updateTaskOrderCMutation = useMutation({
-    mutationFn: async (variables: RequiredProps) => {
-      const { taskId, oldColumnId, newColumnId, oldOrder, newOrder } =
-        variables;
-
-      const updateTaskOrderCPromise = axios.put(
-        `/api/task?q=reorderC&taskId=${taskId}&oldColumnId=${oldColumnId}&newColumnId=${newColumnId}&oldOrder=${oldOrder}&newOrder=${newOrder}`
-      );
-
-      return updateTaskOrderCPromise;
-    },
-  });
-
-  return updateTaskOrderCMutation;
 };
 
 // delete

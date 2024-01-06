@@ -5,6 +5,7 @@ import Title from "@/components/Title";
 import {
   useCreateColumnMutation,
   useUpdateBoardTitleMutation,
+  useUpdateColumnOrderMutation,
 } from "@/lib/mutations";
 import { notify } from "@/utils/notify";
 import { cn } from "@/utils/utils";
@@ -26,7 +27,7 @@ import {
   arrayMove,
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Column from "./Column";
 import Task from "./Task";
 import CreateColumnDialog from "./dialogs/CreateColumnDialog";
@@ -42,14 +43,8 @@ const Board = (props: Board) => {
   const [editMode, setEditMode] = useState(false);
   const [boardTitle, setBoardTitle] = useState(title);
   const [newColumnTitle, setNewColumnTitle] = useState("");
-  const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
-
-  const columnsId = useMemo(
-    () => columns.map((column) => column.id),
-    [columns]
-  );
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -64,6 +59,8 @@ const Board = (props: Board) => {
     refreshBoard,
     order: columns.length + 1,
   });
+
+  const updateColumnOrderMutation = useUpdateColumnOrderMutation();
 
   function handleTitle() {
     if (inputRef.current?.value.length === 0 || !inputRef.current?.value) {
@@ -97,10 +94,6 @@ const Board = (props: Board) => {
   );
 
   function handleDragStart(event: DragStartEvent) {
-    const { active } = event;
-    const { id } = active;
-    setActiveId(id);
-
     if (event.active.data.current?.type === "Column") {
       setActiveColumn(event.active.data.current?.sortableProps);
     }
@@ -224,12 +217,22 @@ const Board = (props: Board) => {
       const overColumnIndex = columns.findIndex(
         (column) => column.id === over.id
       );
+
+      if (activeColumnIndex === overColumnIndex) return;
+
       // Swap the active and over container
       let newColumns = [...columns];
       newColumns = arrayMove(newColumns, activeColumnIndex, overColumnIndex);
       setColumns(newColumns);
 
-      // !! reorder the columns here in database
+      const variables = {
+        boardId: id,
+        activeColumnId: active.id,
+        activeOrder: activeColumnIndex + 1,
+        overOrder: overColumnIndex + 1,
+      };
+
+      updateColumnOrderMutation.mutate(variables);
     }
 
     // Handling item Sorting
@@ -325,7 +328,6 @@ const Board = (props: Board) => {
       // !! delete the task from the old column here in database
       // !! push it to the end of the new column here in database
     }
-    setActiveId(null);
     setActiveColumn(null);
     setActiveTask(null);
   }

@@ -49,5 +49,86 @@ export async function PUT_COLUMNS(req: Request, res: Response) {
       return SendResponse("Unable to update column title", 500);
     }
   }
+
+  if (query === "reorder") {
+    const boardId = searchParams.get("boardId");
+    const activeColumnId = searchParams.get("activeColumnId");
+    const activeOrder = searchParams.get("activeOrder");
+    const overOrder = searchParams.get("overOrder");
+
+    if (!activeColumnId || !activeOrder || !overOrder || !boardId) {
+      return SendResponse(errors.badRequest, 400);
+    }
+
+    if (overOrder > activeOrder) {
+      // left to right
+      // active + 1 to over(included): order - 1
+      // active: overOrder
+      try {
+        await prisma.$transaction([
+          prisma.column.updateMany({
+            where: {
+              boardId: boardId,
+              order: {
+                gte: parseInt(activeOrder) + 1,
+                lte: parseInt(overOrder),
+              },
+            },
+            data: {
+              order: {
+                decrement: 1,
+              },
+            },
+          }),
+          prisma.column.update({
+            where: {
+              id: activeColumnId,
+            },
+            data: {
+              order: parseInt(overOrder),
+            },
+          }),
+        ]);
+
+        return SendResponse("Successfully reorder columns", 200);
+      } catch (error) {
+        return SendResponse("Unable to reorder columns", 500);
+      }
+    } else {
+      // right to left
+      // over(included) to active - 1: order + 1
+      // active: overOrder
+      try {
+        await prisma.$transaction([
+          prisma.column.updateMany({
+            where: {
+              boardId: boardId,
+              order: {
+                gte: parseInt(overOrder),
+                lte: parseInt(activeOrder) - 1,
+              },
+            },
+            data: {
+              order: {
+                increment: 1,
+              },
+            },
+          }),
+          prisma.column.update({
+            where: {
+              id: activeColumnId,
+            },
+            data: {
+              order: parseInt(overOrder),
+            },
+          }),
+        ]);
+        return SendResponse("Successfully reorder columns", 200);
+      } catch (error) {
+        return SendResponse("Unable to reorder columns", 500);
+      }
+    }
+  }
+
   return SendResponse(errors.badRequest, 400);
 }
