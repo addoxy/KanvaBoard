@@ -25,7 +25,6 @@ import {
   DragOverlay,
   DragStartEvent,
   KeyboardSensor,
-  MeasuringStrategy,
   PointerSensor,
   UniqueIdentifier,
   useSensor,
@@ -306,11 +305,6 @@ const Board = (props: Board) => {
         sensors={sensors}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
-        measuring={{
-          droppable: {
-            strategy: MeasuringStrategy.Always,
-          },
-        }}
       >
         <div className="flex gap-x-6 -mr-12 -ml-12 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round overflow-x-auto h-full">
           <SortableContext items={columns.map((column) => column.id)}>
