@@ -96,7 +96,6 @@ const Board = (props: Board) => {
     }
   }
 
-  // DND Handlers
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -118,11 +117,10 @@ const Board = (props: Board) => {
     }
   }
 
-  // This is the function that handles the sorting of the containers and items when the user is done dragging.
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
 
-    // Handling Container Sorting
+    // Handling sorting of columns
     if (
       active.data.current?.type === "Column" &&
       over?.data.current?.type === "Column" &&
@@ -130,7 +128,7 @@ const Board = (props: Board) => {
       over &&
       active.id !== over.id
     ) {
-      // Find the index of the active and over container
+      // Find the index of the active and over column
       const activeColumnIndex = columns.findIndex(
         (column) => column.id === active.id
       );
@@ -140,7 +138,7 @@ const Board = (props: Board) => {
 
       if (activeColumnIndex === overColumnIndex) return;
 
-      // Swap the active and over container
+      // Reorder thea active and over columns
       let newColumns = [...columns];
       newColumns = arrayMove(newColumns, activeColumnIndex, overColumnIndex);
       setColumns(newColumns);
@@ -155,7 +153,7 @@ const Board = (props: Board) => {
       updateColumnOrderMutation.mutate(variables);
     }
 
-    // Handle Items Sorting
+    // Handle sorting of tasks
     if (
       active.data.current?.type === "Task" &&
       over?.data.current?.type === "Task" &&
@@ -163,14 +161,13 @@ const Board = (props: Board) => {
       over &&
       active.id !== over.id
     ) {
-      // Find the active container and over container
+      // Find the active container and over column
       const activeColumn = findItems(active.id, "Task");
       const overColumn = findItems(over.id, "Task");
 
-      // If the active or over container is not found, return
       if (!activeColumn || !overColumn) return;
 
-      // Find the index of the active and over container
+      // Find the index of the active and over column
       const activeColumnIndex = columns.findIndex(
         (column) => column.id === activeColumn.id
       );
@@ -178,7 +175,7 @@ const Board = (props: Board) => {
         (column) => column.id === overColumn.id
       );
 
-      // Find the index of the active and over item
+      // Find the index of the active and over task
       const activeTaskIndex = activeColumn.tasks.findIndex(
         (task) => task.id === active.id
       );
@@ -186,7 +183,7 @@ const Board = (props: Board) => {
         (task) => task.id === over.id
       );
 
-      // In the same container
+      // In the same column
       if (activeColumnIndex === overColumnIndex) {
         let newColumns = [...columns];
         newColumns[activeColumnIndex].tasks = arrayMove(
@@ -205,7 +202,7 @@ const Board = (props: Board) => {
 
         taskReorderSameMutation.mutate(variables);
       } else {
-        // In different containers
+        // In different columns
         let newColumns = [...columns];
         const [removedTask] = newColumns[activeColumnIndex].tasks.splice(
           activeTaskIndex,
@@ -226,7 +223,7 @@ const Board = (props: Board) => {
       }
     }
 
-    // Handling Item Drop Into a Container
+    // Dropping task in a column
     if (
       active.data.current?.type === "Task" &&
       over?.data.current?.type === "Column" &&
@@ -234,14 +231,13 @@ const Board = (props: Board) => {
       over &&
       active.id !== over.id
     ) {
-      // Find the active and over container
+      // Find the active and over column
       const activeColumn = findItems(active.id, "Task");
       const overColumn = findItems(over.id, "Column");
 
-      // If the active or over container is not found, return
       if (!activeColumn || !overColumn) return;
 
-      // Find the index of the active and over container
+      // Find the index of the active and over column
       const activeColumnIndex = columns.findIndex(
         (column) => column.id === activeColumn.id
       );
@@ -251,12 +247,12 @@ const Board = (props: Board) => {
 
       if (activeColumnIndex === overColumnIndex) return;
 
-      // Find the index of the active and over item
+      // Find the index of the active and over task
       const activeTaskIndex = activeColumn.tasks.findIndex(
         (task) => task.id === active.id
       );
 
-      // Remove the active item from the active container and add it to the over container
+      // Remove the active task from the active column and add it to the over column
       let newColumns = [...columns];
       const [removedTask] = newColumns[activeColumnIndex].tasks.splice(
         activeTaskIndex,
