@@ -4,7 +4,7 @@ interface IconProps {
 
 interface Task {
   id: string;
-  content: string | null;
+  content: string;
   order: number;
   columnId: string;
   refreshBoard: () => void;

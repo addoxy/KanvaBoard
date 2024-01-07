@@ -6,23 +6,35 @@ import Title from "@/components/Title";
 import * as Dialog from "@radix-ui/react-dialog";
 import { UseMutationResult } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
+import { useEffect } from "react";
 
 interface DeleteColumnDialogProps {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
   columnName: string;
-  mutateFn: UseMutationResult<AxiosResponse<any, any>, Error, void, unknown>;
+  mutationFn: UseMutationResult<AxiosResponse<any, any>, Error, void, unknown>;
 }
 
 const DeleteColumnDialog = (props: DeleteColumnDialogProps) => {
-  const { isOpen, setIsOpen, columnName, mutateFn } = props;
+  const { isOpen, setIsOpen, columnName, mutationFn } = props;
 
-  if (mutateFn.isSuccess || mutateFn.isError) {
-    setIsOpen(false);
-  }
+  useEffect(() => {
+    if (mutationFn.isSuccess || mutationFn.isError) {
+      setIsOpen(false);
+    }
+  }, [mutationFn.isSuccess, mutationFn.isError, setIsOpen]);
 
   return (
-    <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog.Root
+      open={isOpen}
+      onOpenChange={(value) => {
+        if (mutationFn.isPending) {
+          setIsOpen(true);
+        } else {
+          setIsOpen(value);
+        }
+      }}
+    >
       <Dialog.Trigger asChild>
         <button className="hover:bg-zinc-700/50 rounded-md transition-all delay-100 duration-200 ease-in-out">
           <CrossIcon className="w-6 h-6 text-zinc-300" />
@@ -35,7 +47,7 @@ const DeleteColumnDialog = (props: DeleteColumnDialogProps) => {
             <button
               onClick={() => setIsOpen(false)}
               className="hover:bg-zinc-700/20 rounded-md transition-all delay-100 duration-200 ease-in-out disabled:cursor-not-allowed"
-              disabled={mutateFn.isPending}
+              disabled={mutationFn.isPending}
             >
               <CrossIcon className="w-8 h-8 text-zinc-300" />
             </button>
@@ -60,10 +72,10 @@ const DeleteColumnDialog = (props: DeleteColumnDialogProps) => {
           <Spacer variant="sm" />
           <Button
             variant="full"
-            disabled={mutateFn.isPending}
+            disabled={mutationFn.isPending}
             text="Delete Column"
             handleClick={() => {
-              mutateFn.mutate();
+              mutationFn.mutate();
             }}
           />
         </div>

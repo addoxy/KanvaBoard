@@ -5,8 +5,9 @@ import Input from "@/components/Input";
 import Title from "@/components/Title";
 import { useCreateBoardMutation } from "@/lib/mutations";
 import { useGetBoards } from "@/lib/queries";
+import { notify } from "@/utils/notify";
 import * as Dialog from "@radix-ui/react-dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface CreateBoardProps {
   isEnabled: boolean;
@@ -24,8 +25,23 @@ const CreateBoard = (props: CreateBoardProps) => {
     refreshBoards,
   });
 
+  useEffect(() => {
+    if (createBoardMutation.isSuccess || createBoardMutation.isError) {
+      setIsOpen(false);
+    }
+  }, [createBoardMutation.isSuccess, createBoardMutation.isError, setIsOpen]);
+
   return (
-    <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog.Root
+      open={isOpen}
+      onOpenChange={(value) => {
+        if (createBoardMutation.isPending) {
+          setIsOpen(true);
+        } else {
+          setIsOpen(value);
+        }
+      }}
+    >
       <Dialog.Trigger disabled={!isEnabled} asChild>
         <button className="bg-violet-700 text-zinc-300 text-sm shrink-0 w-44 h-11 rounded-lg disabled:cursor-not-allowed font-medium transition-all delay-100 duration-200 ease-in-out hover:bg-purple-700">
           + New Project
@@ -49,6 +65,15 @@ const CreateBoard = (props: CreateBoardProps) => {
             variant="full"
             value={title}
             setValue={setTitle}
+            handleKeyDown={(e) => {
+              if (e.key === "Enter") {
+                if (title !== "") {
+                  createBoardMutation.mutate();
+                } else {
+                  notify("Project name can't be empty", "warning");
+                }
+              }
+            }}
           />
         </div>
         <Button
@@ -56,7 +81,11 @@ const CreateBoard = (props: CreateBoardProps) => {
           disabled={createBoardMutation.isPending}
           text="Save"
           handleClick={() => {
-            createBoardMutation.mutate();
+            if (title !== "") {
+              createBoardMutation.mutate();
+            } else {
+              notify("Project name can't be empty", "warning");
+            }
           }}
         />
       </DialogBox>

@@ -5,8 +5,9 @@ import Spacer from "@/components/Spacer";
 import Textarea from "@/components/Textarea";
 import Title from "@/components/Title";
 import { useCreateTaskMutation } from "@/lib/mutations";
+import { notify } from "@/utils/notify";
 import * as Dialog from "@radix-ui/react-dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface AddTaskProps {
   boardId: string;
@@ -29,11 +30,21 @@ const AddTaskDialog = (props: AddTaskProps) => {
     refreshBoard,
   });
 
+  useEffect(() => {
+    if (createTaskMutation.isSuccess || createTaskMutation.isError) {
+      setIsOpen(false);
+    }
+  }, [createTaskMutation.isSuccess, createTaskMutation.isError, setIsOpen]);
+
   return (
     <Dialog.Root
       open={isOpen}
       onOpenChange={(value) => {
-        setIsOpen(value);
+        if (createTaskMutation.isPending) {
+          setIsOpen(true);
+        } else {
+          setIsOpen(value);
+        }
         setContent("");
       }}
     >
@@ -58,6 +69,15 @@ const AddTaskDialog = (props: AddTaskProps) => {
           placeholder="Write a task"
           value={content}
           setValue={setContent}
+          handleKeyDown={(e) => {
+            if (e.key === "Enter") {
+              if (content !== "") {
+                createTaskMutation.mutate();
+              } else {
+                notify("Task content can't be empty", "warning");
+              }
+            }
+          }}
         />
         <Spacer variant="xs" />
         <div className="flex justify-between">
@@ -66,7 +86,11 @@ const AddTaskDialog = (props: AddTaskProps) => {
             variant="full"
             disabled={content.length === 0 || createTaskMutation.isPending}
             handleClick={() => {
-              createTaskMutation.mutate();
+              if (content !== "") {
+                createTaskMutation.mutate();
+              } else {
+                notify("Task content can't be empty", "warning");
+              }
             }}
           />
         </div>

@@ -3,10 +3,11 @@ import DialogBox from "@/components/DialogBox";
 import { CrossIcon } from "@/components/Icons";
 import Input from "@/components/Input";
 import Title from "@/components/Title";
+import { notify } from "@/utils/notify";
 import * as Dialog from "@radix-ui/react-dialog";
 import { UseMutationResult } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface CreateColumnDialogProps {
   children: React.ReactNode;
@@ -20,11 +21,21 @@ const CreateColumnDialog = (props: CreateColumnDialogProps) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
+  useEffect(() => {
+    if (mutationFn.isSuccess || mutationFn.isError) {
+      setIsOpen(false);
+    }
+  }, [mutationFn.isSuccess, mutationFn.isError, setIsOpen]);
+
   return (
     <Dialog.Root
       open={isOpen}
       onOpenChange={(value) => {
-        setIsOpen(value);
+        if (mutationFn.isPending) {
+          setIsOpen(true);
+        } else {
+          setIsOpen(value);
+        }
         setTitle("");
       }}
     >
@@ -47,6 +58,15 @@ const CreateColumnDialog = (props: CreateColumnDialogProps) => {
             variant="full"
             value={title}
             setValue={setTitle}
+            handleKeyDown={(e) => {
+              if (e.key === "Enter") {
+                if (title !== "") {
+                  mutationFn.mutate();
+                } else {
+                  notify("Column name can't be empty", "warning");
+                }
+              }
+            }}
           />
         </div>
         <Button
@@ -54,7 +74,11 @@ const CreateColumnDialog = (props: CreateColumnDialogProps) => {
           disabled={mutationFn.isPending}
           text="Save"
           handleClick={() => {
-            mutationFn.mutate();
+            if (title !== "") {
+              mutationFn.mutate();
+            } else {
+              notify("Column name can't be empty", "warning");
+            }
           }}
         />
       </DialogBox>

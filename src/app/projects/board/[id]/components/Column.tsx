@@ -126,7 +126,7 @@ const Column = (props: Column) => {
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             columnName={title}
-            mutateFn={deleteColumnMutation}
+            mutationFn={deleteColumnMutation}
           />
         </div>
       </div>

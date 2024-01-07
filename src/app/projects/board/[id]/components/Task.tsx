@@ -7,6 +7,7 @@ import Spacer from "@/components/Spacer";
 import Textarea from "@/components/Textarea";
 import Title from "@/components/Title";
 import { useDeleteTaskMutation, useUpdateTaskMutation } from "@/lib/mutations";
+import { notify } from "@/utils/notify";
 import { cn } from "@/utils/utils";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -18,7 +19,7 @@ const Task = (props: Task) => {
   const { id, columnTitle, refreshBoard } = props;
 
   const [isOpen, setIsOpen] = useState(false);
-  const [content, setContent] = useState(props.content || "");
+  const [content, setContent] = useState(props.content);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const sortableProps = {
@@ -61,13 +62,13 @@ const Task = (props: Task) => {
 
   useEffect(() => {
     if (deleteTaskMutation.isSuccess || deleteTaskMutation.isError) {
-      setIsOpen(false);
+      setIsDeleteOpen(false);
     }
   }, [deleteTaskMutation.isSuccess, deleteTaskMutation.isError, setIsOpen]);
 
   useEffect(() => {
     if (updateTaskMutation.isSuccess || updateTaskMutation.isError) {
-      setIsDeleteOpen(false);
+      setIsOpen(false);
     }
   }, [
     updateTaskMutation.isSuccess,
@@ -77,7 +78,16 @@ const Task = (props: Task) => {
 
   return (
     <>
-      <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
+      <Dialog.Root
+        open={isOpen}
+        onOpenChange={(value) => {
+          if (updateTaskMutation.isPending) {
+            setIsOpen(true);
+          } else {
+            setIsOpen(value);
+          }
+        }}
+      >
         <Dialog.Trigger
           ref={setNodeRef}
           style={style}
@@ -109,8 +119,20 @@ const Task = (props: Task) => {
           <Textarea
             rows={3}
             placeholder="Edit the task"
-            value={content}
+            defaultValue={props.content}
             setValue={setContent}
+            handleKeyDown={(e) => {
+              if (e.key === "Enter") {
+                if (content === props.content) {
+                  setIsOpen(false);
+                  return;
+                } else if (content !== "") {
+                  updateTaskMutation.mutate();
+                } else {
+                  notify("Task content can't be empty", "warning");
+                }
+              }
+            }}
           />
           <Spacer variant="xs" />
           <div className="justify-between gap-x-3 w-full grid grid-cols-2 grid-rows-1">
@@ -128,7 +150,14 @@ const Task = (props: Task) => {
               variant="full"
               disabled={updateTaskMutation.isPending}
               handleClick={() => {
-                updateTaskMutation.mutate();
+                if (content === props.content) {
+                  setIsOpen(false);
+                  return;
+                } else if (content !== "") {
+                  updateTaskMutation.mutate();
+                } else {
+                  notify("Task content can't be empty", "warning");
+                }
               }}
             />
           </div>
@@ -139,7 +168,7 @@ const Task = (props: Task) => {
           isOpen={isDeleteOpen}
           setIsOpen={setIsDeleteOpen}
           columnName={columnTitle}
-          mutateFn={deleteTaskMutation}
+          mutationFn={deleteTaskMutation}
         />
       )}
     </>
