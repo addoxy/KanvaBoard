@@ -3,6 +3,7 @@
 import Button from "@/components/Button";
 import DialogBox from "@/components/DialogBox";
 import { CrossIcon, ThreeDotsIcon } from "@/components/Icons";
+import Point from "@/components/Point";
 import Spacer from "@/components/Spacer";
 import Title from "@/components/Title";
 import {
@@ -166,10 +167,6 @@ const DeleteDialog = (props: DeleteDialogProps) => {
       </DialogBox>
     </Dialog.Root>
   );
-};
-
-const Point = ({ children }: { children: React.ReactNode }) => {
-  return <li className="text-zinc-500 text-base list-disc">{children}</li>;
 };
 
 export default OptionsMenu;
