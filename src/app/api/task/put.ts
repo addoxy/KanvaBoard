@@ -118,6 +118,14 @@ export async function PUT_TASKS(req: Request, res: Response) {
               },
             },
           }),
+          prisma.task.update({
+            where: {
+              id: activeTaskId,
+            },
+            data: {
+              order: parseInt(overOrder),
+            },
+          }),
         ]);
         console.log("done reordering same");
         return SendResponse("Successfully updated task order", 200);
