@@ -40,7 +40,7 @@ const Template = (props: TemplateProps) => {
 
 const TemplateDescription = ({ children }: { children: React.ReactNode }) => {
   return (
-    <p className="text-sm text-zinc-400 font-normal leading-6">{children}</p>
+    <p className="text-sm text-zinc-300/80 font-normal leading-6">{children}</p>
   );
 };
 
