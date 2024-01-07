@@ -15,7 +15,7 @@ import { cn } from "@/utils/utils";
 import {
   DndContext,
   DragEndEvent,
-  DragMoveEvent,
+  DragOverEvent,
   DragOverlay,
   DragStartEvent,
   KeyboardSensor,
@@ -149,7 +149,7 @@ const Board = (props: Board) => {
     }
   }
 
-  const handleDragMove = (event: DragMoveEvent) => {
+  const handleDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
 
     // Handle Items Sorting
@@ -182,6 +182,13 @@ const Board = (props: Board) => {
       const overTaskIndex = overItem.tasks.findIndex(
         (task) => task.id === over.id
       );
+
+      if (
+        activeColumnIndex === overColumnIndex &&
+        activeTaskIndex === overTaskIndex
+      ) {
+        return;
+      }
 
       // In the same container
       if (activeColumnIndex === overColumnIndex) {
@@ -387,7 +394,7 @@ const Board = (props: Board) => {
         sensors={sensors}
         collisionDetection={closestCorners}
         onDragStart={handleDragStart}
-        onDragOver={handleDragMove}
+        onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
         <div className="flex gap-x-6 -mr-12 -ml-12 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round overflow-x-auto h-full">
