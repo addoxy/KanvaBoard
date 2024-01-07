@@ -10,6 +10,13 @@ import {
   useUpdateBoardTitleMutation,
   useUpdateColumnOrderMutation,
 } from "@/lib/mutations";
+import {
+  getActiveColumnIndex,
+  getActiveTaskIndex,
+  getColumn,
+  getOverColumnIndex,
+  getOverTaskIndex,
+} from "@/utils/dnd";
 import { notify } from "@/utils/notify";
 import { cn } from "@/utils/utils";
 import {
@@ -128,7 +135,6 @@ const Board = (props: Board) => {
       over &&
       active.id !== over.id
     ) {
-      // Find the index of the active and over column
       const activeColumnIndex = columns.findIndex(
         (column) => column.id === active.id
       );
@@ -138,7 +144,7 @@ const Board = (props: Board) => {
 
       if (activeColumnIndex === overColumnIndex) return;
 
-      // Reorder thea active and over columns
+      // Reorder the active and over columns
       let newColumns = [...columns];
       newColumns = arrayMove(newColumns, activeColumnIndex, overColumnIndex);
       setColumns(newColumns);
@@ -149,7 +155,6 @@ const Board = (props: Board) => {
         activeOrder: activeColumnIndex + 1,
         overOrder: overColumnIndex + 1,
       };
-
       updateColumnOrderMutation.mutate(variables);
     }
 
@@ -161,27 +166,16 @@ const Board = (props: Board) => {
       over &&
       active.id !== over.id
     ) {
-      // Find the active container and over column
-      const activeColumn = findItems(active.id, "Task");
-      const overColumn = findItems(over.id, "Task");
+      const activeColumn = getColumn(columns, active, "Task");
+      const overColumn = getColumn(columns, over, "Task");
 
       if (!activeColumn || !overColumn) return;
 
-      // Find the index of the active and over column
-      const activeColumnIndex = columns.findIndex(
-        (column) => column.id === activeColumn.id
-      );
-      const overColumnIndex = columns.findIndex(
-        (column) => column.id === overColumn.id
-      );
+      const activeColumnIndex = getActiveColumnIndex(columns, activeColumn);
+      const overColumnIndex = getOverColumnIndex(columns, overColumn);
 
-      // Find the index of the active and over task
-      const activeTaskIndex = activeColumn.tasks.findIndex(
-        (task) => task.id === active.id
-      );
-      const overTaskIndex = overColumn.tasks.findIndex(
-        (task) => task.id === over.id
-      );
+      const activeTaskIndex = getActiveTaskIndex(activeColumn, active);
+      const overTaskIndex = getOverTaskIndex(overColumn, over);
 
       // In the same column
       if (activeColumnIndex === overColumnIndex) {
@@ -199,7 +193,6 @@ const Board = (props: Board) => {
           activeOrder: activeTaskIndex + 1,
           overOrder: overTaskIndex + 1,
         };
-
         taskReorderSameMutation.mutate(variables);
       } else {
         // In different columns
@@ -218,7 +211,6 @@ const Board = (props: Board) => {
           activeOrder: activeTaskIndex + 1,
           overOrder: overTaskIndex + 1,
         };
-
         taskReorderDifferentMutation.mutate(variables);
       }
     }
@@ -231,26 +223,17 @@ const Board = (props: Board) => {
       over &&
       active.id !== over.id
     ) {
-      // Find the active and over column
-      const activeColumn = findItems(active.id, "Task");
-      const overColumn = findItems(over.id, "Column");
+      const activeColumn = getColumn(columns, active, "Task");
+      const overColumn = getColumn(columns, over, "Column");
 
       if (!activeColumn || !overColumn) return;
 
-      // Find the index of the active and over column
-      const activeColumnIndex = columns.findIndex(
-        (column) => column.id === activeColumn.id
-      );
-      const overColumnIndex = columns.findIndex(
-        (column) => column.id === overColumn.id
-      );
+      const activeColumnIndex = getActiveColumnIndex(columns, activeColumn);
+      const overColumnIndex = getOverColumnIndex(columns, overColumn);
 
       if (activeColumnIndex === overColumnIndex) return;
 
-      // Find the index of the active and over task
-      const activeTaskIndex = activeColumn.tasks.findIndex(
-        (task) => task.id === active.id
-      );
+      const activeTaskIndex = getActiveTaskIndex(activeColumn, active);
 
       // Remove the active task from the active column and add it to the over column
       let newColumns = [...columns];
@@ -268,7 +251,6 @@ const Board = (props: Board) => {
         oldColumnId: activeColumn.id,
         newColumnId: overColumn.id,
       };
-
       dropTaskInColumnMutation.mutate(variables);
     }
 
