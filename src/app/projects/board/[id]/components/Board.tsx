@@ -21,6 +21,7 @@ import {
   KeyboardSensor,
   PointerSensor,
   UniqueIdentifier,
+  closestCorners,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -384,7 +385,7 @@ const Board = (props: Board) => {
       <Spacer variant="lg" />
       <DndContext
         sensors={sensors}
-        // collisionDetection={closestCorners}
+        collisionDetection={closestCorners}
         onDragStart={handleDragStart}
         onDragOver={handleDragMove}
         onDragEnd={handleDragEnd}
