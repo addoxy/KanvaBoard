@@ -317,7 +317,7 @@ export const useTaskReorderSameMutation = (props: {
 
       return taskReorderSamePromise;
     },
-    // onSuccess: () => refreshBoard(),
+    onSuccess: () => refreshBoard(),
   });
 
   return taskReorderSameMutation;
@@ -346,7 +346,7 @@ export const useDropTaskInColumnMutation = (props: {
 
       return dropTaskInColumnPromise;
     },
-    // onSuccess: () => refreshBoard(),
+    onSuccess: () => refreshBoard(),
   });
 
   return dropTaskInColumnMutation;
@@ -375,7 +375,7 @@ export const useTaskReorderDifferentMutation = (props: {
 
       return taskReorderDifferentPromise;
     },
-    // onSuccess: () => refreshBoard(),
+    onSuccess: () => refreshBoard(),
   });
 
   return taskReorderDifferentMutation;

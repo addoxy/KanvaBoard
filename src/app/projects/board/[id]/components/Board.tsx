@@ -15,7 +15,6 @@ import { cn } from "@/utils/utils";
 import {
   DndContext,
   DragEndEvent,
-  DragOverEvent,
   DragOverlay,
   DragStartEvent,
   KeyboardSensor,
@@ -118,10 +117,6 @@ const Board = (props: Board) => {
       setActiveTask(event.active.data.current?.sortableProps);
     }
   }
-
-  const handleDragOver = (event: DragOverEvent) => {
-    const { active, over } = event;
-  };
 
   // This is the function that handles the sorting of the containers and items when the user is done dragging.
   function handleDragEnd(event: DragEndEvent) {
@@ -331,9 +326,7 @@ const Board = (props: Board) => {
       <Spacer variant="lg" />
       <DndContext
         sensors={sensors}
-        // collisionDetection={closestCorners}
         onDragStart={handleDragStart}
-        onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
         measuring={{
           droppable: {
