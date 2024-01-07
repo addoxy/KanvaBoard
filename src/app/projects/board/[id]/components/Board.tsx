@@ -19,6 +19,7 @@ import {
   DragOverlay,
   DragStartEvent,
   KeyboardSensor,
+  MeasuringStrategy,
   PointerSensor,
   UniqueIdentifier,
   useSensor,
@@ -34,29 +35,6 @@ import Column from "./Column";
 import Task from "./Task";
 import CreateColumnDialog from "./dialogs/CreateColumnDialog";
 
-interface SameColumnTaskProps {
-  columnId: string | UniqueIdentifier;
-  activeTaskId: string | UniqueIdentifier;
-  activeOrder: number;
-  overOrder: number;
-}
-
-interface DiffColumnTaskProps {
-  taskId: string | UniqueIdentifier;
-  oldColumnId: string | UniqueIdentifier;
-  newColumnId: string | UniqueIdentifier;
-  activeOrder: number;
-  overOrder: number;
-}
-
-interface SoloColumnProps {
-  taskId: string | UniqueIdentifier;
-  activeOrder: number;
-  overOrder: number;
-  oldColumnId: string | UniqueIdentifier;
-  newColumnId: string | UniqueIdentifier;
-}
-
 const Board = (props: Board) => {
   useEffect(() => {
     setColumns(props.columns);
@@ -70,13 +48,6 @@ const Board = (props: Board) => {
   const [newColumnTitle, setNewColumnTitle] = useState("");
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
-  const [sameColumnTask, setSameColumnTask] =
-    useState<SameColumnTaskProps | null>(null);
-  const [diffColumnTask, setDiffColumnTask] =
-    useState<DiffColumnTaskProps | null>(null);
-  const [soloColumnTask, setSoloColumnTask] = useState<SoloColumnProps | null>(
-    null
-  );
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -150,6 +121,44 @@ const Board = (props: Board) => {
 
   const handleDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
+  };
+
+  // This is the function that handles the sorting of the containers and items when the user is done dragging.
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+
+    // Handling Container Sorting
+    if (
+      active.data.current?.type === "Column" &&
+      over?.data.current?.type === "Column" &&
+      active &&
+      over &&
+      active.id !== over.id
+    ) {
+      // Find the index of the active and over container
+      const activeColumnIndex = columns.findIndex(
+        (column) => column.id === active.id
+      );
+      const overColumnIndex = columns.findIndex(
+        (column) => column.id === over.id
+      );
+
+      if (activeColumnIndex === overColumnIndex) return;
+
+      // Swap the active and over container
+      let newColumns = [...columns];
+      newColumns = arrayMove(newColumns, activeColumnIndex, overColumnIndex);
+      setColumns(newColumns);
+
+      const variables = {
+        boardId: id,
+        activeColumnId: active.id,
+        activeOrder: activeColumnIndex + 1,
+        overOrder: overColumnIndex + 1,
+      };
+
+      updateColumnOrderMutation.mutate(variables);
+    }
 
     // Handle Items Sorting
     if (
@@ -160,34 +169,27 @@ const Board = (props: Board) => {
       active.id !== over.id
     ) {
       // Find the active container and over container
-      const activeItem = findItems(active.id, "Task");
-      const overItem = findItems(over.id, "Task");
+      const activeColumn = findItems(active.id, "Task");
+      const overColumn = findItems(over.id, "Task");
 
       // If the active or over container is not found, return
-      if (!activeItem || !overItem) return;
+      if (!activeColumn || !overColumn) return;
 
       // Find the index of the active and over container
       const activeColumnIndex = columns.findIndex(
-        (column) => column.id === activeItem.id
+        (column) => column.id === activeColumn.id
       );
       const overColumnIndex = columns.findIndex(
-        (column) => column.id === overItem.id
+        (column) => column.id === overColumn.id
       );
 
       // Find the index of the active and over item
-      const activeTaskIndex = activeItem.tasks.findIndex(
+      const activeTaskIndex = activeColumn.tasks.findIndex(
         (task) => task.id === active.id
       );
-      const overTaskIndex = overItem.tasks.findIndex(
+      const overTaskIndex = overColumn.tasks.findIndex(
         (task) => task.id === over.id
       );
-
-      if (
-        activeColumnIndex === overColumnIndex &&
-        activeTaskIndex === overTaskIndex
-      ) {
-        return;
-      }
 
       // In the same container
       if (activeColumnIndex === overColumnIndex) {
@@ -200,15 +202,13 @@ const Board = (props: Board) => {
         setColumns(newColumns);
 
         const variables = {
-          columnId: activeItem.id,
+          columnId: activeColumn.id,
           activeTaskId: active.id,
           activeOrder: activeTaskIndex + 1,
           overOrder: overTaskIndex + 1,
         };
 
-        setSameColumnTask(variables);
-        setDiffColumnTask(null);
-        setSoloColumnTask(null);
+        taskReorderSameMutation.mutate(variables);
       } else {
         // In different containers
         let newColumns = [...columns];
@@ -221,15 +221,13 @@ const Board = (props: Board) => {
 
         const variables = {
           taskId: active.id,
-          oldColumnId: activeItem.id,
-          newColumnId: overItem.id,
+          oldColumnId: activeColumn.id,
+          newColumnId: overColumn.id,
           activeOrder: activeTaskIndex + 1,
           overOrder: overTaskIndex + 1,
         };
 
-        setSameColumnTask(null);
-        setDiffColumnTask(variables);
-        setSoloColumnTask(null);
+        taskReorderDifferentMutation.mutate(variables);
       }
     }
 
@@ -280,69 +278,11 @@ const Board = (props: Board) => {
         newColumnId: overColumn.id,
       };
 
-      setSameColumnTask(null);
-      setDiffColumnTask(null);
-      setSoloColumnTask(variables);
-    }
-  };
-
-  // This is the function that handles the sorting of the containers and items when the user is done dragging.
-  function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
-
-    // Handling Container Sorting
-    if (
-      active.data.current?.type === "Column" &&
-      over?.data.current?.type === "Column" &&
-      active &&
-      over &&
-      active.id !== over.id
-    ) {
-      // Find the index of the active and over container
-      const activeColumnIndex = columns.findIndex(
-        (column) => column.id === active.id
-      );
-      const overColumnIndex = columns.findIndex(
-        (column) => column.id === over.id
-      );
-
-      if (activeColumnIndex === overColumnIndex) return;
-
-      // Swap the active and over container
-      let newColumns = [...columns];
-      newColumns = arrayMove(newColumns, activeColumnIndex, overColumnIndex);
-      setColumns(newColumns);
-
-      const variables = {
-        boardId: id,
-        activeColumnId: active.id,
-        activeOrder: activeColumnIndex + 1,
-        overOrder: overColumnIndex + 1,
-      };
-
-      updateColumnOrderMutation.mutate(variables);
-    }
-
-    if (sameColumnTask) {
-      console.log("same column");
-      taskReorderSameMutation.mutate(sameColumnTask);
-    }
-
-    if (diffColumnTask) {
-      console.log("different columns");
-      taskReorderDifferentMutation.mutate(diffColumnTask);
-    }
-
-    if (soloColumnTask) {
-      console.log("solo column");
-      dropTaskInColumnMutation.mutate(soloColumnTask);
+      dropTaskInColumnMutation.mutate(variables);
     }
 
     setActiveColumn(null);
     setActiveTask(null);
-    setSameColumnTask(null);
-    setDiffColumnTask(null);
-    setSoloColumnTask(null);
   }
 
   return (
@@ -395,6 +335,11 @@ const Board = (props: Board) => {
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
+        measuring={{
+          droppable: {
+            strategy: MeasuringStrategy.Always,
+          },
+        }}
       >
         <div className="flex gap-x-6 -mr-12 -ml-12 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round overflow-x-auto h-full">
           <SortableContext items={columns.map((column) => column.id)}>

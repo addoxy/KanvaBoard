@@ -6,10 +6,10 @@ import {
   useUpdateColumnTitleMutation,
 } from "@/lib/mutations";
 import { notify } from "@/utils/notify";
+import { cn } from "@/utils/utils";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Task from "./Task";
 import AddTaskDialog from "./dialogs/AddTaskDialog";
 import DeleteColumnDialog from "./dialogs/DeleteColumnDialog";
@@ -20,9 +20,6 @@ const Column = (props: Column) => {
   const [editMode, setEditMode] = useState(false);
   const [columnTitle, setColumnTitle] = useState(title);
   const [isOpen, setIsOpen] = useState(false);
-  const [animationParent] = useAutoAnimate();
-
-  const tasksId = useMemo(() => tasks.map((task) => task.id), [tasks]);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -40,6 +37,7 @@ const Column = (props: Column) => {
     transform,
     transition,
     isDragging,
+    isOver,
   } = useSortable({
     id: id,
     data: {
@@ -132,7 +130,12 @@ const Column = (props: Column) => {
           />
         </div>
       </div>
-      <div className="flex w-80 flex-col gap-y-2 rounded-lg border border-zinc-700/20 bg-zinc-800/40 p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round">
+      <div
+        className={cn(
+          "flex w-80 flex-col gap-y-2 rounded-lg border border-zinc-700/20 bg-zinc-800/40 p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round",
+          isOver && "opacity-50"
+        )}
+      >
         <SortableContext items={tasks.map((task) => task.id)}>
           {tasks.map((task) => {
             return (

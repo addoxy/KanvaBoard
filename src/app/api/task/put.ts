@@ -109,7 +109,7 @@ export async function PUT_TASKS(req: Request, res: Response) {
               columnId: columnId,
               order: {
                 gte: parseInt(overOrder),
-                lte: parseInt(activeOrder) - 1,
+                lte: parseInt(activeOrder),
               },
             },
             data: {
