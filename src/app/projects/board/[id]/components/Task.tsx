@@ -139,7 +139,9 @@ const Task = (props: Task) => {
             <Button
               text="Delete"
               variant="delete"
-              disabled={deleteTaskMutation.isPending}
+              disabled={
+                deleteTaskMutation.isPending || updateTaskMutation.isPending
+              }
               handleClick={() => {
                 setIsOpen(false);
                 setIsDeleteOpen(true);
