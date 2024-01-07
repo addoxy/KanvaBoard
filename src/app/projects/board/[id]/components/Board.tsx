@@ -21,7 +21,6 @@ import {
   KeyboardSensor,
   PointerSensor,
   UniqueIdentifier,
-  closestCorners,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -236,22 +235,24 @@ const Board = (props: Board) => {
       active.id !== over.id
     ) {
       // Find the active and over container
-      const activeItem = findItems(active.id, "Task");
-      const overItem = findItems(over.id, "Column");
+      const activeColumn = findItems(active.id, "Task");
+      const overColumn = findItems(over.id, "Column");
 
       // If the active or over container is not found, return
-      if (!activeItem || !overItem) return;
+      if (!activeColumn || !overColumn) return;
 
       // Find the index of the active and over container
       const activeColumnIndex = columns.findIndex(
-        (column) => column.id === activeItem.id
+        (column) => column.id === activeColumn.id
       );
       const overColumnIndex = columns.findIndex(
-        (column) => column.id === overItem.id
+        (column) => column.id === overColumn.id
       );
 
+      if (activeColumnIndex === overColumnIndex) return;
+
       // Find the index of the active and over item
-      const activeTaskIndex = activeItem.tasks.findIndex(
+      const activeTaskIndex = activeColumn.tasks.findIndex(
         (task) => task.id === active.id
       );
 
@@ -267,9 +268,9 @@ const Board = (props: Board) => {
       const variables = {
         taskId: active.id,
         activeOrder: activeTaskIndex + 1,
-        overOrder: columns[overColumnIndex].tasks.length + 1,
-        oldColumnId: activeItem.id,
-        newColumnId: overItem.id,
+        overOrder: columns[overColumnIndex].tasks.length,
+        oldColumnId: activeColumn.id,
+        newColumnId: overColumn.id,
       };
 
       setSameColumnTask(null);
@@ -383,7 +384,7 @@ const Board = (props: Board) => {
       <Spacer variant="lg" />
       <DndContext
         sensors={sensors}
-        collisionDetection={closestCorners}
+        // collisionDetection={closestCorners}
         onDragStart={handleDragStart}
         onDragOver={handleDragMove}
         onDragEnd={handleDragEnd}

@@ -100,7 +100,7 @@ export async function PUT_TASKS(req: Request, res: Response) {
         return SendResponse("Unable to update task order", 500);
       }
     } else {
-      // btt: active - 1 to over: order + 1
+      // btt: over to active - 1: order + 1
       // active: newOrder
       try {
         await prisma.$transaction([
