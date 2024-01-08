@@ -94,10 +94,11 @@ const Task = (props: Task) => {
           {...attributes}
           {...listeners}
           asChild
+          className="touch-none"
         >
           <p
             className={cn(
-              "cursor-pointer rounded-lg border border-zinc-600/20 bg-zinc-750 p-3 text-sm text-zinc-300 touch-none",
+              "cursor-pointer rounded-lg border border-zinc-600/20 bg-zinc-750 p-3 text-sm text-zinc-300",
               isDragging && "opacity-50",
               isOver && "opacity-50"
             )}
