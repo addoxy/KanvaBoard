@@ -1,3 +1,5 @@
+"use client";
+
 import PageWrapper from "@/components/PageWrapper";
 import Spacer from "@/components/Spacer";
 import Title from "@/components/Title";
