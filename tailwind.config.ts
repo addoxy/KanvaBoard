@@ -48,6 +48,7 @@ const config: Config = {
       colors: {
         zinc: {
           750: "#28282c",
+          825: "#1b1b1e",
           850: "#1e1e21",
           925: "#141416",
         },
@@ -79,6 +80,7 @@ const config: Config = {
   plugins: [
     require("tailwindcss-debug-screens"),
     require("tailwind-scrollbar"),
+    require("tailwindcss-animate"),
   ],
 };
 export default config;

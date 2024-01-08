@@ -5,7 +5,9 @@ const PageWrapper = (props: { children: React.ReactNode }) => {
 
   return (
     <div className="w-screen max-w-screen-2xl h-screen mx-auto flex">
-      <Sidebar />
+      <div className="hidden lg:block">
+        <Sidebar />
+      </div>
       <div className="px-12 pt-8 w-full h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round">
         {children}
       </div>

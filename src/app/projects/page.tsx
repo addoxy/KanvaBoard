@@ -1,6 +1,7 @@
 "use client";
 
 import PageWrapper from "@/components/PageWrapper";
+import SidebarToggle from "@/components/Sidebar/SidebarToggle";
 import Spacer from "@/components/Spacer";
 import Title from "@/components/Title";
 import { Table, TableBody } from "@/components/otherui/Table";
@@ -27,7 +28,10 @@ export default function ProjectsPage() {
   return (
     <PageWrapper>
       <div className="flex flex-col">
-        <Title text="Projects" variant="xl" />
+        <div className="flex items-center">
+          <SidebarToggle className="mr-3 outline-none" />
+          <Title text="Projects" variant="xl" />
+        </div>
         <Spacer variant="sm" />
         <div className="flex gap-x-2 items-center">
           <SearchBar isEnabled={status === "success"} setQuery={setQuery} />

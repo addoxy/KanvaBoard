@@ -1,5 +1,6 @@
 "use client";
 
+import SidebarToggle from "@/components/Sidebar/SidebarToggle";
 import Spacer from "@/components/Spacer";
 import Title from "@/components/Title";
 import {
@@ -260,31 +261,34 @@ const Board = (props: Board) => {
   return (
     <div className="h-full flex flex-col">
       <div className="flex justify-between gap-x-10 items-center">
-        {!editMode && (
-          <Title
-            text={boardTitle}
-            variant="xl"
-            onClick={() => setEditMode(true)}
-            className="cursor-pointer"
-          />
-        )}
-        {editMode && (
-          <input
-            autoFocus
-            defaultValue={boardTitle}
-            onBlur={() => {
-              handleTitle();
-              setEditMode(false);
-            }}
-            ref={inputRef}
-            onKeyDown={(e) => {
-              if (e.key === "Escape" || e.key === "Enter") {
-                inputRef.current && inputRef.current.blur();
-              }
-            }}
-            className="h-8 w-full rounded-lg px-2 font-medium text-zinc-300 bg-zinc-800 text-2xl outline-none py-5 -my-3 truncate"
-          />
-        )}
+        <div className="flex items-center">
+          <SidebarToggle className="mr-3 outline-none" />
+          {!editMode && (
+            <Title
+              text={boardTitle}
+              variant="xl"
+              onClick={() => setEditMode(true)}
+              className="cursor-pointer"
+            />
+          )}
+          {editMode && (
+            <input
+              autoFocus
+              defaultValue={boardTitle}
+              onBlur={() => {
+                handleTitle();
+                setEditMode(false);
+              }}
+              ref={inputRef}
+              onKeyDown={(e) => {
+                if (e.key === "Escape" || e.key === "Enter") {
+                  inputRef.current && inputRef.current.blur();
+                }
+              }}
+              className="h-8 w-full rounded-lg px-2 font-medium text-zinc-300 bg-zinc-800 text-2xl outline-none py-5 -my-3 truncate"
+            />
+          )}
+        </div>
         <CreateColumnDialog
           title={newColumnTitle}
           setTitle={setNewColumnTitle}
