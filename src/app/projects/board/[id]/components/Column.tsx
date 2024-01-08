@@ -81,7 +81,7 @@ const Column = (props: Column) => {
         style={style}
         {...attributes}
         {...listeners}
-        className="w-80 rounded-lg bg-zinc-800/20 h-100"
+        className="w-80 rounded-lg bg-zinc-800/20 h-100 touch-manipulation"
       />
     );
   }
