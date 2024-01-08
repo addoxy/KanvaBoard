@@ -27,7 +27,6 @@ import {
   DragStartEvent,
   KeyboardSensor,
   PointerSensor,
-  UniqueIdentifier,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -90,17 +89,6 @@ const Board = (props: Board) => {
 
     setBoardTitle(inputRef.current?.value);
     updateBoardTitleMutation.mutate();
-  }
-
-  function findItems(id: UniqueIdentifier | undefined, type: string) {
-    if (type === "Column") {
-      return columns.find((column) => column.id === id);
-    }
-    if (type === "Task") {
-      return columns.find((column) =>
-        column.tasks.find((task) => task.id === id)
-      );
-    }
   }
 
   const sensors = useSensors(
