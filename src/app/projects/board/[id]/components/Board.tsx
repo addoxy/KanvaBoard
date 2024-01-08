@@ -295,7 +295,7 @@ const Board = (props: Board) => {
             {columns.map((column, i) => (
               <div
                 key={column.id}
-                className="first-of-type:pl-12 last-of-type:pr-12 h-fit"
+                className="first-of-type:pl-12 last-of-type:pr-12 h-full"
               >
                 <Column {...column} refreshBoard={refreshBoard} />
               </div>
