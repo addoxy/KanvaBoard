@@ -19,8 +19,8 @@ const DialogBox = (props: DialogBoxProps) => {
       <DialogContent
         className={cn(
           "pt-8 data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] flex flex-col bg-zinc-925 border border-zinc-800 rounded-xl focus:outline-none",
-          variant === "lg" && "w-104 px-9",
-          variant === "xl" && "w-140 px-9  pb-10"
+          variant === "lg" && "sm:w-104 px-9 w-10/12",
+          variant === "xl" && "sm:w-140 px-9 pb-10 w-10/12"
         )}
       >
         {children}
