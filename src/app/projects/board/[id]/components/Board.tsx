@@ -297,7 +297,7 @@ const Board = (props: Board) => {
           <button
             disabled={createColumnMutation.isPending}
             className={cn(
-              "bg-violet-700 text-zinc-300 text-sm shrink-0 font-medium transition-all delay-100 duration-200 ease-in-out hover:bg-purple-700 disabled:cursor-not-allowed w-36 h-9 rounded-lg"
+              "bg-violet-700 text-zinc-300 text-sm shrink-0 font-medium transition-all delay-100 duration-200 ease-in-out hover:bg-purple-700 disabled:cursor-not-allowed w-32 sm:w-36 h-9 rounded-lg"
             )}
           >
             + New Column
