@@ -301,12 +301,12 @@ const Board = (props: Board) => {
           setActiveTask(null);
         }}
       >
-        <div className="flex gap-x-6 -mr-12 -ml-12 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round overflow-x-auto h-full">
+        <div className="flex gap-x-6 sm:-mr-12 sm:-ml-12 -ml-4 -mr-4 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round overflow-x-auto h-full">
           <SortableContext items={columns.map((column) => column.id)}>
             {columns.map((column, i) => (
               <div
                 key={column.id}
-                className="first-of-type:pl-12 last-of-type:pr-12 h-full"
+                className="sm:first-of-type:pl-12 sm:last-of-type:pr-12 first-of-type:pl-4 last-of-type:pr-4 h-full"
               >
                 <Column {...column} refreshBoard={refreshBoard} />
               </div>
