@@ -25,7 +25,7 @@ import {
   DragEndEvent,
   DragOverlay,
   DragStartEvent,
-  PointerSensor,
+  MouseSensor,
   TouchSensor,
   useSensor,
   useSensors,
@@ -51,6 +51,20 @@ const Board = (props: Board) => {
   const [activeTask, setActiveTask] = useState<Task | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const sensors = useSensors(
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 1000,
+        tolerance: 10000,
+      },
+    }),
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        distance: 3,
+      },
+    })
+  );
 
   const updateBoardTitleMutation = useUpdateBoardTitleMutation({
     id,
@@ -86,20 +100,6 @@ const Board = (props: Board) => {
     setBoardTitle(inputRef.current?.value);
     updateBoardTitleMutation.mutate();
   }
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 3,
-      },
-    }),
-    useSensor(TouchSensor, {
-      activationConstraint: {
-        delay: 2000,
-        distance: 0,
-      },
-    })
-  );
 
   function handleDragStart(event: DragStartEvent) {
     if (event.active.data.current?.type === "Column") {
