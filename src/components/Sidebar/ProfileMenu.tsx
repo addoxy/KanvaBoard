@@ -42,7 +42,7 @@ const ProfileMenu = () => {
         <DropdownMenu.Content
           align="center"
           sideOffset={8}
-          className="w-44 shadow-md bg-zinc-800 border border-zinc-700/25 rounded-lg overflow-hidden pt-3 data-[side=bottom]:animate-slideUpAndFade"
+          className="w-44 shadow-md bg-zinc-800 border border-zinc-700/25 rounded-lg overflow-hidden pt-3 data-[side=bottom]:animate-slideUpAndFade z-50"
         >
           <DropdownMenu.Item className="flex flex-col outline-none px-4 border-b border-b-zinc-700/50">
             <span className="truncate text-zinc-300 mb-1 text-sm">
