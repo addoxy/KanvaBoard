@@ -25,16 +25,12 @@ import {
   DragEndEvent,
   DragOverlay,
   DragStartEvent,
-  KeyboardSensor,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import {
-  SortableContext,
-  arrayMove,
-  sortableKeyboardCoordinates,
-} from "@dnd-kit/sortable";
+import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { useEffect, useRef, useState } from "react";
 import Column from "./Column";
 import Task from "./Task";
@@ -97,9 +93,7 @@ const Board = (props: Board) => {
         distance: 3,
       },
     }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
+    useSensor(TouchSensor)
   );
 
   function handleDragStart(event: DragStartEvent) {
