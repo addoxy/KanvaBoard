@@ -19,7 +19,7 @@ const SidebarToggle = (props: SidebarToggleProps) => {
       <SheetTrigger className="outline-none">
         <SidebarIcon
           className={cn(
-            "W-8 h-8 text-zinc-500 lg:hidden hover:bg-zinc-800/50 p-1 hover:text-zinc-400 rounded-md",
+            "W-8 h-8 text-zinc-400 lg:hidden hover:bg-zinc-800/50 p-1 hover:text-zinc-300 rounded-md rotate-180",
             className
           )}
         />
