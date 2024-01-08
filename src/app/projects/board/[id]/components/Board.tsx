@@ -26,7 +26,6 @@ import {
   DragOverlay,
   DragStartEvent,
   PointerSensor,
-  TouchSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -92,8 +91,7 @@ const Board = (props: Board) => {
       activationConstraint: {
         distance: 3,
       },
-    }),
-    useSensor(TouchSensor)
+    })
   );
 
   function handleDragStart(event: DragStartEvent) {
