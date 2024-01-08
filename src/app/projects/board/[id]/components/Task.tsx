@@ -98,7 +98,7 @@ const Task = (props: Task) => {
         >
           <p
             className={cn(
-              "cursor-pointer rounded-lg border border-zinc-600/20 bg-zinc-750 p-3 text-sm text-zinc-300 touch-manipulation",
+              "cursor-pointer rounded-lg border border-zinc-600/20 bg-zinc-750 p-3 text-sm text-zinc-300",
               isDragging && "opacity-50",
               isOver && "opacity-50"
             )}
