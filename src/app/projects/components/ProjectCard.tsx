@@ -23,7 +23,7 @@ const ProjectCard = (props: ProjectCardProps) => {
 
   return (
     <TableRow className="text-zinc-400 hover:bg-zinc-800/20 border-b-zinc-700/30">
-      <TableCell className="pl-6 py-7 text-sm 600 w-7/12">
+      <TableCell className="text-sm pl-6 lg:w-7/12 w-5/12 pb-5">
         <Link
           className="line-clamp-1"
           onClick={() => updateViewedAtMutation.mutate()}
@@ -32,7 +32,7 @@ const ProjectCard = (props: ProjectCardProps) => {
           {name}
         </Link>
       </TableCell>
-      <TableCell className="py-7 text-sm 600 w-7/12 hidden sm:block">
+      <TableCell className="text-sm w-6/12 lg:w-5/12 font-medium py-7 hidden sm:block">
         {lastViewed}
       </TableCell>
       <TableCell className="py-7 w-1/12">
