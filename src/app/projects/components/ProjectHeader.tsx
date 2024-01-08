@@ -7,7 +7,7 @@ const ProjectHeader = () => {
         <TableHead className="text-sm text-zinc-600 pl-6 w-7/12 pb-5">
           Title
         </TableHead>
-        <TableHead className="text-sm w-4/12 font-medium text-zinc-600 pb-5">
+        <TableHead className="text-sm w-7/12 font-medium text-zinc-600 pb-5 hidden sm:block">
           Last Viewed At
         </TableHead>
         <TableHead className="w-1/12"></TableHead>

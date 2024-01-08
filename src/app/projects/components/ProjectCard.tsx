@@ -32,7 +32,9 @@ const ProjectCard = (props: ProjectCardProps) => {
           {name}
         </Link>
       </TableCell>
-      <TableCell className="py-7 text-sm 600 w-4/12">{lastViewed}</TableCell>
+      <TableCell className="py-7 text-sm 600 w-7/12 hidden sm:block">
+        {lastViewed}
+      </TableCell>
       <TableCell className="py-7 w-1/12">
         <OptionsMenu boardName={name} favorite={favorite} id={id} />
       </TableCell>
