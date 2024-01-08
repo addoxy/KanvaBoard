@@ -33,7 +33,7 @@ export default function ProjectsPage() {
           <Title text="Projects" variant="xl" />
         </div>
         <Spacer variant="sm" />
-        <div className="flex gap-x-2 items-center">
+        <div className="flex sm:gap-x-2 sm:items-center flex-col gap-y-2 sm:flex-row sm:gap-y-0 gap-x-0">
           <SearchBar isEnabled={status === "success"} setQuery={setQuery} />
           <CreateBoard isEnabled={status === "success"} />
         </div>
