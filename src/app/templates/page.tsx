@@ -17,9 +17,9 @@ export default function page() {
         </div>
         <Spacer variant="lg" />
         <Template {...todosTemplate} />
-        <Spacer variant="md" />
+        <Spacer variant="xl" />
         <Template {...weeklyPlannerTemplate} />
-        <Spacer variant="md" />
+        <Spacer variant="lg" />
       </div>
     </PageWrapper>
   );

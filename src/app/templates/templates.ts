@@ -2,7 +2,7 @@ export const todosTemplate: TemplateProps = {
   type: "todos",
   title: "To Dos",
   description:
-    "Efficiently manage your tasks with the To Dos Template. Customize columns, and effortlessly move tasks through different stages with a simple drag-and-drop interface. Stay organized and boost productivity with this intuitive task management tool.",
+    "Efficiently manage your tasks with the To Dos Template. Customize columns, and effortlessly move tasks through different stages with a simple drag-and-drop interface.",
   columns: [
     {
       title: "Todo",
