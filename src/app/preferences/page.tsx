@@ -11,7 +11,7 @@ import ThemeSection from "./components/ThemeSection";
 export default function page() {
   return (
     <PageWrapper>
-      <div className="flex flex-col px-48">
+      <div className="flex flex-col mx-auto xl:ml-48 sm:max-w-120 md:max-w-160">
         <div className="flex items-center">
           <SidebarToggle className="mr-3 outline-none" />
           <Title text="Preferences" variant="xl" />

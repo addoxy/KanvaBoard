@@ -9,6 +9,7 @@ interface InputProps {
   setValue: (value: string) => void;
   handleKeyDown?: KeyboardEventHandler;
   variant: "sm" | "md" | "lg" | "xl" | "full";
+  className?: string;
 }
 
 const Input = (props: InputProps) => {
@@ -20,6 +21,7 @@ const Input = (props: InputProps) => {
     setValue,
     handleKeyDown,
     variant,
+    className,
   } = props;
 
   return (
@@ -32,7 +34,8 @@ const Input = (props: InputProps) => {
         "text-sm py-2 px-3 text-zinc-300 border-zinc-700/30 border bg-zinc-800/40 rounded-md focus:outline-zinc-700 focus:outline-none placeholder:text-zinc-600",
         variant === "full" && "w-full",
         variant === "lg" && "w-100",
-        variant === "xl" && "w-120"
+        variant === "xl" && "w-120",
+        className
       )}
       defaultValue={defaultValue}
       value={value}

@@ -48,6 +48,7 @@ const GeneralSection = () => {
               variant="lg"
               defaultValue={workspaceName}
               setValue={setNewName}
+              className="w-full md:w-100"
             />
             <Spacer variant="xs" />
           </>
