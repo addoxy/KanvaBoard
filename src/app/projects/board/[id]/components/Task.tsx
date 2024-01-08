@@ -94,7 +94,6 @@ const Task = (props: Task) => {
           {...attributes}
           {...listeners}
           asChild
-          className="touch-none"
         >
           <p
             className={cn(

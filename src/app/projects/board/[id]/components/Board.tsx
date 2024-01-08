@@ -26,6 +26,7 @@ import {
   DragOverlay,
   DragStartEvent,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -90,6 +91,12 @@ const Board = (props: Board) => {
     useSensor(PointerSensor, {
       activationConstraint: {
         distance: 3,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 2000,
+        distance: 0,
       },
     })
   );
@@ -289,6 +296,10 @@ const Board = (props: Board) => {
         sensors={sensors}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
+        onDragCancel={() => {
+          setActiveColumn(null);
+          setActiveTask(null);
+        }}
       >
         <div className="flex gap-x-6 -mr-12 -ml-12 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round overflow-x-auto h-full">
           <SortableContext items={columns.map((column) => column.id)}>

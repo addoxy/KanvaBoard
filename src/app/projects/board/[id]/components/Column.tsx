@@ -118,7 +118,7 @@ const Column = (props: Column) => {
           <button
             {...attributes}
             {...listeners}
-            className="hover:bg-zinc-700/50 rounded-md mr-2 p-2 transition-all delay-100 duration-200 ease-in-out touch-none"
+            className="hover:bg-zinc-700/50 rounded-md mr-2 p-2 transition-all delay-100 duration-200 ease-in-out"
           >
             <DragIcon className="w-2 h-2 text-zinc-300" />
           </button>
