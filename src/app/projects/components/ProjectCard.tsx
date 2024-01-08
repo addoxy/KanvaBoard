@@ -32,7 +32,7 @@ const ProjectCard = (props: ProjectCardProps) => {
           {name}
         </Link>
       </TableCell>
-      <TableCell className="text-sm w-6/12 lg:w-5/12 font-medium py-7 hidden sm:block">
+      <TableCell className="text-sm w-7/12 lg:w-5/12 font-medium py-7 hidden sm:block">
         {lastViewed}
       </TableCell>
       <TableCell className="py-7 w-1/12">
