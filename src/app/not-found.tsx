@@ -11,7 +11,7 @@ export default async function page() {
   const link = session ? "/projects" : "/";
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen w-screen">
+    <div className="flex flex-col items-center justify-center h-screen w-screen bg-zinc-900">
       <Image src={logo} alt="logo" className="mb-20" />
       <Title text="Page not found" variant="xl" className="mb-6" />
       <Link href={link}>
