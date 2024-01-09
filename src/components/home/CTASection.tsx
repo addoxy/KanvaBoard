@@ -16,7 +16,7 @@ const CTASection = () => {
         </span>{" "}
         today
       </h3>
-      <p className="text-zinc-400 leading-6 w-170 text-center mb-10">
+      <p className="text-zinc-400 leading-6 text-center mb-10">
         and experience the minimalist approach to project management.
       </p>
       <Link href="/sign-in">

@@ -11,7 +11,7 @@ const FeatureCard = (props: FeatureCardProps) => {
   const { FeatureIcon, variant, title, content } = props;
   return (
     <div className="hover:scale-105 transition-all duration-200">
-      <div className="flex flex-col bg-zinc-900 border border-zinc-800 p-10 rounded-lg card relative group h-70">
+      <div className="flex flex-col bg-zinc-900 border border-zinc-800 p-10 rounded-lg card relative group h-70 w-100">
         <div className="group-hover:absolute -z-10 rounded-lg -inset-0.5 rotate-card"></div>
         <div
           className={cn(

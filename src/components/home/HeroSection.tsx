@@ -8,11 +8,11 @@ import { ArrowIcon } from "../Icons";
 import Spacer from "../Spacer";
 
 const HeroSection = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   return (
     <div className="flex flex-col items-center">
-      <h1 className="font-medium text-6xl text-zinc-200 text-center w-200">
+      <h1 className="font-medium text-6xl text-zinc-200 text-center lg:w-200 w-full">
         The{" "}
         <span className="bg-gradient-to-r from-purple-700 to-rose-700 inline-block text-transparent bg-clip-text">
           Minimal
@@ -20,7 +20,7 @@ const HeroSection = () => {
         Approach to Project Management
       </h1>
       <Spacer variant="sm" />
-      <p className="text-zinc-400 leading-6 w-170 text-center">
+      <p className="text-zinc-400 leading-6 lg:w-170 w-full text-center">
         Experience the power of minimalism in project management with our
         streamlined approach, ensuring efficiency and optimal results every step
         of the way.

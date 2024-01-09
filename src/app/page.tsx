@@ -8,7 +8,7 @@ import Navbar from "@/components/home/Navbar";
 
 export default async function Home() {
   return (
-    <div className="px-20 pt-6 flex flex-col">
+    <div className="md:px-20 px-4 pt-6 flex flex-col">
       <Navbar />
       <Spacer variant="xs" />
       <Divider className="bg-zinc-900" />
