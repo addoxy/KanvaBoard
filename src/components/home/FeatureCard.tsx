@@ -15,7 +15,7 @@ const FeatureCard = (props: FeatureCardProps) => {
         <div className="group-hover:absolute -z-10 rounded-lg -inset-0.5 rotate-card"></div>
         <div
           className={cn(
-            "relative w-12 h-12 bg-zinc-700/50 rounded-lg flex items-center justify-center mb-6",
+            "relative p-3 w-fit bg-zinc-700/50 rounded-lg flex items-center justify-center mb-6",
             variant === "feature" && "bg-zinc-700/50",
             variant === "subtle" && "bg-purple-300"
           )}
