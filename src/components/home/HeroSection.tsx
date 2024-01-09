@@ -43,7 +43,6 @@ const HeroSection = () => {
         alt="hero"
         className="rounded-lg border border-zinc-800 shadow-lg shadow-purple-900 w-11/12"
       />
-      <Spacer variant="xl" />
     </div>
   );
 };
