@@ -233,6 +233,7 @@ export const ArrowIcon = (props: IconProps) => {
       className={cn("fill-current", className)}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
+      preserveAspectRatio="none"
     >
       <path
         fill="none"
