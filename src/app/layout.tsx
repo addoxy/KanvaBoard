@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "bg-zinc-900",
+          "bg-zinc-950",
           inter.className,
           process.env.NODE_ENV === "development" && "debug-screens"
         )}
