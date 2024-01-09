@@ -19,7 +19,7 @@ export default function page() {
         <Spacer variant="lg" />
         <GeneralSection />
         <Spacer variant="lg" />
-        <Divider />
+        <Divider className="bg-zinc-800/70" />
         <Spacer variant="lg" />
         <ThemeSection />
         <Spacer variant="lg" />

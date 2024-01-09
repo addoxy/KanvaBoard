@@ -224,3 +224,24 @@ export const SidebarIcon = (props: IconProps) => {
     </svg>
   );
 };
+
+export const ArrowIcon = (props: IconProps) => {
+  const { className } = props;
+
+  return (
+    <svg
+      className={cn("fill-current", className)}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.5"
+        d="m17 14l-5-5l-5 5"
+      />
+    </svg>
+  );
+};

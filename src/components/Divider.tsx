@@ -1,5 +1,13 @@
-const Divider = () => {
-  return <div className="h-px w-full bg-zinc-800/70" />;
+import { cn } from "@/utils/utils";
+
+interface DividerProps {
+  className?: string;
+}
+
+const Divider = (props: DividerProps) => {
+  const { className } = props;
+
+  return <div className={cn("h-px w-full", className)} />;
 };
 
 export default Divider;
