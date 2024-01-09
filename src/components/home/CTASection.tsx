@@ -9,7 +9,7 @@ const CTASection = () => {
 
   return (
     <>
-      <h3 className="text-zinc-300 text-3xl font-medium mb-3">
+      <h3 className="text-zinc-300 text-2xl sm:text-3xl font-medium mb-3">
         Get{" "}
         <span className="bg-gradient-to-r from-purple-700 to-rose-700 inline-block text-transparent bg-clip-text">
           KanvaBoard

@@ -14,7 +14,7 @@ const FeatureSection = () => {
     <>
       <Spacer variant="xl" />
       <Spacer variant="xl" />
-      <h2 className="font-medium text-3xl text-zinc-200 text-center">
+      <h2 className="font-medium text-2xl sm:text-3xl text-zinc-200 text-center">
         <span className="bg-gradient-to-r from-purple-700 to-rose-700 inline-block text-transparent bg-clip-text">
           Features
         </span>{" "}
@@ -53,7 +53,7 @@ const FeatureSection = () => {
       </div>
       <Spacer variant="xl" />
       <Spacer variant="xl" />
-      <h2 className="font-medium text-3xl text-zinc-200 text-center">
+      <h2 className="font-medium text-2xl sm:text-3xl text-zinc-200 text-center">
         <span>Subtle Features,</span>{" "}
         <span className="bg-gradient-to-r from-purple-700 to-rose-700 inline-block text-transparent bg-clip-text">
           Meaningful

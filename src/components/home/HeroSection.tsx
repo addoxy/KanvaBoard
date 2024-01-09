@@ -12,7 +12,7 @@ const HeroSection = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <h1 className="font-medium text-6xl text-zinc-200 text-center lg:w-200 w-full">
+      <h1 className="font-medium sm:text-4xl md:text-6xl text-zinc-200 text-center lg:w-200 w-full text-3xl">
         The{" "}
         <span className="bg-gradient-to-r from-purple-700 to-rose-700 inline-block text-transparent bg-clip-text">
           Minimal
@@ -41,7 +41,7 @@ const HeroSection = () => {
       <Image
         src={hero}
         alt="hero"
-        className="rounded-lg border border-zinc-800 shadow-lg shadow-purple-900 w-11/12"
+        className="rounded-lg border border-zinc-800 shadow-lg shadow-purple-900 sm:w-11/12 w-full"
       />
     </div>
   );
