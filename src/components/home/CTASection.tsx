@@ -21,7 +21,7 @@ const CTASection = () => {
       </p>
       <Link href="/sign-in">
         <button className="bg-violet-700 text-zinc-300 shrink-0 font-medium transition-all delay-100 duration-200 ease-in-out hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-50 w-44 h-11 rounded-lg">
-          {session ? "App" : "Sign In"}
+          {session ? "App" : "Get started"}
         </button>
       </Link>
 
