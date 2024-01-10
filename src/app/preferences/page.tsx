@@ -28,8 +28,8 @@ export default function page() {
           <Divider className="bg-zinc-800/70" />
           <Spacer variant="lg" />
           <SidebarSection />
-          <Spacer variant="lg" />
         </div>
+        <Spacer variant="xl" />
       </div>
     </PageWrapper>
   );
