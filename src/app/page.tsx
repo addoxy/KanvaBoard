@@ -18,6 +18,8 @@ export default async function Home() {
         <FeatureSection />
         <CTASection />
       </div>
+      <Spacer variant="xl" />
+      <Spacer variant="xl" />
       <Divider className="bg-zinc-900" />
       <Spacer variant="xs" />
       <Footer />

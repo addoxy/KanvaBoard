@@ -2,13 +2,12 @@
 
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import Spacer from "../Spacer";
 
 const CTASection = () => {
   const { data: session } = useSession();
 
   return (
-    <>
+    <div className="grid place-items-center bg-zinc-925 border border-zinc-800 rounded-lg p-20">
       <h3 className="text-zinc-300 text-2xl sm:text-3xl font-medium mb-3">
         Get{" "}
         <span className="bg-gradient-to-r from-purple-700 to-rose-700 inline-block text-transparent bg-clip-text">
@@ -24,10 +23,7 @@ const CTASection = () => {
           {session ? "App" : "Get started"}
         </button>
       </Link>
-
-      <Spacer variant="xl" />
-      <Spacer variant="xl" />
-    </>
+    </div>
   );
 };
 
