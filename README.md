@@ -1,6 +1,9 @@
 ## KanvaBoard
 A minimal project management app that lets you keep track of and sort your tasks using a drag and drop interface.
 
+
+
+
 ## Features
 - Collection of templates: Simplify planning by leveraging a variety of ready-made templates tailored to different project needs
 - Robust search: Quickly find the project you are looking for using our robust search feature and save the time spent scrolling through lists
