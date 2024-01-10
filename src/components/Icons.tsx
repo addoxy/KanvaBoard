@@ -318,3 +318,61 @@ export const FavoriteIcon = (props: IconProps) => {
     </svg>
   );
 };
+
+export const Logo = (props: IconProps) => {
+  const { className } = props;
+
+  return (
+    <svg
+      className={cn("fill-current group", className)}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="0.6"
+        y="0.6"
+        width="22.8"
+        height="22.8"
+        rx="3"
+        strokeWidth="1.2"
+        className="stroke-violet-600 group-hover:stroke-purple-600 fill-none"
+      />
+      <rect
+        x="6"
+        y="6"
+        width="4"
+        height="12"
+        rx="1"
+        className="fill-violet-600 group-hover:fill-purple-600"
+      />
+      <rect
+        x="14"
+        y="6"
+        width="4"
+        height="12"
+        rx="1"
+        className="fill-violet-600 group-hover:fill-purple-600"
+      />
+    </svg>
+  );
+};
+
+export const NotFoundIcon = (props: IconProps) => {
+  const { className } = props;
+
+  return (
+    <svg
+      className={cn("fill-current group", className)}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 36 36"
+    >
+      <path
+        fill="currentColor"
+        d="M18 2a16 16 0 1 0 16 16A16 16 0 0 0 18 2m9 12.28a1.8 1.8 0 1 1-1.8-1.8a1.8 1.8 0 0 1 1.8 1.8m-15.55 1.8a1.8 1.8 0 1 1 1.8-1.8a1.8 1.8 0 0 1-1.84 1.8Zm14 7.53a1 1 0 0 1-1.6 1.2a7 7 0 0 0-11.31.13a1 1 0 1 1-1.63-1.16a9 9 0 0 1 14.54-.17"
+        className="clr-i-solid clr-i-solid-path-1"
+      />
+      <path fill="none" d="M0 0h36v36H0z" />
+    </svg>
+  );
+};
