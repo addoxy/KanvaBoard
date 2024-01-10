@@ -2,6 +2,11 @@ interface IconProps {
   className: string;
 }
 
+interface SidebarToggle {
+  toggle: boolean;
+  setToggle: (value: boolean) => void;
+}
+
 interface Task {
   id: string;
   content: string;
