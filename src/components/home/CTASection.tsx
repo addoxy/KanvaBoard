@@ -7,8 +7,8 @@ const CTASection = () => {
   const { data: session } = useSession();
 
   return (
-    <div className="grid place-items-center bg-zinc-925 border border-zinc-800 rounded-lg p-20">
-      <h3 className="text-zinc-300 text-2xl sm:text-3xl font-medium mb-3">
+    <div className="grid place-items-center bg-zinc-925 border border-zinc-800 rounded-lg sm:p-20 p-10">
+      <h3 className="text-zinc-300 text-center text-2xl sm:text-3xl font-medium mb-3">
         Get{" "}
         <span className="bg-gradient-to-r from-purple-700 to-rose-700 inline-block text-transparent bg-clip-text">
           KanvaBoard
