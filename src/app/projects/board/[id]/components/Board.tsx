@@ -248,14 +248,14 @@ const Board = (props: Board) => {
   return (
     <div className="h-full flex flex-col">
       <div className="flex justify-between gap-x-10 items-center">
-        <div className="flex items-center">
+        <div className="flex items-center w-full">
           <SidebarToggle className="mr-3 outline-none" />
           {!editMode && (
             <Title
               text={boardTitle}
               variant="xl"
               onClick={() => setEditMode(true)}
-              className="cursor-pointer"
+              className="cursor-pointer line-clamp-1"
             />
           )}
           {editMode && (
@@ -272,7 +272,7 @@ const Board = (props: Board) => {
                   inputRef.current && inputRef.current.blur();
                 }
               }}
-              className="h-8 w-full rounded-lg px-2 font-medium text-zinc-300 bg-zinc-800 text-2xl outline-none py-5 -my-3 truncate"
+              className="h-8 w-full rounded-lg px-2 font-medium text-zinc-300 bg-zinc-800 text-2xl outline-none py-5 -my-3"
             />
           )}
         </div>
