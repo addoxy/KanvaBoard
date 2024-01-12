@@ -325,34 +325,30 @@ export const Logo = (props: IconProps) => {
   return (
     <svg
       className={cn("fill-current group", className)}
-      viewBox="0 0 24 24"
+      viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <rect
-        x="0.6"
-        y="0.6"
-        width="22.8"
-        height="22.8"
-        rx="3"
-        strokeWidth="1.2"
-        className="stroke-violet-600 group-hover:stroke-purple-600 fill-none"
+        width="7.5"
+        height="20"
+        rx="1.5"
+        className="fill-violet-800 group-hover:fill-purple-800"
       />
       <rect
-        x="6"
-        y="6"
-        width="4"
-        height="12"
-        rx="1"
-        className="fill-violet-600 group-hover:fill-purple-600"
+        x="12.5"
+        y="10"
+        width="7.5"
+        height="10"
+        rx="1.5"
+        className="fill-violet-800 group-hover:fill-purple-800"
       />
       <rect
-        x="14"
-        y="6"
-        width="4"
-        height="12"
-        rx="1"
-        className="fill-violet-600 group-hover:fill-purple-600"
+        x="12.5"
+        width="7.5"
+        height="6.25"
+        rx="1.5"
+        className="fill-violet-800 group-hover:fill-purple-800"
       />
     </svg>
   );

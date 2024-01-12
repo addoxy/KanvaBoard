@@ -11,7 +11,7 @@ const Navbar = () => {
   return (
     <div className="w-full flex justify-between items-center">
       <Link href="/" className="flex items-center">
-        <Logo className="w-6 h-6 mr-3" />
+        <Logo className="w-5 h-5 mr-3" />
         <span className="text-zinc-200 font-medium">KanvaBoard</span>
       </Link>
       <Link href="/sign-in">
