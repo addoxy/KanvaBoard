@@ -41,7 +41,7 @@ const HeroSection = () => {
       <Image
         src={hero}
         alt="hero"
-        className="rounded-lg border border-zinc-800 shadow-lg shadow-purple-900 sm:w-11/12 w-full"
+        className="rounded-lg border border-zinc-800 shadow-lg shadow-purple-900 sm:w-11/12 w-full max-w-6xl"
       />
     </div>
   );
