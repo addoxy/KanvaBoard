@@ -1,3 +1,6 @@
+<div align="center">![logo](https://github.com/addoxy/KanvaBoard/assets/92105084/d8fc4df2-d56f-44c4-8e00-d8e1aebf6096)</div>
+
+
 ## KanvaBoard
 A minimal project management app that lets you keep track of and sort your tasks using a drag and drop interface.
 
