@@ -1,4 +1,4 @@
-![logo](https://github.com/addoxy/KanvaBoard/public/logo.png?raw=true)
+![logo](public/logo.png)
 
 
 ## KanvaBoard
