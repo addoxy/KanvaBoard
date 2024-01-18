@@ -1,4 +1,4 @@
-<div align="center"><img src="![logo](public/logo.png)" alt="logo"></div>
+<div align="center"><img src="public/logo.png" alt="logo"></div>
 
 
 ## KanvaBoard
