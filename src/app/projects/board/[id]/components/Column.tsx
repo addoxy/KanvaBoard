@@ -6,7 +6,6 @@ import {
   useUpdateColumnTitleMutation,
 } from "@/lib/mutations";
 import { notify } from "@/utils/notify";
-import { cn } from "@/utils/utils";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useRef, useState } from "react";
@@ -38,6 +37,8 @@ const Column = (props: Column) => {
     transition,
     isDragging,
     isOver,
+    active,
+    over,
   } = useSortable({
     id: id,
     data: {
@@ -130,24 +131,23 @@ const Column = (props: Column) => {
           />
         </div>
       </div>
-      <div
-        className={cn(
-          "flex w-80 flex-col gap-y-2 rounded-lg border border-zinc-700/20 bg-zinc-800/40 p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round",
-          isOver && "opacity-50"
-        )}
-      >
+      <div className="flex w-80 flex-col gap-y-2 rounded-lg border border-zinc-700/20 bg-zinc-800/40 p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round">
         <SortableContext items={tasks.map((task) => task.id)}>
-          {tasks.map((task) => {
-            return (
-              <Task
-                {...task}
-                key={task.id}
-                columnTitle={title}
-                refreshBoard={refreshBoard}
-              />
-            );
-          })}
+          {tasks.map((task) => (
+            <Task
+              {...task}
+              key={task.id}
+              columnTitle={title}
+              refreshBoard={refreshBoard}
+              columnId={id}
+            />
+          ))}
         </SortableContext>
+        {isOver &&
+          active?.data.current?.type !== "Column" &&
+          active?.data.current?.sortableProps.columnId !== over?.id && (
+            <div className="rounded-lg bg-zinc-750 opacity-50 h-11" />
+          )}
         <AddTaskDialog
           boardId={boardId}
           columnId={id}

@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import DeleteTaskDialog from "./dialogs/DeleteTaskDialog";
 
 const Task = (props: Task) => {
-  const { id, columnTitle, refreshBoard } = props;
+  const { id, columnTitle, refreshBoard, columnId } = props;
 
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState(props.content);
@@ -26,6 +26,7 @@ const Task = (props: Task) => {
     ...props,
     id: id,
     content: content,
+    columnId: columnId,
   };
 
   const {
@@ -36,6 +37,8 @@ const Task = (props: Task) => {
     transition,
     isDragging,
     isOver,
+    active,
+    over,
   } = useSortable({
     id: id,
     data: {
@@ -78,6 +81,13 @@ const Task = (props: Task) => {
 
   return (
     <>
+      {isOver &&
+        active?.data.current?.type === "Task" &&
+        over?.data.current?.type === "Task" &&
+        active?.data.current?.sortableProps.columnId !==
+          over?.data.current?.sortableProps.columnId && (
+          <div className="rounded-lg bg-zinc-750 opacity-50 h-11" />
+        )}
       <Dialog.Root
         open={isOpen}
         onOpenChange={(value) => {
@@ -96,15 +106,20 @@ const Task = (props: Task) => {
           asChild
           className="touch-manipulation"
         >
-          <p
-            className={cn(
-              "cursor-pointer rounded-lg border border-zinc-600/20 bg-zinc-750 p-3 text-sm text-zinc-300",
-              isDragging && "opacity-50",
-              isOver && "opacity-50"
-            )}
-          >
-            {props.content}
-          </p>
+          <div>
+            <p
+              className={cn(
+                "cursor-pointer rounded-lg border border-zinc-600/20 bg-zinc-750 p-3 text-sm text-zinc-300",
+                active?.id === id && "opacity-50 border-none",
+                active?.data.current?.sortableProps.columnId ===
+                  over?.data.current?.sortableProps.columnId &&
+                  isDragging &&
+                  "text-transparent"
+              )}
+            >
+              {props.content}
+            </p>
+          </div>
         </Dialog.Trigger>
         <DialogBox variant="xl">
           <div className="flex justify-between items-center mb-6">
