@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import Providers from "@/utils/providers";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { cn } from "../utils/utils";
@@ -13,7 +13,6 @@ export const metadata: Metadata = {
     "A minimal project management app that lets you keep track of and sort your tasks using a drag and drop interface.",
   authors: [{ name: "Addoxy" }],
   category: "Project management",
-  colorScheme: "dark",
   keywords: [
     "project",
     "project-management",
@@ -38,6 +37,10 @@ export const metadata: Metadata = {
     locale: "en-US",
     type: "website",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "dark",
 };
 
 export default function RootLayout({
