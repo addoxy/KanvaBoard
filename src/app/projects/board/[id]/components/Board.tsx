@@ -303,7 +303,7 @@ const Board = (props: Board) => {
       >
         <div className="flex gap-x-6 sm:-mr-12 sm:-ml-12 -ml-4 -mr-4 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round overflow-x-auto h-full">
           <SortableContext items={columns.map((column) => column.id)}>
-            {columns.map((column, i) => (
+            {columns.map((column) => (
               <div
                 key={column.id}
                 className="sm:first-of-type:pl-12 sm:last-of-type:pr-12 first-of-type:pl-4 last-of-type:pr-4 h-full"

@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import DeleteTaskDialog from "./dialogs/DeleteTaskDialog";
 
 const Task = (props: Task) => {
-  const { id, columnTitle, refreshBoard, columnId, className } = props;
+  const { id, columnTitle, refreshBoard, columnId, className, index } = props;
 
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState(props.content);
@@ -27,6 +27,7 @@ const Task = (props: Task) => {
     id: id,
     content: content,
     columnId: columnId,
+    index: index,
   };
 
   const {
@@ -113,7 +114,16 @@ const Task = (props: Task) => {
                   active?.id !== over?.id &&
                   active?.data.current?.sortableProps.columnId ===
                     over?.data.current?.sortableProps.columnId &&
+                  over?.data.current?.sortableProps.index >
+                    active?.data.current?.sortableProps.index &&
                   "border-b-violet-700",
+                isOver &&
+                  active?.id !== over?.id &&
+                  active?.data.current?.sortableProps.columnId ===
+                    over?.data.current?.sortableProps.columnId &&
+                  over?.data.current?.sortableProps.index <
+                    active?.data.current?.sortableProps.index &&
+                  "border-t-violet-700",
                 className
               )}
             >

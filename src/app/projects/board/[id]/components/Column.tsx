@@ -141,6 +141,7 @@ const Column = (props: Column) => {
           <Task
             {...task}
             key={task.id}
+            index={i}
             columnTitle={title}
             refreshBoard={refreshBoard}
             columnId={id}
