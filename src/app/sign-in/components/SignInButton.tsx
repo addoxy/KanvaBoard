@@ -1,6 +1,7 @@
 "use client";
 
 import { DiscordIcon, GithubIcon, GoogleIcon } from "@/components/Icons";
+import { cn } from "@/utils/utils";
 import { signIn } from "next-auth/react";
 
 interface SignInButtonProps {
@@ -12,13 +13,17 @@ const SignInButton = (props: SignInButtonProps) => {
   const { name, brand } = props;
   return (
     <button
-      className="lg:w-104 sm:w-84 w-full bg-zinc-800/40 border border-zinc-700 text-zinc-300 flex items-center justify-center py-6 rounded-xl gap-x-7 hover:bg-zinc-800/90"
+      className={cn(
+        "w-80 py-4 flex items-center justify-center rounded-md text-zinc-300 gap-x-3 transition-all delay-100 duration-200 ease-in-out shadow-md",
+        brand === "google" && "bg-violet-700/90 hover:bg-purple-700",
+        brand !== "google" && "bg-zinc-800 hover:bg-zinc-700"
+      )}
       onClick={() => signIn(brand)}
     >
-      {brand === "google" && <GoogleIcon className="h-8 w-8 text-zinc-300" />}
-      {brand === "github" && <GithubIcon className="h-8 w-8 text-zinc-300" />}
-      {brand === "discord" && <DiscordIcon className="h-8 w-8 text-zinc-300" />}
-      {name}
+      {brand === "google" && <GoogleIcon className="h-4 w-4" />}
+      {brand === "github" && <GithubIcon className="h-4 w-4" />}
+      {brand === "discord" && <DiscordIcon className="h-4 w-4" />}
+      Continue with {name}
     </button>
   );
 };
