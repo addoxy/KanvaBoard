@@ -9,6 +9,7 @@ import { notify } from "@/utils/notify";
 import { cn } from "@/utils/utils";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useRef, useState } from "react";
 import Task from "./Task";
 import AddTaskDialog from "./dialogs/AddTaskDialog";
@@ -22,6 +23,9 @@ const Column = (props: Column) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const [animationParent] = useAutoAnimate({
+    duration: 200,
+  });
 
   const sortableProps = {
     ...props,
@@ -39,6 +43,7 @@ const Column = (props: Column) => {
     isDragging,
     isOver,
     active,
+    over,
   } = useSortable({
     id: id,
     data: {
@@ -132,8 +137,9 @@ const Column = (props: Column) => {
         </div>
       </div>
       <div
+        ref={animationParent}
         className={cn(
-          "flex w-80 flex-col gap-y-2 rounded-lg border border-zinc-700/20 bg-zinc-800/40 p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round",
+          "grid w-80 grid-cols-1 gap-y-2 rounded-lg border border-zinc-700/20 bg-zinc-800/40 p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-zinc-850 hover:scrollbar-thumb-zinc-700 scrollbar-round",
           isOver &&
             active?.data.current?.type === "Task" &&
             tasks.length == 0 &&

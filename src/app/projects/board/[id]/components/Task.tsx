@@ -100,36 +100,34 @@ const Task = (props: Task) => {
           asChild
           className="touch-manipulation"
         >
-          <div>
-            <p
-              className={cn(
-                "cursor-pointer rounded-lg border border-zinc-600/20 bg-zinc-750 p-3 text-sm text-zinc-300",
-                isDragging && "opacity-50",
-                isOver &&
-                  active?.id !== over?.id &&
-                  active?.data.current?.sortableProps.columnId !==
-                    over?.data.current?.sortableProps.columnId &&
-                  "border-t-violet-700",
-                isOver &&
-                  active?.id !== over?.id &&
-                  active?.data.current?.sortableProps.columnId ===
-                    over?.data.current?.sortableProps.columnId &&
-                  over?.data.current?.sortableProps.index >
-                    active?.data.current?.sortableProps.index &&
-                  "border-b-violet-700",
-                isOver &&
-                  active?.id !== over?.id &&
-                  active?.data.current?.sortableProps.columnId ===
-                    over?.data.current?.sortableProps.columnId &&
-                  over?.data.current?.sortableProps.index <
-                    active?.data.current?.sortableProps.index &&
-                  "border-t-violet-700",
-                className
-              )}
-            >
-              {props.content}
-            </p>
-          </div>
+          <p
+            className={cn(
+              "cursor-pointer rounded-lg border border-zinc-600/20 bg-zinc-750 p-3 text-sm text-zinc-300 w-72",
+              isDragging && "opacity-50",
+              isOver &&
+                active?.id !== over?.id &&
+                active?.data.current?.sortableProps.columnId !==
+                  over?.data.current?.sortableProps.columnId &&
+                "border-t-violet-700",
+              isOver &&
+                active?.id !== over?.id &&
+                active?.data.current?.sortableProps.columnId ===
+                  over?.data.current?.sortableProps.columnId &&
+                over?.data.current?.sortableProps.index >
+                  active?.data.current?.sortableProps.index &&
+                "border-b-violet-700",
+              isOver &&
+                active?.id !== over?.id &&
+                active?.data.current?.sortableProps.columnId ===
+                  over?.data.current?.sortableProps.columnId &&
+                over?.data.current?.sortableProps.index <
+                  active?.data.current?.sortableProps.index &&
+                "border-t-violet-700",
+              className
+            )}
+          >
+            {props.content}
+          </p>
         </Dialog.Trigger>
         <DialogBox variant="xl">
           <div className="flex justify-between items-center mb-6">
