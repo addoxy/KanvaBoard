@@ -14,6 +14,7 @@ interface Task {
   columnId: string;
   refreshBoard: () => void;
   columnTitle?: string;
+  className?: string;
 }
 
 interface Column {

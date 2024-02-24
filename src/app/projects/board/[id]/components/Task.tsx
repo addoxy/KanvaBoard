@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import DeleteTaskDialog from "./dialogs/DeleteTaskDialog";
 
 const Task = (props: Task) => {
-  const { id, columnTitle, refreshBoard, columnId } = props;
+  const { id, columnTitle, refreshBoard, columnId, className } = props;
 
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState(props.content);
@@ -35,8 +35,8 @@ const Task = (props: Task) => {
     listeners,
     transform,
     transition,
-    isDragging,
     isOver,
+    isDragging,
     active,
     over,
   } = useSortable({
@@ -81,13 +81,6 @@ const Task = (props: Task) => {
 
   return (
     <>
-      {isOver &&
-        active?.data.current?.type === "Task" &&
-        over?.data.current?.type === "Task" &&
-        active?.data.current?.sortableProps.columnId !==
-          over?.data.current?.sortableProps.columnId && (
-          <div className="rounded-lg bg-zinc-750 opacity-50 h-11" />
-        )}
       <Dialog.Root
         open={isOpen}
         onOpenChange={(value) => {
@@ -110,11 +103,18 @@ const Task = (props: Task) => {
             <p
               className={cn(
                 "cursor-pointer rounded-lg border border-zinc-600/20 bg-zinc-750 p-3 text-sm text-zinc-300",
-                active?.id === id && "opacity-50 border-none",
-                active?.data.current?.sortableProps.columnId ===
-                  over?.data.current?.sortableProps.columnId &&
-                  isDragging &&
-                  "text-transparent"
+                isDragging && "opacity-50",
+                isOver &&
+                  active?.id !== over?.id &&
+                  active?.data.current?.sortableProps.columnId !==
+                    over?.data.current?.sortableProps.columnId &&
+                  "border-t-violet-700",
+                isOver &&
+                  active?.id !== over?.id &&
+                  active?.data.current?.sortableProps.columnId ===
+                    over?.data.current?.sortableProps.columnId &&
+                  "border-b-violet-700",
+                className
               )}
             >
               {props.content}
