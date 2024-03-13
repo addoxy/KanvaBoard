@@ -16,3 +16,11 @@ A minimal project management app that lets you keep track of and sort your tasks
 - Favorites section: Add upto five projects to favorites and never lose sight of your most important projects
 - Secure authentication using OAuth (Google, Github & Discord)
 - Full mobile and desktop support
+
+## Tech Stack
+- Next 14
+- Tailwind CSS
+- Prisma
+- NextAuth
+- DND Kit
+- RadixUI and more
