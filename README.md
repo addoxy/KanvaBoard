@@ -23,4 +23,5 @@ A minimal project management app that lets you keep track of and sort your tasks
 - Prisma
 - NextAuth
 - DND Kit
+- React Query
 - RadixUI and more
