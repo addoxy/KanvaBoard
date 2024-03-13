@@ -18,7 +18,7 @@ A minimal project management app that lets you keep track of and sort your tasks
 - Full mobile and desktop support
 
 ## Tech Stack
-- Next 14
+- Next.js 14
 - Tailwind CSS
 - Prisma
 - NextAuth
