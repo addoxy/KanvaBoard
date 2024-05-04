@@ -32,6 +32,7 @@ pnpm dev
 ```
 
 # Environment Variables
+```
 NEXTAUTH_URL=http://localhost:3000/
 NEXTAUTH_SECRET=
 
@@ -45,3 +46,4 @@ GITHUB_CLIENT_SECRET=
 
 DISCORD_CLIENT_ID=
 DISCORD_CLIENT_SECRET=
+```
