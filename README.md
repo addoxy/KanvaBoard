@@ -1,6 +1,6 @@
 <div align="center"><img src="public/logo.png" alt="logo"></div>
 
-## KanvaBoard
+# KanvaBoard
 A minimal project management app that lets you keep track of and sort your tasks using a drag and drop interface.
 
 ## Features
@@ -22,7 +22,7 @@ A minimal project management app that lets you keep track of and sort your tasks
 - React Query
 - RadixUI and more
 
-# To Run It Locally
+## To Run It Locally
 ```
 pnpm install
 ```
@@ -31,7 +31,7 @@ then
 pnpm dev
 ```
 
-# Environment Variables
+## Environment Variables
 ```
 NEXTAUTH_URL=http://localhost:3000/
 NEXTAUTH_SECRET=
