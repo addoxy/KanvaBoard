@@ -1,11 +1,7 @@
 <div align="center"><img src="public/logo.png" alt="logo"></div>
 
-
 ## KanvaBoard
 A minimal project management app that lets you keep track of and sort your tasks using a drag and drop interface.
-
-
-
 
 ## Features
 - Collection of templates: Simplify planning by leveraging a variety of ready-made templates tailored to different project needs
@@ -25,3 +21,27 @@ A minimal project management app that lets you keep track of and sort your tasks
 - DND Kit
 - React Query
 - RadixUI and more
+
+# To Run It Locally
+```
+pnpm install
+```
+then
+```
+pnpm dev
+```
+
+# Environment Variables
+NEXTAUTH_URL=http://localhost:3000/
+NEXTAUTH_SECRET=
+
+DATABASE_URL=
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+
+DISCORD_CLIENT_ID=
+DISCORD_CLIENT_SECRET=
