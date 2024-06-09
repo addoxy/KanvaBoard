@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,14 +10,31 @@ import {
 import { BoardData } from "@/utils/types";
 import { CircularProgress } from "@nextui-org/progress";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpRight, Edit, Ellipsis, Trash } from "lucide-react";
+import {
+  ArrowUpRight,
+  Edit,
+  Ellipsis,
+  MoreHorizontal,
+  Trash,
+  ArrowUpDown,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export const columns: ColumnDef<BoardData>[] = [
   {
     accessorKey: "title",
-    header: "Title",
+    header: ({ column }) => {
+      return (
+        <button
+          className="flex w-full items-center justify-start pl-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Title
+          <ArrowUpDown className="ml-2 size-3" />
+        </button>
+      );
+    },
     cell: ({ row }) => {
       const title = row.original.title;
       return (
@@ -31,7 +49,17 @@ export const columns: ColumnDef<BoardData>[] = [
   },
   {
     accessorKey: "lead",
-    header: "Lead",
+    header: ({ column }) => {
+      return (
+        <button
+          className="flex w-full items-center justify-start pl-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Lead
+          <ArrowUpDown className="ml-2 size-3" />
+        </button>
+      );
+    },
     cell: ({ row }) => {
       const src = row.original.leadImage;
       const lead = row.original.lead;
@@ -43,11 +71,47 @@ export const columns: ColumnDef<BoardData>[] = [
       );
     },
   },
-  { accessorKey: "startDate", header: "Start Date" },
-  { accessorKey: "targetDate", header: "Target Date" },
+  {
+    accessorKey: "startDate",
+    header: ({ column }) => {
+      return (
+        <button
+          className="flex w-full items-center justify-start pl-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Start Date
+          <ArrowUpDown className="ml-2 size-3" />
+        </button>
+      );
+    },
+  },
+  {
+    accessorKey: "targetDate",
+    header: ({ column }) => {
+      return (
+        <button
+          className="flex w-full items-center justify-start pl-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Target Date
+          <ArrowUpDown className="ml-2 size-3" />
+        </button>
+      );
+    },
+  },
   {
     accessorKey: "progress",
-    header: "Progress",
+    header: ({ column }) => {
+      return (
+        <button
+          className="flex w-full items-center justify-start pl-0"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Progress
+          <ArrowUpDown className="ml-2 size-3" />
+        </button>
+      );
+    },
     cell: ({ row }) => {
       const progress = row.original.progress;
 
@@ -72,10 +136,18 @@ export const columns: ColumnDef<BoardData>[] = [
     accessorKey: "actions",
     header: "Actions",
     cell: ({ row }) => {
+      const id = row.original.id;
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger className="border-none bg-inherit transition-all duration-300">
-            <Ellipsis className="size-4" />
+            <Button
+              variant="ghost"
+              className="h-8 w-8 p-0 hover:bg-inherit hover:text-inherit"
+            >
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem className="gap-2">
