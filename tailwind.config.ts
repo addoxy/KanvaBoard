@@ -26,7 +26,6 @@ const config = {
         border: {
           DEFAULT: "hsl(var(--border))",
           secondary: "hsl(var(--secondary-border))",
-          dropdown: "hsl(var(--dropdown-border))",
         },
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

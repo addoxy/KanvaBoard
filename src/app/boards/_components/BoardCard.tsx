@@ -7,7 +7,15 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/utils/utils";
-import { CircleCheck, CircleDashed, CircleDot, Ellipsis } from "lucide-react";
+import {
+  CircleCheck,
+  CircleDashed,
+  CircleDot,
+  Delete,
+  Edit,
+  Ellipsis,
+  Trash,
+} from "lucide-react";
 import { useState } from "react";
 
 type BoardCardProps = {
@@ -22,7 +30,7 @@ const BoardCard = (props: BoardCardProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div className="border-border-secondary group flex flex-col rounded-lg border bg-secondary px-6 pb-7 pt-5">
+    <div className="border-border-secondary group flex flex-col rounded-lg border bg-secondary px-6 pb-7 pt-5 hover:border-border">
       <div className="flex items-center justify-between">
         <h3>{title}</h3>
         <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
@@ -39,8 +47,13 @@ const BoardCard = (props: BoardCardProps) => {
             side="bottom"
             align="end"
           >
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem className="gap-2">
+              <Edit className="size-3" /> Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem className="gap-2 text-destructive focus:text-destructive">
+              <Trash className="size-3" />
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
