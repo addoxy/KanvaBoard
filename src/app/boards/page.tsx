@@ -22,7 +22,7 @@ const BoardsPage = () => {
 
   const data = [
     {
-      id: "1",
+      id: "awdsfasd",
       title: "Sample project",
       lead: "John Doe",
       leadImage: "https://randomuser.me/api/portraits",
@@ -284,6 +284,7 @@ const BoardsPage = () => {
           <DataTable columns={columns} data={data} />
         </div>
       )}
+      <div></div>
     </>
   );
 };
