@@ -41,11 +41,11 @@ const NAV_ITEMS = [
 const Sidebar = () => {
   return (
     <aside>
-      <div className="border-sidebar-border flex h-screen w-20 shrink-0 flex-col items-center overflow-hidden border-r py-10">
+      <div className="border-border-sidebar flex h-screen w-20 shrink-0 flex-col items-center overflow-hidden border-r py-10">
         <Link href="/" className="mb-6">
           <Image src="/logo.svg" width={32} height={32} alt="logo" />
         </Link>
-        <div className="bg-sidebar-border mb-7 h-px w-8 rounded-full" />
+        <div className="bg-border-sidebar mb-7 h-px w-8 rounded-full" />
         {NAV_ITEMS.map((navItem) => (
           <NavItem
             key={navItem.label}
