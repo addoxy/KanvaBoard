@@ -23,14 +23,16 @@ const config = {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       colors: {
-        border: "hsl(var(--border))",
+        border: {
+          DEFAULT: "hsl(var(--border))",
+          secondary: "hsl(var(--secondary-border))",
+          dropdown: "hsl(var(--dropdown-border))",
+          sidebar: "hsl(var(--sidebar-border))",
+        },
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        dropdown: "hsl(var(--dropdown))",
-        "dropdown-border": "hsl(var(--dropdown-border))",
-        "sidebar-border": "hsl(var(--sidebar-border))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

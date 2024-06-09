@@ -23,13 +23,15 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "dark relative min-h-screen bg-background font-sans antialiased",
+          "dark relative flex min-h-screen bg-background font-sans antialiased",
           fontSans.variable,
           process.env.NODE_ENV === "development" && "debug-screens",
         )}
       >
         <Sidebar />
-        {children}
+        <div className="h-screen w-full overflow-y-auto px-12 py-9">
+          {children}
+        </div>
       </body>
     </html>
   );
