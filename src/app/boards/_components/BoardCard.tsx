@@ -30,7 +30,7 @@ const BoardCard = (props: BoardCardProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div className="border-border-secondary group flex flex-col rounded-lg border bg-secondary px-6 pb-7 pt-5 hover:border-border">
+    <div className="border-border-secondary group flex flex-col rounded-lg border bg-secondary px-6 pb-7 pt-5">
       <div className="flex items-center justify-between">
         <h3>{title}</h3>
         <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
