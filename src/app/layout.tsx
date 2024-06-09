@@ -1,3 +1,4 @@
+import Sidebar from "@/components/Sidebar";
 import "@/styles/globals.css";
 import { cn } from "@/utils/utils";
 import type { Metadata } from "next";
@@ -22,11 +23,12 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "dark relative min-h-screen bg-background font-sans antialiased",
           fontSans.variable,
           process.env.NODE_ENV === "development" && "debug-screens",
         )}
       >
+        <Sidebar />
         {children}
       </body>
     </html>

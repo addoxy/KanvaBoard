@@ -28,6 +28,9 @@ const config = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        dropdown: "hsl(var(--dropdown))",
+        "dropdown-border": "hsl(var(--dropdown-border))",
+        "sidebar-border": "hsl(var(--sidebar-border))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
