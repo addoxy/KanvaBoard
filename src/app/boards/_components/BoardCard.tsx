@@ -6,8 +6,11 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/utils/utils";
+import { BoardData } from "@/utils/types";
+import { cn, formatDateRange } from "@/utils/utils";
+import { CircularProgress } from "@nextui-org/progress";
 import {
+  Calendar,
   CircleCheck,
   CircleDashed,
   CircleDot,
@@ -16,30 +19,18 @@ import {
   Ellipsis,
   Trash,
 } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 
-type BoardCardProps = {
-  title: string;
-  todo: number;
-  inProgress: number;
-  done: number;
-};
-
-const BoardCard = (props: BoardCardProps) => {
-  const { title, todo, inProgress, done } = props;
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const BoardCard = (props: BoardData) => {
+  const { id, title, lead, leadImage, startDate, targetDate, progress } = props;
 
   return (
     <div className="border-border-secondary group flex flex-col rounded-lg border bg-secondary px-6 pb-7 pt-5">
       <div className="flex items-center justify-between">
-        <h3>{title}</h3>
-        <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-          <DropdownMenuTrigger
-            className={cn(
-              "rounded-md border-none opacity-0 transition-all delay-100 duration-300 focus:opacity-100 group-hover:opacity-100",
-              isMenuOpen && "opacity-100",
-            )}
-          >
+        <h3 className="text-lg">{title}</h3>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="rounded-md border-none opacity-0 transition-all delay-100 duration-300 focus:opacity-100 group-hover:opacity-100 data-[state=open]:opacity-100">
             <Ellipsis className="size-4" />
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -57,20 +48,27 @@ const BoardCard = (props: BoardCardProps) => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="mt-5 flex flex-col gap-3">
-        <div className="flex items-center gap-2.5">
-          <CircleDashed className="size-4 text-primary/50" />
-          <span className="text-muted-foreground">Todo: {todo}</span>
+      <div className="mt-5 flex flex-col gap-4 text-sm text-foreground/85">
+        <div className="flex items-center gap-2">
+          <Image src={leadImage} width={20} height={20} alt={lead} />
+          {lead}
         </div>
-        <div className="flex items-center gap-2.5">
-          <CircleDot className="size-4 text-primary/60" />
-          <span className="text-muted-foreground">
-            In Progress: {inProgress}
-          </span>
+        <div className="flex items-center gap-2">
+          <Calendar className="size-5" />
+          {formatDateRange(startDate, targetDate)}
         </div>
-        <div className="flex items-center gap-2.5">
-          <CircleCheck className="size-4 text-primary" />
-          <span className="text-muted-foreground">Done: {done}</span>
+        <div className="flex items-center gap-2">
+          <CircularProgress
+            classNames={{
+              svg: "h-5 w-5",
+              indicator: "stroke-primary",
+              track: "stroke-primary/20",
+              value: "text-3xl font-semibold text-white",
+            }}
+            aria-label="Loading..."
+            value={progress}
+          />
+          {progress}%
         </div>
       </div>
     </div>

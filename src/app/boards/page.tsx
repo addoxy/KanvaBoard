@@ -14,191 +14,196 @@ import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import useStore from "@/lib/store/use-store";
 import { useView } from "@/lib/store/use-view";
+import { getRandomDate } from "@/utils/utils";
 import { format as formatDate } from "date-fns";
 import { AlignJustify, ChevronDown, LayoutGrid, Search } from "lucide-react";
 
 const BoardsPage = () => {
   const viewStore = useStore(useView, (state) => state);
 
+  const startDateRange = new Date();
+  const endDateRange = new Date();
+  endDateRange.setDate(startDateRange.getDate() + 180);
+
   const data = [
     {
       id: "awdsfasd",
       title: "Sample project",
       lead: "John Doe",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 24,
     },
     {
       id: "2",
       title: "Project 2",
       lead: "Jane Smith",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 50,
     },
     {
       id: "3",
       title: "Project 3",
       lead: "Mike Johnson",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 75,
     },
     {
       id: "4",
       title: "Project 4",
       lead: "Emily Davis",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 90,
     },
     {
       id: "5",
       title: "Project 5",
       lead: "David Wilson",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 10,
     },
     {
       id: "6",
       title: "Project 6",
       lead: "Sarah Thompson",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 30,
     },
     {
       id: "7",
       title: "Project 7",
       lead: "Michael Brown",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 60,
     },
     {
       id: "8",
       title: "Project 8",
       lead: "Emma Martinez",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 80,
     },
     {
       id: "9",
       title: "Project 9",
       lead: "Daniel Anderson",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 20,
     },
     {
       id: "10",
       title: "Project 10",
       lead: "Olivia Taylor",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 40,
     },
     {
       id: "11",
       title: "Project 11",
       lead: "Noah Thomas",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 70,
     },
     {
       id: "12",
       title: "Project 12",
       lead: "Ava Hernandez",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 100,
     },
     {
       id: "13",
       title: "Project 13",
       lead: "Liam Moore",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 15,
     },
     {
       id: "14",
       title: "Project 14",
       lead: "Sophia Clark",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 35,
     },
     {
       id: "15",
       title: "Project 15",
       lead: "Mason Rodriguez",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 55,
     },
     {
       id: "16",
       title: "Project 16",
       lead: "Isabella Lee",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 85,
     },
     {
       id: "17",
       title: "Project 17",
       lead: "James Walker",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 25,
     },
     {
       id: "18",
       title: "Project 18",
       lead: "Grace Lewis",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 45,
     },
     {
       id: "19",
       title: "Project 19",
       lead: "Benjamin Young",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 65,
     },
     {
       id: "20",
       title: "Project 20",
       lead: "Chloe Hall",
-      leadImage: "https://randomuser.me/api/portraits",
-      startDate: formatDate(new Date(), "MMM d, yyyy"),
-      targetDate: formatDate(new Date(), "MMM d, yyyy"),
+      leadImage: "https://avatar.iran.liara.run/public",
+      startDate: getRandomDate(),
+      targetDate: getRandomDate(),
       progress: 95,
     },
   ];
@@ -239,44 +244,60 @@ const BoardsPage = () => {
               List
             </ToggleGroupItem>
           </ToggleGroup>
-          <DropdownMenu>
-            <DropdownMenuTrigger className="rounded-md border-none px-4">
-              Sort by
-              <ChevronDown className="size-3" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent side="bottom" align="end">
-              <DropdownMenuCheckboxItem
-                checked
-                className="flex items-center gap-2"
-              >
-                Name
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem className="flex items-center gap-2">
-                Last Modified
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem className="flex items-center gap-2">
-                Created At
-              </DropdownMenuCheckboxItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {viewStore?.view == "grid" && (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="rounded-md border-none px-4">
+                Sort by
+                <ChevronDown className="size-3" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent side="bottom" align="end">
+                <DropdownMenuCheckboxItem
+                  checked
+                  className="flex items-center gap-2"
+                >
+                  Name
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem className="flex items-center gap-2">
+                  Last Modified
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem className="flex items-center gap-2">
+                  Created At
+                </DropdownMenuCheckboxItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+          {viewStore?.view == "list" && (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="rounded-md border-none px-4">
+                Filter
+                <ChevronDown className="size-3" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent side="bottom" align="end">
+                <DropdownMenuCheckboxItem
+                  checked
+                  className="flex items-center gap-2"
+                >
+                  Lead
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem className="flex items-center gap-2">
+                  Start Date
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem className="flex items-center gap-2">
+                  Target Date
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem className="flex items-center gap-2">
+                  Progress
+                </DropdownMenuCheckboxItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
       {viewStore && viewStore.view === "grid" && (
         <div className="mt-5 grid gap-5 xl:grid-cols-4">
-          <BoardCard title="Sprint 15-27" todo={24} inProgress={12} done={48} />
-          <BoardCard title="Sprint 15-27" todo={24} inProgress={12} done={48} />
-          <BoardCard title="Sprint 15-27" todo={24} inProgress={12} done={48} />
-          <BoardCard title="Sprint 15-27" todo={24} inProgress={12} done={48} />
-          <BoardCard title="Sprint 15-27" todo={24} inProgress={12} done={48} />
-          <BoardCard title="Sprint 15-27" todo={24} inProgress={12} done={48} />
-          <BoardCard title="Sprint 15-27" todo={24} inProgress={12} done={48} />
-          <BoardCard title="Sprint 15-27" todo={24} inProgress={12} done={48} />
-          <BoardCard title="Sprint 15-27" todo={24} inProgress={12} done={48} />
-          <BoardCard title="Sprint 15-27" todo={24} inProgress={12} done={48} />
-          <BoardCard title="Sprint 15-27" todo={24} inProgress={12} done={48} />
-          <BoardCard title="Sprint 15-27" todo={24} inProgress={12} done={48} />
-          <BoardCard title="Sprint 15-27" todo={24} inProgress={12} done={48} />
-          <BoardCard title="Sprint 15-27" todo={24} inProgress={12} done={48} />
+          {data.map((board) => (
+            <BoardCard key={board.id} {...board} />
+          ))}
         </div>
       )}
       {viewStore && viewStore.view === "list" && (
