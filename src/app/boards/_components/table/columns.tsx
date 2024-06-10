@@ -1,23 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import BoardMenu from "../BoardMenu";
 import { BoardData } from "@/utils/types";
 import { CircularProgress } from "@nextui-org/progress";
 import { ColumnDef } from "@tanstack/react-table";
-import {
-  ArrowUpRight,
-  Edit,
-  Ellipsis,
-  MoreHorizontal,
-  Trash,
-  ArrowUpDown,
-} from "lucide-react";
+import { ArrowUpDown, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -137,29 +124,7 @@ export const columns: ColumnDef<BoardData>[] = [
     header: "Actions",
     cell: ({ row }) => {
       const id = row.original.id;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger className="border-none bg-inherit transition-all duration-300">
-            <Button
-              variant="ghost"
-              className="h-8 w-8 p-0 hover:bg-inherit hover:text-inherit"
-            >
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem className="gap-2">
-              <Edit className="size-3" /> Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem className="gap-2 text-destructive focus:text-destructive">
-              <Trash className="size-3" />
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+      return <BoardMenu className="hover:bg-background/20" />;
     },
   },
 ];

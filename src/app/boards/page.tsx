@@ -15,15 +15,10 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import useStore from "@/lib/store/use-store";
 import { useView } from "@/lib/store/use-view";
 import { getRandomDate } from "@/utils/utils";
-import { format as formatDate } from "date-fns";
 import { AlignJustify, ChevronDown, LayoutGrid, Search } from "lucide-react";
 
 const BoardsPage = () => {
   const viewStore = useStore(useView, (state) => state);
-
-  const startDateRange = new Date();
-  const endDateRange = new Date();
-  endDateRange.setDate(startDateRange.getDate() + 180);
 
   const data = [
     {
@@ -210,47 +205,47 @@ const BoardsPage = () => {
 
   return (
     <>
-      <div>
-        <h1 className="text-4xl font-medium">Boards</h1>
-        <div className="mt-12 flex items-center gap-3">
-          <div className="relative flex w-full items-center">
-            <Search className="absolute left-3 size-4 text-muted-foreground" />
-            <Input placeholder="Search for your boards..." className="pl-10" />
-          </div>
-          <Button variant="default">New Board</Button>
+      <h1 className="text-4xl font-medium">Boards</h1>
+      <div className="mt-12 flex items-center gap-3">
+        <div className="relative flex w-full items-center">
+          <Search className="absolute left-3 size-4 text-muted-foreground" />
+          <Input placeholder="Search for your boards..." className="pl-10" />
         </div>
-        <div className="mt-10 flex justify-between">
-          <ToggleGroup
-            variant="default"
-            type="single"
-            value={viewStore?.view}
-            onValueChange={viewStore?.setView}
-            className="h-10 w-fit rounded-md bg-secondary p-1"
+        <Button variant="default">New Board</Button>
+      </div>
+      <div className="mt-10 flex justify-between">
+        <ToggleGroup
+          variant="default"
+          type="single"
+          value={viewStore?.view}
+          onValueChange={viewStore?.setView}
+          className="h-10 w-fit rounded-md bg-secondary p-1"
+        >
+          <ToggleGroupItem
+            value="grid"
+            aria-label="Toggle grid"
+            className="gap-2"
           >
-            <ToggleGroupItem
-              value="grid"
-              aria-label="Toggle grid"
-              className="gap-2"
-            >
-              <LayoutGrid className="size-4" />
-              Cards
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="list"
-              aria-label="Toggle list"
-              className="gap-2"
-            >
-              <AlignJustify className="h-4 w-4" />
-              List
-            </ToggleGroupItem>
-          </ToggleGroup>
-          {viewStore?.view == "grid" && (
-            <DropdownMenu>
-              <DropdownMenuTrigger className="rounded-md border-none px-4">
-                Sort by
-                <ChevronDown className="size-3" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent side="bottom" align="end">
+            <LayoutGrid className="size-4" />
+            Cards
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="list"
+            aria-label="Toggle list"
+            className="gap-2"
+          >
+            <AlignJustify className="h-4 w-4" />
+            List
+          </ToggleGroupItem>
+        </ToggleGroup>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="rounded-md border-none px-4">
+            {viewStore?.view == "grid" ? "Sort by" : "Filter"}
+            <ChevronDown className="size-3" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent side="bottom" align="end">
+            {viewStore?.view == "grid" ? (
+              <>
                 <DropdownMenuCheckboxItem
                   checked
                   className="flex items-center gap-2"
@@ -263,16 +258,9 @@ const BoardsPage = () => {
                 <DropdownMenuCheckboxItem className="flex items-center gap-2">
                   Created At
                 </DropdownMenuCheckboxItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
-          {viewStore?.view == "list" && (
-            <DropdownMenu>
-              <DropdownMenuTrigger className="rounded-md border-none px-4">
-                Filter
-                <ChevronDown className="size-3" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent side="bottom" align="end">
+              </>
+            ) : (
+              <>
                 <DropdownMenuCheckboxItem
                   checked
                   className="flex items-center gap-2"
@@ -288,24 +276,22 @@ const BoardsPage = () => {
                 <DropdownMenuCheckboxItem className="flex items-center gap-2">
                   Progress
                 </DropdownMenuCheckboxItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
-        </div>
+              </>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
-      {viewStore && viewStore.view === "grid" && (
+      {viewStore?.view === "grid" ? (
         <div className="mt-5 grid gap-5 xl:grid-cols-4">
           {data.map((board) => (
             <BoardCard key={board.id} {...board} />
           ))}
         </div>
-      )}
-      {viewStore && viewStore.view === "list" && (
+      ) : (
         <div className="mt-5 w-full">
           <DataTable columns={columns} data={data} />
         </div>
       )}
-      <div></div>
     </>
   );
 };

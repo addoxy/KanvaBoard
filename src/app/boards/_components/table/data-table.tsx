@@ -17,7 +17,6 @@ import {
   useReactTable,
   SortingState,
   getSortedRowModel,
-  VisibilityState,
 } from "@tanstack/react-table";
 import { useState } from "react";
 
@@ -31,17 +30,14 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<BoardData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
     state: {
       sorting,
-      columnVisibility,
     },
   });
 
