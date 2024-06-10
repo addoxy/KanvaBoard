@@ -16,9 +16,11 @@ import useStore from "@/lib/store/use-store";
 import { useView } from "@/lib/store/use-view";
 import { getRandomDate } from "@/utils/utils";
 import { AlignJustify, ChevronDown, LayoutGrid, Search } from "lucide-react";
+import { useState } from "react";
 
 const BoardsPage = () => {
   const viewStore = useStore(useView, (state) => state);
+  const [query, setQuery] = useState<string>("");
 
   const data = [
     {
@@ -203,13 +205,26 @@ const BoardsPage = () => {
     },
   ];
 
+  const filteredQueries = data.filter(
+    (board) =>
+      board.title.toLowerCase().includes(query.toLowerCase()) ||
+      board.lead.toLowerCase().includes(query.toLowerCase()) ||
+      board.startDate.toLowerCase().includes(query.toLowerCase()) ||
+      board.targetDate.toLowerCase().includes(query.toLowerCase()),
+  );
+
   return (
     <>
       <h1 className="text-4xl font-medium">Boards</h1>
       <div className="mt-12 flex items-center gap-3">
         <div className="relative flex w-full items-center">
           <Search className="absolute left-3 size-4 text-muted-foreground" />
-          <Input placeholder="Search for your boards..." className="pl-10" />
+          <Input
+            placeholder="Search for your boards..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="pl-10"
+          />
         </div>
         <Button variant="default">New Board</Button>
       </div>
@@ -282,14 +297,18 @@ const BoardsPage = () => {
         </DropdownMenu>
       </div>
       {viewStore?.view === "grid" ? (
-        <div className="mt-5 grid gap-5 xl:grid-cols-4">
-          {data.map((board) => (
-            <BoardCard key={board.id} {...board} />
-          ))}
-        </div>
+        filteredQueries.length === 0 ? (
+          <p className="mt-20 text-center">No results found.</p>
+        ) : (
+          <div className="mt-5 grid gap-5 xl:grid-cols-4">
+            {filteredQueries.map((board) => (
+              <BoardCard key={board.id} {...board} />
+            ))}
+          </div>
+        )
       ) : (
         <div className="mt-5 w-full">
-          <DataTable columns={columns} data={data} />
+          <DataTable columns={columns} data={filteredQueries} />
         </div>
       )}
     </>
