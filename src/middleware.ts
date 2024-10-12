@@ -1,33 +1,35 @@
 import authConfig from '@/auth.config';
 import NextAuth from 'next-auth';
+import { SIGN_IN_REDIRECT_URL } from './lib/constants';
 
 const { auth } = NextAuth(authConfig);
 
-const API_ROUTE = '/api/auth';
+const API_AUTH_ROUTE = '/api/auth';
 const AUTH_ROUTES = ['/sign-in', '/sign-up'];
 const PUBLIC_ROUTES = ['/'];
 
 export default auth((req) => {
   const isLoggedIn = !!req.auth;
-  const pathname = req.nextUrl.pathname;
+  const nextUrl = req.nextUrl;
+  const pathname = nextUrl.pathname;
 
-  const isApiRoute = pathname.startsWith(API_ROUTE);
-  const isAuthRoute = AUTH_ROUTES.includes(pathname);
+  const isApiAuthRoute = pathname.startsWith(API_AUTH_ROUTE);
   const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
+  const isAuthRoute = AUTH_ROUTES.includes(pathname);
 
-  if (isApiRoute) {
+  if (isApiAuthRoute) {
     return;
   }
 
   if (isAuthRoute) {
     if (isLoggedIn) {
-      return Response.redirect(new URL('/dashboard', req.nextUrl));
+      return Response.redirect(new URL(SIGN_IN_REDIRECT_URL, nextUrl));
     }
     return;
   }
 
   if (!isLoggedIn && !isPublicRoute) {
-    return Response.redirect(new URL('/sign-in', req.nextUrl));
+    Response.redirect(new URL('/sign-in', nextUrl));
   }
 
   return;

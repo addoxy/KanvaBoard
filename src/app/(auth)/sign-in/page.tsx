@@ -2,6 +2,7 @@
 
 import AnimatedUnderline from '@/components/animated-underline';
 import { GitHubIcon, GoogleIcon } from '@/components/icons';
+import Loader from '@/components/loader';
 import { Button } from '@/components/vendor/button';
 import {
   Form,
@@ -17,8 +18,9 @@ import { signInSchema } from '@/schemas/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
-import { useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 const SignInPage = () => {
@@ -39,7 +41,8 @@ const SignInPage = () => {
 };
 
 const SignInForm = () => {
-  const { mutate: signIn } = useSignIn();
+  const { mutate: signIn, isPending } = useSignIn();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -49,12 +52,23 @@ const SignInForm = () => {
     },
   });
 
-  const [isPending, startTransition] = useTransition();
-
   function onSubmit(values: z.infer<typeof signInSchema>) {
-    startTransition(() => {
-      signIn({ json: values });
-    });
+    signIn(
+      { json: values },
+      {
+        onSuccess: (data) => {
+          if (data.success) {
+            toast.success(data.message);
+            router.push('/dashboard');
+          } else {
+            toast.error(data.message || 'Something went wrong!');
+          }
+        },
+        onError: () => {
+          toast.error('Something went wrong!');
+        },
+      }
+    );
   }
 
   return (
@@ -99,7 +113,7 @@ const SignInForm = () => {
                   <AnimatedUnderline>Forgot password?</AnimatedUnderline>
                 </Link>
                 <Button type="submit" disabled={isPending}>
-                  {isPending ? '' : 'Sign in'}
+                  {isPending ? <Loader /> : 'Sign in'}
                 </Button>
               </div>
             </form>
