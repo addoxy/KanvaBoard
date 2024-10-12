@@ -12,6 +12,7 @@ import {
   FormMessage,
 } from '@/components/vendor/form';
 import { Input } from '@/components/vendor/input';
+import { useSignIn } from '@/hooks/user/use-sign-in';
 import { signInSchema } from '@/schemas/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
@@ -38,6 +39,8 @@ const SignInPage = () => {
 };
 
 const SignInForm = () => {
+  const { mutate: signIn } = useSignIn();
+
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -50,7 +53,7 @@ const SignInForm = () => {
 
   function onSubmit(values: z.infer<typeof signInSchema>) {
     startTransition(() => {
-      console.log(values);
+      signIn({ json: values });
     });
   }
 
@@ -96,7 +99,7 @@ const SignInForm = () => {
                   <AnimatedUnderline>Forgot password?</AnimatedUnderline>
                 </Link>
                 <Button type="submit" disabled={isPending}>
-                  Sign in
+                  {isPending ? '' : 'Sign in'}
                 </Button>
               </div>
             </form>

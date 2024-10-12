@@ -45,3 +45,33 @@ export const GitHubIcon = ({ className }: IconProps) => {
     </svg>
   );
 };
+
+export const SuccessIcon = ({ className }: IconProps) => {
+  return (
+    <svg
+      className={cn('size-5 fill-current text-primary', className)}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1024 1024"
+    >
+      <path
+        fill="currentColor"
+        d="M512 64a448 448 0 1 1 0 896a448 448 0 0 1 0-896m-55.808 536.384l-99.52-99.584a38.4 38.4 0 1 0-54.336 54.336l126.72 126.72a38.27 38.27 0 0 0 54.336 0l262.4-262.464a38.4 38.4 0 1 0-54.272-54.336z"
+      ></path>
+    </svg>
+  );
+};
+
+export const ErrorIcon = ({ className }: IconProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn('size-5 fill-current text-destructive', className)}
+      viewBox="0 0 16 16"
+    >
+      <path
+        fill="currentColor"
+        d="m8.746 8l3.1-3.1a.527.527 0 1 0-.746-.746L8 7.254l-3.1-3.1a.527.527 0 1 0-.746.746l3.1 3.1l-3.1 3.1a.527.527 0 1 0 .746.746l3.1-3.1l3.1 3.1a.527.527 0 1 0 .746-.746zM8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16"
+      ></path>
+    </svg>
+  );
+};

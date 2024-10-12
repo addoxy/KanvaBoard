@@ -1,4 +1,5 @@
 import '@/styles/globals.css';
+import Providers from '@/utils/providers';
 import { cn } from '@/utils/utils';
 import type { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
@@ -26,7 +27,7 @@ export default function RootLayout({
           'debug-screens min-h-screen bg-background font-sans antialiased'
         )}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

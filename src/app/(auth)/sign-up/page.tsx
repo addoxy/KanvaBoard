@@ -2,6 +2,7 @@
 
 import AnimatedUnderline from '@/components/animated-underline';
 import { GitHubIcon, GoogleIcon } from '@/components/icons';
+import Loader from '@/components/loader';
 import { Button } from '@/components/vendor/button';
 import {
   Form,
@@ -12,12 +13,13 @@ import {
   FormMessage,
 } from '@/components/vendor/form';
 import { Input } from '@/components/vendor/input';
+import { useSignUp } from '@/hooks/user/use-sign-up';
 import { signUpSchema } from '@/schemas/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
-import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 const SignUpPage = () => {
@@ -38,6 +40,8 @@ const SignUpPage = () => {
 };
 
 const SignUpForm = () => {
+  const { mutate: signUp, isPending } = useSignUp();
+
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -47,12 +51,24 @@ const SignUpForm = () => {
     },
   });
 
-  const [isPending, startTransition] = useTransition();
-
   function onSubmit(values: z.infer<typeof signUpSchema>) {
-    startTransition(() => {
-      console.log(values);
-    });
+    signUp(
+      {
+        json: values,
+      },
+      {
+        onSuccess: (data) => {
+          if (data.success) {
+            toast.success(data.message);
+          } else {
+            toast.error(data.message || 'Something went wrong!');
+          }
+        },
+        onError: () => {
+          toast.error('Something went wrong!');
+        },
+      }
+    );
   }
 
   return (
@@ -111,7 +127,7 @@ const SignUpForm = () => {
                 )}
               />
               <Button type="submit" className="mt-2" disabled={isPending}>
-                Sign up
+                {isPending ? <Loader /> : 'Sign up'}
               </Button>
             </form>
           </Form>
