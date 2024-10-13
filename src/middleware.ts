@@ -5,39 +5,56 @@ import { SIGN_IN_REDIRECT_URL } from './lib/constants';
 const { auth } = NextAuth(authConfig);
 
 const API_AUTH_ROUTE = '/api/auth';
-const AUTH_ROUTES = ['/sign-in', '/sign-up'];
+const AUTH_ROUTES = ['/sign-in', '/sign-up', '/auth/error'];
 const PUBLIC_ROUTES = ['/'];
+const PROTECTED_ROUTES = ['/dashboard'];
 
 export default auth((req) => {
+  const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
-  const nextUrl = req.nextUrl;
   const pathname = nextUrl.pathname;
 
-  const isApiAuthRoute = pathname.startsWith(API_AUTH_ROUTE);
-  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
-  const isAuthRoute = AUTH_ROUTES.includes(pathname);
+  console.log(pathname);
 
-  if (isApiAuthRoute) {
+  const pathStartsWith = (routes: string[]) => routes.some((route) => pathname.startsWith(route));
+
+  // Allow all API auth routes to pass through
+  if (pathname.startsWith(API_AUTH_ROUTE)) {
     return;
   }
 
-  if (isAuthRoute) {
+  // Handle authentication routes
+  if (pathStartsWith(AUTH_ROUTES)) {
     if (isLoggedIn) {
       return Response.redirect(new URL(SIGN_IN_REDIRECT_URL, nextUrl));
     }
     return;
   }
 
-  if (!isLoggedIn && !isPublicRoute) {
-    Response.redirect(new URL('/sign-in', nextUrl));
+  // Protect routes that require authentication
+  if (pathStartsWith(PROTECTED_ROUTES)) {
+    if (!isLoggedIn) {
+      return Response.redirect(new URL('/sign-in', nextUrl));
+    }
+    return;
   }
 
+  // Allow access to public routes
+  if (pathStartsWith(PUBLIC_ROUTES)) {
+    return;
+  }
+
+  // For any other routes, redirect to sign-in if not logged in
+  if (!isLoggedIn) {
+    const signInUrl = new URL('/sign-in', nextUrl);
+    signInUrl.searchParams.set('callbackUrl', pathname);
+    return Response.redirect(signInUrl);
+  }
+
+  // Allow all other requests to pass through
   return;
 });
 
 export const config = {
-  matcher: [
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    '/(api|trpc)(.*)',
-  ],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 };

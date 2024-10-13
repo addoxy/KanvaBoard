@@ -8,8 +8,14 @@ import { getUserByEmail } from './utils/db';
 
 export default {
   providers: [
-    Google,
-    GitHub,
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    GitHub({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    }),
     Credentials({
       async authorize(credentials) {
         const validatedFields = signInSchema.safeParse(credentials);
@@ -20,13 +26,13 @@ export default {
           const user = await getUserByEmail(email);
 
           /* Need to check for password because the user could try to login using his OAuth email */
-          if (!user || !user.password) return null;
+          if (!user || !user.password) {
+            return null;
+          }
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
 
           if (passwordsMatch) {
-            console.log('-------------ALL CHECKS PASSED-------------');
-            console.log(user);
             return user;
           }
         }

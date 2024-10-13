@@ -1,7 +1,6 @@
 'use client';
 
 import AnimatedUnderline from '@/components/animated-underline';
-import { GitHubIcon, GoogleIcon } from '@/components/icons';
 import Loader from '@/components/loader';
 import { Button } from '@/components/vendor/button';
 import {
@@ -21,6 +20,7 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import SocialSignInButton from '../components/SocialSignInButton';
 
 const SignUpPage = () => {
   return (
@@ -137,14 +137,8 @@ const SignUpForm = () => {
             <div className="h-px w-full bg-muted-foreground/15" />
           </div>
           <div className="flex flex-col gap-2">
-            <Button variant="outline" className="gap-2" disabled={isPending}>
-              <GoogleIcon className="size-5" />
-              Sign in with Google
-            </Button>
-            <Button variant="outline" className="gap-2" disabled={isPending}>
-              <GitHubIcon className="size-5 text-foreground" />
-              Sign in with GitHub
-            </Button>
+            <SocialSignInButton provider="google" />
+            <SocialSignInButton provider="github" />
           </div>
         </div>
       </div>

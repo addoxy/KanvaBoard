@@ -1,5 +1,6 @@
 import Logo from '@/components/logo';
 import { cn } from '@/utils/utils';
+import Link from 'next/link';
 
 type AuthLayoutProps = {
   children: React.ReactNode;
@@ -7,9 +8,11 @@ type AuthLayoutProps = {
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div className={cn('bg-muted flex min-h-screen w-full items-center justify-center py-20')}>
+    <div className={cn('flex min-h-screen w-full items-center justify-center bg-muted py-20')}>
       <div className="flex w-full flex-col items-center justify-center gap-12">
-        <Logo size="lg" />
+        <Link href="/">
+          <Logo size="lg" />
+        </Link>
         {children}
       </div>
     </div>

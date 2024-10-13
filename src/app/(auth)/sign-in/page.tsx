@@ -1,7 +1,6 @@
 'use client';
 
 import AnimatedUnderline from '@/components/animated-underline';
-import { GitHubIcon, GoogleIcon } from '@/components/icons';
 import Loader from '@/components/loader';
 import { Button } from '@/components/vendor/button';
 import {
@@ -17,13 +16,19 @@ import { useSignIn } from '@/hooks/user/use-sign-in';
 import { signInSchema } from '@/schemas/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
+import { CircleAlert } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import SocialSignInButton from '../components/SocialSignInButton';
 
 const SignInPage = () => {
+  const searchParams = useSearchParams();
+  const urlError =
+    searchParams.get('error') === 'OAuthAccountNotLinked' ? 'Email already in use!' : '';
+
   return (
     <div className="flex w-full flex-col items-center justify-center">
       <h1 className="text-3xl font-bold">Sign in to your account</h1>
@@ -35,6 +40,11 @@ const SignInPage = () => {
           </AnimatedUnderline>
         </Link>
       </div>
+      {urlError && (
+        <div className="mt-8">
+          <ErrorBadge error={urlError} />
+        </div>
+      )}
       <SignInForm />
     </div>
   );
@@ -53,6 +63,9 @@ const SignInForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof signInSchema>) {
+    // clear the search params
+    router.replace(window.location.pathname);
+
     signIn(
       { json: values },
       {
@@ -73,7 +86,7 @@ const SignInForm = () => {
 
   return (
     <div className="mt-8 w-full px-8 sm:mt-12 sm:w-fit sm:px-0">
-      <div className="rounded-xl border border-border/70 bg-background p-4 sm:p-10">
+      <div className="rounded-xl border border-border/70 bg-background p-5 sm:p-10">
         <div className="flex w-full flex-col gap-6 sm:w-96">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-2">
@@ -124,17 +137,24 @@ const SignInForm = () => {
             <div className="h-px w-full bg-muted-foreground/15" />
           </div>
           <div className="flex flex-col gap-2">
-            <Button variant="outline" className="gap-2" disabled={isPending}>
-              <GoogleIcon className="size-5" />
-              Sign in with Google
-            </Button>
-            <Button variant="outline" className="gap-2" disabled={isPending}>
-              <GitHubIcon className="size-5 text-foreground" />
-              Sign in with GitHub
-            </Button>
+            <SocialSignInButton provider="google" />
+            <SocialSignInButton provider="github" />
           </div>
         </div>
       </div>
+    </div>
+  );
+};
+
+type ErrorBadgeProps = {
+  error: string;
+};
+
+const ErrorBadge = ({ error }: ErrorBadgeProps) => {
+  return (
+    <div className="flex w-full items-center justify-center gap-2 rounded-lg border border-destructive/10 bg-destructive/10 px-8 py-3 text-destructive/80">
+      <CircleAlert className="size-4 text-destructive/70" />
+      {error}
     </div>
   );
 };
