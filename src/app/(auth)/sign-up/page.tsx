@@ -84,7 +84,12 @@ const SignUpForm = () => {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="Email" disabled={isPending} {...field} />
+                      <Input
+                        type="email"
+                        placeholder="mail@example.com"
+                        disabled={isPending}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -99,7 +104,7 @@ const SignUpForm = () => {
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="Password"
+                        placeholder="********"
                         disabled={isPending}
                         {...field}
                       />
@@ -117,7 +122,7 @@ const SignUpForm = () => {
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="Confirm password"
+                        placeholder="********"
                         disabled={isPending}
                         {...field}
                       />
@@ -137,8 +142,8 @@ const SignUpForm = () => {
             <div className="h-px w-full bg-muted-foreground/15" />
           </div>
           <div className="flex flex-col gap-2">
-            <SocialSignInButton provider="google" />
-            <SocialSignInButton provider="github" />
+            <SocialSignInButton provider="google" disabled={isPending} />
+            <SocialSignInButton provider="github" disabled={isPending} />
           </div>
         </div>
       </div>

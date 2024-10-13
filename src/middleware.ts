@@ -14,8 +14,6 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth;
   const pathname = nextUrl.pathname;
 
-  console.log(pathname);
-
   const pathStartsWith = (routes: string[]) => routes.some((route) => pathname.startsWith(route));
 
   // Allow all API auth routes to pass through

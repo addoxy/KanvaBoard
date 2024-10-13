@@ -5,13 +5,15 @@ import { signIn } from 'next-auth/react';
 
 type SocialSignInButtonProps = {
   provider: 'google' | 'github';
+  disabled: boolean;
 };
 
-const SocialSignInButton = ({ provider }: SocialSignInButtonProps) => {
+const SocialSignInButton = ({ provider, disabled = false }: SocialSignInButtonProps) => {
   return (
     <Button
       variant="outline"
       className="gap-2"
+      disabled={disabled}
       onClick={() =>
         signIn(provider, {
           callbackUrl: SIGN_IN_REDIRECT_URL,
