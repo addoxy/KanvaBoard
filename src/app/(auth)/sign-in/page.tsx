@@ -13,6 +13,7 @@ import {
 } from '@/components/vendor/form';
 import { Input } from '@/components/vendor/input';
 import { useSignIn } from '@/hooks/user/use-sign-in';
+import { SIGN_IN_REDIRECT_URL } from '@/lib/constants';
 import { signInSchema } from '@/schemas/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
@@ -72,7 +73,7 @@ const SignInForm = () => {
         onSuccess: (data) => {
           if (data.success) {
             toast.success(data.message);
-            router.push('/dashboard');
+            window.location.href = SIGN_IN_REDIRECT_URL;
           } else {
             toast.error(data.message || 'Something went wrong!');
           }
@@ -127,7 +128,7 @@ const SignInForm = () => {
                 )}
               />
               <div className="mt-2 flex flex-col gap-2">
-                <Link href="/forgot-password" className="ml-auto text-sm">
+                <Link href="/reset-password" className="ml-auto text-sm">
                   <AnimatedUnderline>Forgot password?</AnimatedUnderline>
                 </Link>
                 <Button type="submit" disabled={isPending}>

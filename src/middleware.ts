@@ -5,8 +5,8 @@ import { SIGN_IN_REDIRECT_URL } from './lib/constants';
 const { auth } = NextAuth(authConfig);
 
 const API_AUTH_ROUTE = '/api/auth';
-const AUTH_ROUTES = ['/sign-in', '/sign-up', '/auth/error'];
-const PUBLIC_ROUTES = ['/'];
+const AUTH_ROUTES = ['/sign-in', '/sign-up', '/error', '/new-password'];
+const PUBLIC_ROUTES = ['/', '/new-verification'];
 const PROTECTED_ROUTES = ['/dashboard'];
 
 export default auth((req) => {

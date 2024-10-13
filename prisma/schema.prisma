@@ -15,7 +15,6 @@ model User {
   password      String?
   image         String?
   accounts      Account[]
-  sessions      Session[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -42,17 +41,16 @@ model Account {
   @@id([provider, providerAccountId])
 }
 
-model Session {
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+model VerificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique @default(uuid())
+  expires DateTime
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@unique([email, token])
 }
 
-model VerificationToken {
+model PasswordResetToken {
   id      String   @id @default(cuid())
   email   String
   token   String   @unique @default(uuid())

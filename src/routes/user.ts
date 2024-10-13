@@ -1,8 +1,19 @@
 import { signIn } from '@/auth';
 import { db } from '@/lib/prisma';
-import { sendVerificationEmail } from '@/lib/resend';
-import { signInSchema, signUpSchema } from '@/schemas/auth';
-import { generateVerificationToken, getUserByEmail, getVerificationTokenByToken } from '@/utils/db';
+import { sendPasswordResetEmail, sendVerificationEmail } from '@/lib/resend';
+import {
+  changePasswordSchema,
+  resetPasswordSchema,
+  signInSchema,
+  signUpSchema,
+} from '@/schemas/auth';
+import {
+  generatePasswordResetToken,
+  generateVerificationToken,
+  getPasswordResetTokenByToken,
+  getUserByEmail,
+  getVerificationTokenByToken,
+} from '@/utils/db';
 import { zValidator } from '@hono/zod-validator';
 import bcrypt from 'bcryptjs';
 import { Hono } from 'hono';
@@ -71,7 +82,7 @@ const userRoutes = new Hono()
         return c.json({ success: true, message: 'Verification email sent!' }, 200);
       } catch (error) {
         return c.json(
-          { success: false, message: 'Account created but unable to send verification token!' },
+          { success: false, message: 'Account created but unable to send verification link!' },
           500
         );
       }
@@ -125,6 +136,64 @@ const userRoutes = new Hono()
         return c.json({ success: false, message: 'Something went wrong!' }, 500);
       }
     }
-  );
+  )
+  .post('/send-reset-password-email', zValidator('json', resetPasswordSchema), async (c) => {
+    const { email } = c.req.valid('json');
+
+    const existingUser = await getUserByEmail(email);
+    if (!existingUser) {
+      return c.json({ success: false, message: 'User does not exist!' }, 400);
+    }
+
+    try {
+      const passwordResetToken = await generatePasswordResetToken(email);
+      await sendPasswordResetEmail(passwordResetToken.email, passwordResetToken.token);
+
+      return c.json({ success: true, message: 'Verification email sent!' }, 200);
+    } catch {
+      return c.json({ success: true, message: 'Unable to send reset link!' }, 200);
+    }
+  })
+  .post('/change-password', zValidator('json', changePasswordSchema), async (c) => {
+    const { password, token } = c.req.valid('json');
+
+    const existingToken = await getPasswordResetTokenByToken(token);
+    if (!existingToken) {
+      return c.json({ success: false, message: 'Password reset token does not exist!' }, 400);
+    }
+
+    const hasExpired = new Date(existingToken.expires) < new Date();
+    if (hasExpired) {
+      return c.json({ success: false, message: 'Password reset token has expired!' }, 400);
+    }
+
+    const existingUser = await getUserByEmail(existingToken.email);
+    if (!existingUser) {
+      return c.json({ success: false, message: 'Email does not exist!' }, 400);
+    }
+
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      await db.user.update({
+        where: {
+          id: existingUser.id,
+        },
+        data: {
+          password: hashedPassword,
+        },
+      });
+
+      await db.passwordResetToken.delete({
+        where: {
+          id: existingToken.id,
+        },
+      });
+
+      return c.json({ success: true, message: 'Successfully reset password!' }, 200);
+    } catch {
+      return c.json({ success: false, message: 'Unable to reset password!' }, 500);
+    }
+  });
 
 export default userRoutes;
