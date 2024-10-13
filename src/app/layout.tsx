@@ -11,7 +11,7 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: 'Jeera',
+  title: 'KanvaBoard',
   description: 'Project management web app',
 };
 
