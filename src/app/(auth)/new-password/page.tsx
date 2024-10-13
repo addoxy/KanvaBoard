@@ -13,12 +13,12 @@ import {
 } from '@/components/vendor/form';
 import { Input } from '@/components/vendor/input';
 import { useResetPassword } from '@/hooks/user/use-reset-password';
-import { newPasswordSchema } from '@/schemas/auth';
+import { newPasswordSchema } from '@/schemas/auth-schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 import { CircleAlert } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -46,8 +46,6 @@ const NewPasswordForm = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
   const [error, setError] = useState<string | undefined>();
-
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof newPasswordSchema>>({
     resolver: zodResolver(newPasswordSchema),

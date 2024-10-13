@@ -1,15 +1,16 @@
 'use client';
 
 import { Button } from '@/components/vendor/button';
-import { signOut, useSession } from 'next-auth/react';
+import { useUser } from '@/hooks/user/use-user';
+import { signOut } from 'next-auth/react';
 
 const DashboardPage = () => {
-  const session = useSession();
+  const user = useUser();
 
   return (
     <>
       <div>Dashboard page</div>
-      <div>{JSON.stringify(session)}</div>
+      <div>{JSON.stringify(user)}</div>
       <Button onClick={() => signOut()}>Sign out</Button>
     </>
   );

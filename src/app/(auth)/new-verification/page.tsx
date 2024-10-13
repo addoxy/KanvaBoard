@@ -41,7 +41,7 @@ const NewVerificationPage = () => {
         },
       }
     );
-  }, [token]);
+  }, [token, verifyEmail]);
 
   useEffect(() => onSubmit(), [onSubmit]);
 

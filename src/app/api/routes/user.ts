@@ -6,7 +6,7 @@ import {
   resetPasswordSchema,
   signInSchema,
   signUpSchema,
-} from '@/schemas/auth';
+} from '@/schemas/auth-schemas';
 import {
   generatePasswordResetToken,
   generateVerificationToken,
@@ -80,7 +80,7 @@ const userRoutes = new Hono()
         await sendVerificationEmail(verificationToken.email, verificationToken.token);
 
         return c.json({ success: true, message: 'Verification email sent!' }, 200);
-      } catch (error) {
+      } catch {
         return c.json(
           { success: false, message: 'Account created but unable to send verification link!' },
           500
@@ -132,7 +132,7 @@ const userRoutes = new Hono()
         });
 
         return c.json({ success: true, message: 'Successfully verified email!' }, 200);
-      } catch (error) {
+      } catch {
         return c.json({ success: false, message: 'Something went wrong!' }, 500);
       }
     }

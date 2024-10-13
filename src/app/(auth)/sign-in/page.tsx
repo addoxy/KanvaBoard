@@ -14,7 +14,7 @@ import {
 import { Input } from '@/components/vendor/input';
 import { useSignIn } from '@/hooks/user/use-sign-in';
 import { SIGN_IN_REDIRECT_URL } from '@/lib/constants';
-import { signInSchema } from '@/schemas/auth';
+import { signInSchema } from '@/schemas/auth-schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 import { CircleAlert } from 'lucide-react';
@@ -73,7 +73,9 @@ const SignInForm = () => {
         onSuccess: (data) => {
           if (data.success) {
             toast.success(data.message);
-            window.location.href = SIGN_IN_REDIRECT_URL;
+            if (data.message === 'Successfully signed in!') {
+              window.location.href = SIGN_IN_REDIRECT_URL;
+            }
           } else {
             toast.error(data.message || 'Something went wrong!');
           }

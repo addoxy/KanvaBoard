@@ -13,7 +13,7 @@ import {
 } from '@/components/vendor/form';
 import { Input } from '@/components/vendor/input';
 import { useSendResetPasswordEmail } from '@/hooks/user/use-send-reset-password-email';
-import { resetPasswordSchema } from '@/schemas/auth';
+import { resetPasswordSchema } from '@/schemas/auth-schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
