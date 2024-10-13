@@ -151,7 +151,7 @@ const userRoutes = new Hono()
 
       return c.json({ success: true, message: 'Verification email sent!' }, 200);
     } catch {
-      return c.json({ success: true, message: 'Unable to send reset link!' }, 200);
+      return c.json({ success: true, message: 'Unable to send reset link!' }, 500);
     }
   })
   .post('/change-password', zValidator('json', changePasswordSchema), async (c) => {
