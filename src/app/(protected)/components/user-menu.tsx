@@ -12,7 +12,10 @@ import {
 import { useSidebarToggle } from '@/hooks/sidebar/use-sidebar-toggle';
 import { useUser } from '@/hooks/user/use-user';
 import { useStore } from '@/utils/store';
+import { cn } from '@/utils/utils';
+import { LogOut } from 'lucide-react';
 import { signOut } from 'next-auth/react';
+import Link from 'next/link';
 
 const UserMenu = () => {
   const user = useUser();
@@ -34,13 +37,23 @@ const UserMenu = () => {
               {name?.substring(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          {expanded && <p className="w-36 truncate">{name}</p>}
+          {expanded && <p className="w-36 truncate text-left">{name}</p>}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <UserMenuItem onSelect={() => signOut()}>Log Out</UserMenuItem>
+        <DropdownMenuItem>
+          <Link href="/settings" className="size-full">
+            Settings
+          </Link>
+        </DropdownMenuItem>
+        <UserMenuItem
+          className="flex items-center justify-between !text-destructive"
+          onSelect={() => signOut()}
+        >
+          Log Out <LogOut className="size-4" />
+        </UserMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -49,11 +62,12 @@ const UserMenu = () => {
 type UserMenuItemProps = {
   children: React.ReactNode;
   onSelect?: ((event: Event) => void) | undefined;
+  className?: string;
 };
 
-const UserMenuItem = ({ children, onSelect }: UserMenuItemProps) => {
+const UserMenuItem = ({ children, onSelect, className }: UserMenuItemProps) => {
   return (
-    <DropdownMenuItem onSelect={onSelect} className="w-44 cursor-pointer">
+    <DropdownMenuItem onSelect={onSelect} className={cn('w-44 cursor-pointer', className)}>
       {children}
     </DropdownMenuItem>
   );

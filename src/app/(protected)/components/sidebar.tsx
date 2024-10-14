@@ -24,7 +24,11 @@ import {
 import Link from 'next/link';
 import UserMenu from './user-menu';
 
-const Sidebar = () => {
+type SidebarProps = {
+  className?: string;
+};
+
+const Sidebar = ({ className }: SidebarProps) => {
   const sidebarStore = useStore(useSidebarToggle, (state) => state);
   const expanded = sidebarStore?.expanded;
 
@@ -33,7 +37,8 @@ const Sidebar = () => {
       className={cn(
         'flex flex-col bg-secondary px-4 py-6 transition-all',
         !expanded && 'w-[68px]',
-        expanded && 'w-56'
+        expanded && 'w-56',
+        className
       )}
     >
       <SidebarHeader />
@@ -83,7 +88,7 @@ const SidebarHeader = () => {
             onClick={() => sidebarStore.setExpanded(!expanded)}
             variant="sidebar"
             size="icon"
-            className="size-6"
+            className="hidden size-6 lg:flex"
           >
             {expanded ? <ChevronFirst className="size-4" /> : <ChevronLast className="size-4" />}
           </Button>
