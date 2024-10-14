@@ -3,12 +3,12 @@ import { Button } from '@/components/vendor/button';
 import { SIGN_IN_REDIRECT_URL } from '@/lib/constants';
 import { signIn } from 'next-auth/react';
 
-type SocialSignInButtonProps = {
+type OAuthButtonProps = {
   provider: 'google' | 'github';
   disabled: boolean;
 };
 
-const SocialSignInButton = ({ provider, disabled = false }: SocialSignInButtonProps) => {
+const OAuthButton = ({ provider, disabled = false }: OAuthButtonProps) => {
   return (
     <Button
       variant="outline"
@@ -29,4 +29,4 @@ const SocialSignInButton = ({ provider, disabled = false }: SocialSignInButtonPr
   );
 };
 
-export default SocialSignInButton;
+export default OAuthButton;

@@ -23,7 +23,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import SocialSignInButton from '../components/SocialSignInButton';
+import OAuthButton from '../components/oauth-button';
 
 const SignInPage = () => {
   const searchParams = useSearchParams();
@@ -64,7 +64,7 @@ const SignInForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof signInSchema>) {
-    // clear the search params
+    // clear the search params to ensure the urlError is not always displayed
     router.replace(window.location.pathname);
 
     signIn(
@@ -145,8 +145,8 @@ const SignInForm = () => {
             <div className="h-px w-full bg-muted-foreground/15" />
           </div>
           <div className="flex flex-col gap-2">
-            <SocialSignInButton provider="google" disabled={isPending} />
-            <SocialSignInButton provider="github" disabled={isPending} />
+            <OAuthButton provider="google" disabled={isPending} />
+            <OAuthButton provider="github" disabled={isPending} />
           </div>
         </div>
       </div>

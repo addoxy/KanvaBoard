@@ -20,7 +20,7 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import SocialSignInButton from '../components/SocialSignInButton';
+import OAuthButton from '../components/oauth-button';
 
 const SignUpPage = () => {
   return (
@@ -142,8 +142,8 @@ const SignUpForm = () => {
             <div className="h-px w-full bg-muted-foreground/15" />
           </div>
           <div className="flex flex-col gap-2">
-            <SocialSignInButton provider="google" disabled={isPending} />
-            <SocialSignInButton provider="github" disabled={isPending} />
+            <OAuthButton provider="google" disabled={isPending} />
+            <OAuthButton provider="github" disabled={isPending} />
           </div>
         </div>
       </div>

@@ -131,8 +131,11 @@ const userRoutes = new Hono()
           },
         });
 
+        console.log('SUCCESSFULLY VERIFIED!');
+
         return c.json({ success: true, message: 'Successfully verified email!' }, 200);
       } catch {
+        console.log('SOMETHING WENT WRONG!!!!!');
         return c.json({ success: false, message: 'Something went wrong!' }, 500);
       }
     }

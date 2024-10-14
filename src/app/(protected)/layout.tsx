@@ -1,5 +1,5 @@
 import { cn } from '@/utils/utils';
-import PageHeader from './components/PageHeader';
+import PageHeader from './components/page-header';
 import Sidebar from './components/sidebar';
 
 type ProtectedLayoutProps = {
