@@ -12,7 +12,15 @@ import {
 import { useSidebarToggle } from '@/hooks/sidebar/use-sidebar-toggle';
 import { useStore } from '@/utils/store';
 import { cn } from '@/utils/utils';
-import { ChevronFirst, CircleCheck, Home, LucideIcon, Plus } from 'lucide-react';
+import {
+  ChevronFirst,
+  ChevronLast,
+  CircleCheck,
+  Home,
+  LucideIcon,
+  PanelsTopLeft,
+  Plus,
+} from 'lucide-react';
 import Link from 'next/link';
 import UserMenu from './user-menu';
 
@@ -21,27 +29,20 @@ const Sidebar = () => {
   const expanded = sidebarStore?.expanded;
 
   return (
-    <aside className="flex w-56 flex-col bg-secondary px-4 py-6">
-      <div className="flex w-full items-center justify-between text-lg font-semibold">
-        {expanded && (
-          <div className="flex items-center gap-2">
-            <Logo size="sm" />
-            KanvaBoard
-          </div>
-        )}
-        {sidebarStore && (
-          <Button
-            onClick={() => sidebarStore.setExpanded(!expanded)}
-            variant="sidebar"
-            size="icon"
-            className="size-6"
-          >
-            <ChevronFirst className="size-4" />
-          </Button>
-        )}
-      </div>
-      <Divider className="my-4" />
-      <WorkspaceSection />
+    <aside
+      className={cn(
+        'flex flex-col bg-secondary px-4 py-6 transition-all',
+        !expanded && 'w-[68px]',
+        expanded && 'w-56'
+      )}
+    >
+      <SidebarHeader />
+      {expanded && (
+        <>
+          <Divider className="my-4" />
+          <WorkspaceSection />
+        </>
+      )}
       <Divider className="my-6" />
       <div className="space-y-1">
         <SidebarNavItem href="/dashboard" icon={Home}>
@@ -50,14 +51,45 @@ const Sidebar = () => {
         <SidebarNavItem href="/my-tasks" icon={CircleCheck}>
           My Tasks
         </SidebarNavItem>
+        <SidebarNavItem href="/projects" icon={PanelsTopLeft}>
+          Projects
+        </SidebarNavItem>
       </div>
       <Divider className="my-6" />
-      <ProjectSection />
+      <PinnedSection />
       <div className="mt-auto">
         <Divider className="my-4" />
         <UserMenu />
       </div>
     </aside>
+  );
+};
+
+const SidebarHeader = () => {
+  const sidebarStore = useStore(useSidebarToggle, (state) => state);
+  const expanded = sidebarStore?.expanded;
+
+  return (
+    <div className="flex w-full items-center justify-between text-lg font-semibold">
+      {expanded && (
+        <div className="flex items-center gap-2">
+          <Logo size="sm" />
+          KanvaBoard
+        </div>
+      )}
+      <div className={cn('flex items-center justify-center', !expanded && 'w-full')}>
+        {sidebarStore && (
+          <Button
+            onClick={() => sidebarStore.setExpanded(!expanded)}
+            variant="sidebar"
+            size="icon"
+            className="size-6"
+          >
+            {expanded ? <ChevronFirst className="size-4" /> : <ChevronLast className="size-4" />}
+          </Button>
+        )}
+      </div>
+    </div>
   );
 };
 
@@ -84,15 +116,20 @@ const WorkspaceSection = () => {
   );
 };
 
-const ProjectSection = () => {
+const PinnedSection = () => {
+  const sidebarStore = useStore(useSidebarToggle, (state) => state);
+  const expanded = sidebarStore?.expanded;
+
   return (
     <div className="flex flex-col">
-      <div className="flex items-center justify-between">
-        <span className="text-sm text-muted-foreground">Projects</span>
-        <Button variant="sidebar" className="size-4 rounded-full p-0">
-          <Plus className="size-3" />
-        </Button>
-      </div>
+      {expanded && (
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">Pinned</span>
+          <Button variant="sidebar" className="size-4 rounded-full p-0">
+            <Plus className="size-3" />
+          </Button>
+        </div>
+      )}
       <div className="mt-2 space-y-1">
         <ProjectItem name="New project" />
         <ProjectItem name="Another project" />
@@ -106,6 +143,9 @@ type ProjectItemProps = {
 };
 
 const ProjectItem = ({ name }: ProjectItemProps) => {
+  const sidebarStore = useStore(useSidebarToggle, (state) => state);
+  const expanded = sidebarStore?.expanded;
+
   return (
     <Link
       href={`/projects/${name}`}
@@ -120,7 +160,7 @@ const ProjectItem = ({ name }: ProjectItemProps) => {
       <div className="flex size-6 items-center justify-center rounded-md bg-primary capitalize text-background">
         {name[0]}
       </div>
-      {name}
+      {expanded && name}
     </Link>
   );
 };
@@ -132,6 +172,8 @@ type SidebarNavItemProps = {
 };
 
 const SidebarNavItem = ({ href, children, icon }: SidebarNavItemProps) => {
+  const sidebarStore = useStore(useSidebarToggle, (state) => state);
+  const expanded = sidebarStore?.expanded;
   const Icon = icon;
 
   return (
@@ -146,7 +188,7 @@ const SidebarNavItem = ({ href, children, icon }: SidebarNavItemProps) => {
       )}
     >
       <Icon className="size-4" />
-      {children}
+      {expanded && children}
     </Link>
   );
 };

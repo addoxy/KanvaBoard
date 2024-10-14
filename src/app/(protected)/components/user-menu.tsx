@@ -9,12 +9,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/vendor/dropdown-menu';
+import { useSidebarToggle } from '@/hooks/sidebar/use-sidebar-toggle';
 import { useUser } from '@/hooks/user/use-user';
+import { useStore } from '@/utils/store';
 import { signOut } from 'next-auth/react';
 
 const UserMenu = () => {
   const user = useUser();
   const name = user?.name ? user.name : user?.email;
+
+  const sidebarStore = useStore(useSidebarToggle, (state) => state);
+  const expanded = sidebarStore?.expanded;
 
   return (
     <DropdownMenu>
@@ -29,7 +34,7 @@ const UserMenu = () => {
               {name?.substring(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <p className="w-36 truncate">{name}</p>
+          {expanded && <p className="w-36 truncate">{name}</p>}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
