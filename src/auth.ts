@@ -24,6 +24,12 @@ export const {
     },
   },
   callbacks: {
+    async session({ token, session }) {
+      if (token.sub && session.user) {
+        session.user.id = token.sub;
+      }
+      return session;
+    },
     async signIn({ account, user }) {
       // allow oauth to sign in without email verification
       if (account?.provider !== 'credentials') {

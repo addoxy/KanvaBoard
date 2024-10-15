@@ -1,5 +1,6 @@
 'use client';
 
+import ButtonWithLoader from '@/components/button-with-loader';
 import { Button } from '@/components/vendor/button';
 import {
   Dialog,
@@ -21,6 +22,7 @@ import { useCreateWorkspace } from '@/hooks/workspace/use-create-workspace';
 import { createWorkspaceSchema } from '@/schemas/workspace-schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -32,7 +34,11 @@ const CreateWorkspaceDialog = () => {
     },
   });
 
-  const { mutate: createWorkspace, isPending } = useCreateWorkspace();
+  const [open, setOpen] = useState(false);
+
+  const { mutate: createWorkspace, isPending } = useCreateWorkspace({
+    onSuccessCallback: () => setOpen(false),
+  });
 
   function onSubmit(values: z.infer<typeof createWorkspaceSchema>) {
     createWorkspace({
@@ -43,7 +49,13 @@ const CreateWorkspaceDialog = () => {
   }
 
   return (
-    <Dialog>
+    <Dialog
+      open={open}
+      onOpenChange={(val) => {
+        setOpen(val);
+        form.reset();
+      }}
+    >
       <DialogTrigger asChild>
         <Button variant="sidebar" className="size-4 rounded-full p-0">
           <Plus className="size-3" />
@@ -73,13 +85,24 @@ const CreateWorkspaceDialog = () => {
                 </FormItem>
               )}
             />
-            <div className="flex items-center gap-2">
-              <Button variant="outline" type="reset" disabled={isPending}>
+            <div className="mt-2 flex items-center gap-2">
+              <Button
+                variant="outline"
+                type="reset"
+                disabled={isPending}
+                className="w-full"
+                onClick={() => setOpen(false)}
+              >
                 Cancel
               </Button>
-              <Button type="submit" disabled={isPending}>
+              <ButtonWithLoader
+                type="submit"
+                className="w-full"
+                disabled={isPending}
+                isPending={isPending}
+              >
                 Create workspace
-              </Button>
+              </ButtonWithLoader>
             </div>
           </form>
         </Form>

@@ -2,13 +2,6 @@
 
 import Logo from '@/components/logo';
 import { Button, buttonVariants } from '@/components/vendor/button';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/vendor/select';
 import { useSidebarToggle } from '@/hooks/sidebar/use-sidebar-toggle';
 import { useStore } from '@/utils/store';
 import { cn } from '@/utils/utils';
@@ -19,11 +12,11 @@ import {
   Home,
   LucideIcon,
   PanelsTopLeft,
-  Plus,
 } from 'lucide-react';
 import Link from 'next/link';
-import CreateWorkspaceDialog from './create-workspace-dialog';
+import PinnedSection from './pinned-section';
 import UserMenu from './user-menu';
+import WorkspaceSection from './workspace-section';
 
 type SidebarProps = {
   className?: string;
@@ -96,76 +89,6 @@ const SidebarHeader = () => {
         )}
       </div>
     </div>
-  );
-};
-
-const WorkspaceSection = () => {
-  return (
-    <div className="flex flex-col">
-      <div className="flex items-center justify-between">
-        <span className="text-sm text-muted-foreground">Workspaces</span>
-        <CreateWorkspaceDialog />
-      </div>
-      <Select>
-        <SelectTrigger className="mt-2 border-none bg-foreground/5 font-medium text-muted-foreground shadow-none hover:bg-foreground/15 hover:text-foreground">
-          <SelectValue placeholder="Select a workspace" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="light">Light</SelectItem>
-          <SelectItem value="dark">Dark</SelectItem>
-          <SelectItem value="system">System</SelectItem>
-        </SelectContent>
-      </Select>
-    </div>
-  );
-};
-
-const PinnedSection = () => {
-  const sidebarStore = useStore(useSidebarToggle, (state) => state);
-  const expanded = sidebarStore?.expanded;
-
-  return (
-    <div className="flex flex-col">
-      {expanded && (
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-muted-foreground">Pinned</span>
-          <Button variant="sidebar" className="size-4 rounded-full p-0">
-            <Plus className="size-3" />
-          </Button>
-        </div>
-      )}
-      <div className="mt-2 space-y-1">
-        <ProjectItem name="New project" />
-        <ProjectItem name="Another project" />
-      </div>
-    </div>
-  );
-};
-
-type ProjectItemProps = {
-  name: string;
-};
-
-const ProjectItem = ({ name }: ProjectItemProps) => {
-  const sidebarStore = useStore(useSidebarToggle, (state) => state);
-  const expanded = sidebarStore?.expanded;
-
-  return (
-    <Link
-      href={`/projects/${name}`}
-      className={cn(
-        buttonVariants({
-          variant: 'ghost',
-          className:
-            'w-full justify-start gap-2 px-1.5 font-normal capitalize text-muted-foreground hover:bg-foreground/10',
-        })
-      )}
-    >
-      <div className="flex size-6 items-center justify-center rounded-md bg-primary capitalize text-background">
-        {name[0]}
-      </div>
-      {expanded && name}
-    </Link>
   );
 };
 

@@ -6,25 +6,31 @@ import { toast } from 'sonner';
 type ResponseType = InferResponseType<(typeof api.workspace)['create-workspace']['$post']>;
 type RequestType = InferRequestType<(typeof api.workspace)['create-workspace']['$post']>;
 
-export const useCreateWorkspace = () => {
+type UseCreateWorkspaceOptions = {
+  onSuccessCallback?: () => void;
+};
+
+export const useCreateWorkspace = ({ onSuccessCallback }: UseCreateWorkspaceOptions = {}) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async ({ json }) => {
       const response = await api.workspace['create-workspace']['$post']({ json });
-
       return await response.json();
     },
     onSuccess: (data) => {
       if (data.success) {
         toast.success(data.message);
         queryClient.invalidateQueries({ queryKey: ['workspaces'] });
+        if (onSuccessCallback) {
+          onSuccessCallback();
+        }
       } else {
         toast.error(data.message);
       }
     },
-    onError: () => {
-      toast.error('Something went wrong!');
+    onError: (error) => {
+      toast.error(error.message || 'Something went wrong!');
     },
   });
 
