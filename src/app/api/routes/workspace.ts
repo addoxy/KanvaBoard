@@ -3,6 +3,7 @@ import { db } from '@/lib/prisma';
 import { createWorkspaceSchema } from '@/schemas/workspace-schemas';
 import { getUser } from '@/utils/utils';
 import { zValidator } from '@hono/zod-validator';
+import { Role } from '@prisma/client';
 import { Hono } from 'hono';
 
 const workspaceRoutes = new Hono()
@@ -15,7 +16,7 @@ const workspaceRoutes = new Hono()
     try {
       const workspaces = await db.workspace.findMany({
         where: {
-          userId: user.id,
+          OR: [{ ownerId: user.id }, { members: { some: { userId: user.id } } }],
         },
       });
 
@@ -36,9 +37,22 @@ const workspaceRoutes = new Hono()
       await db.workspace.create({
         data: {
           name,
-          userId: user.id,
+          owner: {
+            connect: { id: user.id },
+          },
+          members: {
+            create: {
+              userId: user.id,
+              role: Role.ADMIN,
+            },
+          },
+        },
+        include: {
+          owner: true,
+          members: true,
         },
       });
+
       return c.json({ success: true, message: 'Successfully created workspace' }, 200);
     } catch {
       return c.json({ success: false, message: 'Unable to create workspace!' }, 500);
