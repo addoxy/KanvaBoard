@@ -29,7 +29,7 @@ const Sidebar = ({ className }: SidebarProps) => {
   return (
     <aside
       className={cn(
-        'flex flex-col bg-secondary px-4 py-6 transition-all',
+        'flex flex-col bg-muted px-4 py-6 transition-all',
         !expanded && 'w-[68px]',
         expanded && 'w-56',
         className
@@ -110,7 +110,7 @@ const SidebarNavItem = ({ href, children, icon }: SidebarNavItemProps) => {
         buttonVariants({
           variant: 'ghost',
           className:
-            'w-full justify-start gap-2 px-2.5 font-normal text-muted-foreground hover:bg-foreground/10',
+            'w-full justify-start gap-2 px-2.5 font-normal text-foreground/80 hover:bg-foreground/10 hover:text-foreground',
         })
       )}
     >

@@ -37,7 +37,7 @@ const UserMenu = () => {
               {name?.substring(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          {expanded && <p className="w-36 truncate text-left">{name}</p>}
+          {expanded && <p className="w-36 truncate text-left font-normal">{name}</p>}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

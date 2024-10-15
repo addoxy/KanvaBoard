@@ -44,7 +44,7 @@ const ProjectItem = ({ name }: ProjectItemProps) => {
         buttonVariants({
           variant: 'ghost',
           className:
-            'w-full justify-start gap-2 px-1.5 font-normal capitalize text-muted-foreground hover:bg-foreground/10',
+            'w-full justify-start gap-2 px-1.5 font-normal capitalize text-foreground/80 hover:bg-foreground/10 hover:text-foreground',
         })
       )}
     >
