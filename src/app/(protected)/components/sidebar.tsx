@@ -22,6 +22,7 @@ import {
   Plus,
 } from 'lucide-react';
 import Link from 'next/link';
+import CreateWorkspaceDialog from './create-workspace-dialog';
 import UserMenu from './user-menu';
 
 type SidebarProps = {
@@ -103,9 +104,7 @@ const WorkspaceSection = () => {
     <div className="flex flex-col">
       <div className="flex items-center justify-between">
         <span className="text-sm text-muted-foreground">Workspaces</span>
-        <Button variant="sidebar" className="size-4 rounded-full p-0">
-          <Plus className="size-3" />
-        </Button>
+        <CreateWorkspaceDialog />
       </div>
       <Select>
         <SelectTrigger className="mt-2 border-none bg-foreground/5 font-medium text-muted-foreground shadow-none hover:bg-foreground/15 hover:text-foreground">

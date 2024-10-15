@@ -18,7 +18,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
 const ResetPasswordPage = () => {
@@ -49,21 +48,7 @@ const ResetPasswordForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof resetPasswordSchema>) {
-    sendResetPasswordEmail(
-      { json: values },
-      {
-        onSuccess: (data) => {
-          if (data.success) {
-            toast.success(data.message);
-          } else {
-            toast.error(data.message || 'Something went wrong!');
-          }
-        },
-        onError: () => {
-          toast.error('Something went wrong!');
-        },
-      }
-    );
+    sendResetPasswordEmail({ json: values });
   }
 
   return (

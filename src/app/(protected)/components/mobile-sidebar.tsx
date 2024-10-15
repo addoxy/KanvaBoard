@@ -24,7 +24,7 @@ const MobileSidebar = ({ className }: MobileSidebarProps) => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button size="icon" variant="outline">
+        <Button size="icon" variant="outline" className="lg:hidden">
           <Menu className="size-4" />
         </Button>
       </SheetTrigger>

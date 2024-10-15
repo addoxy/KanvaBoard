@@ -1,3 +1,4 @@
+import { EMAIL_IMAGE_URL } from '@/lib/constants';
 import {
   Body,
   Button,
@@ -21,12 +22,7 @@ export const VerificationEmail = ({ verificationEmailLink }: VerificationEmailPr
       <Preview>KanvaBoard verify your email</Preview>
       <Body style={main}>
         <Container style={container}>
-          <Img
-            src={`${process.env.NEXT_PUBLIC_URL}/public/logo.png`}
-            width="40"
-            height="33"
-            alt="KanvaBoard"
-          />
+          <Img src={EMAIL_IMAGE_URL} width="40" height="33" alt="KanvaBoard" />
           <Section>
             <Text style={text}>
               Click on the following link to verify your email and continue using your account:

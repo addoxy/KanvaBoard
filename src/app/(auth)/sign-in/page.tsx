@@ -13,7 +13,6 @@ import {
 } from '@/components/vendor/form';
 import { Input } from '@/components/vendor/input';
 import { useSignIn } from '@/hooks/user/use-sign-in';
-import { SIGN_IN_REDIRECT_URL } from '@/lib/constants';
 import { signInSchema } from '@/schemas/auth-schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
@@ -21,7 +20,6 @@ import { CircleAlert } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { z } from 'zod';
 import OAuthButton from '../components/oauth-button';
 
@@ -67,24 +65,7 @@ const SignInForm = () => {
     // clear the search params to ensure the urlError is not always displayed
     router.replace(window.location.pathname);
 
-    signIn(
-      { json: values },
-      {
-        onSuccess: (data) => {
-          if (data.success) {
-            toast.success(data.message);
-            if (data.message === 'Successfully signed in!') {
-              window.location.href = SIGN_IN_REDIRECT_URL;
-            }
-          } else {
-            toast.error(data.message || 'Something went wrong!');
-          }
-        },
-        onError: () => {
-          toast.error('Something went wrong!');
-        },
-      }
-    );
+    signIn({ json: values });
   }
 
   return (

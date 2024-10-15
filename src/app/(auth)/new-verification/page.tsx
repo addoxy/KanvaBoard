@@ -14,7 +14,6 @@ const NewVerificationPage = () => {
   const token = searchParams.get('token');
   const { mutate: verifyEmail, status } = useVerifyEmail();
   const [error, setError] = useState<string | undefined>();
-  const [success, setSuccess] = useState<string | undefined>();
 
   const onSubmit = useCallback(() => {
     if (!token) {
@@ -22,25 +21,11 @@ const NewVerificationPage = () => {
       return;
     }
 
-    verifyEmail(
-      {
-        json: {
-          token: token,
-        },
+    verifyEmail({
+      json: {
+        token: token,
       },
-      {
-        onSuccess: (data) => {
-          if (data.success) {
-            setSuccess(data.message);
-          } else {
-            setError(data.message);
-          }
-        },
-        onError: () => {
-          setError('Something went wrong');
-        },
-      }
-    );
+    });
   }, [token, verifyEmail]);
 
   useEffect(() => onSubmit(), [onSubmit]);
@@ -54,7 +39,7 @@ const NewVerificationPage = () => {
       <p className={cn('mt-3 text-muted-foreground', isError && 'text-destructive')}>
         {isPending && 'Verifying your email!'}
         {isError && (error || 'Something went wrong')}
-        {isSuccess && (success || 'Successfully verified your email!')}
+        {isSuccess && 'Successfully verified your email!'}
       </p>
       {isPending && <Loader className="mt-4 size-8 text-primary" />}
       {isSuccess && <CircleCheck className="mt-4 size-8 text-primary" />}

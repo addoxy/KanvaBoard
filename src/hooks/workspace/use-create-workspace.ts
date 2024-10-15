@@ -1,20 +1,24 @@
 import { api } from '@/lib/rpc';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { InferRequestType, InferResponseType } from 'hono';
 import { toast } from 'sonner';
 
-type ResponseType = InferResponseType<(typeof api.user)['change-password']['$post']>;
-type RequestType = InferRequestType<(typeof api.user)['change-password']['$post']>;
+type ResponseType = InferResponseType<(typeof api.workspace)['create-workspace']['$post']>;
+type RequestType = InferRequestType<(typeof api.workspace)['create-workspace']['$post']>;
 
-export const useResetPassword = () => {
+export const useCreateWorkspace = () => {
+  const queryClient = useQueryClient();
+
   const mutation = useMutation<ResponseType, Error, RequestType>({
     mutationFn: async ({ json }) => {
-      const response = await api.user['change-password']['$post']({ json });
+      const response = await api.workspace['create-workspace']['$post']({ json });
+
       return await response.json();
     },
     onSuccess: (data) => {
       if (data.success) {
         toast.success(data.message);
+        queryClient.invalidateQueries({ queryKey: ['workspaces'] });
       } else {
         toast.error(data.message);
       }

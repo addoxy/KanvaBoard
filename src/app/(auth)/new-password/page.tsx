@@ -21,7 +21,6 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
 const NewPasswordPage = () => {
@@ -61,26 +60,12 @@ const NewPasswordForm = () => {
       return;
     }
 
-    resetPassword(
-      {
-        json: {
-          password: values.password,
-          token: token,
-        },
+    resetPassword({
+      json: {
+        password: values.password,
+        token: token,
       },
-      {
-        onSuccess: (data) => {
-          if (data.success) {
-            toast.success(data.message);
-          } else {
-            toast.error(data.message || 'Something went wrong!');
-          }
-        },
-        onError: () => {
-          toast.error('Something went wrong!');
-        },
-      }
-    );
+    });
   }
 
   return (
