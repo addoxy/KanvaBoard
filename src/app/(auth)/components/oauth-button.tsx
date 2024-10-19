@@ -12,7 +12,7 @@ const OAuthButton = ({ provider, disabled = false }: OAuthButtonProps) => {
   return (
     <Button
       variant="outline"
-      className="gap-2"
+      className="w-full gap-2"
       disabled={disabled}
       onClick={() =>
         signIn(provider, {
@@ -22,9 +22,7 @@ const OAuthButton = ({ provider, disabled = false }: OAuthButtonProps) => {
     >
       {provider === 'google' && <GoogleIcon className="size-5" />}
       {provider === 'github' && <GitHubIcon className="size-5" />}
-      <p>
-        Sign in with <span className="capitalize">{provider}</span>
-      </p>
+      <span className="capitalize">{provider}</span>
     </Button>
   );
 };

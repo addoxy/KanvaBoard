@@ -19,7 +19,7 @@ import { ArrowRightIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import OAuthButton from '../components/oauth-button';
+import OAuthSection from '../components/oauth-section';
 
 const SignUpPage = () => {
   return (
@@ -121,15 +121,7 @@ const SignUpForm = () => {
               </Button>
             </form>
           </Form>
-          <div className="flex items-center gap-2">
-            <div className="h-px w-full bg-muted-foreground/15" />
-            <span className="text-sm text-muted-foreground">OR</span>
-            <div className="h-px w-full bg-muted-foreground/15" />
-          </div>
-          <div className="flex flex-col gap-2">
-            <OAuthButton provider="google" disabled={isPending} />
-            <OAuthButton provider="github" disabled={isPending} />
-          </div>
+          <OAuthSection disabled={isPending} />
         </div>
       </div>
     </div>
