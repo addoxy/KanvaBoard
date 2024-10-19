@@ -27,7 +27,7 @@ const UserMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="justify-start gap-2 px-2 py-5">
+        <Button variant="outline" className="w-full justify-start gap-2 px-2 py-5">
           <Avatar className="size-7 rounded-md text-xs">
             <AvatarImage src={user?.image || ''} />
             <AvatarFallback className="rounded-md bg-primary text-background">
@@ -35,7 +35,7 @@ const UserMenu = () => {
             </AvatarFallback>
           </Avatar>
           {expanded && (
-            <div className="flex items-center justify-between">
+            <div className="flex w-full items-center justify-between">
               <p className="w-32 truncate text-left font-normal">{name}</p>
               <ChevronsUpDown className="size-2 text-muted-foreground" />
             </div>

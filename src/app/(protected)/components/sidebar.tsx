@@ -1,6 +1,7 @@
 'use client';
 
 import Logo from '@/components/logo';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button, buttonVariants } from '@/components/vendor/button';
 import { useSidebarToggle } from '@/hooks/sidebar/use-sidebar-toggle';
 import { useStore } from '@/utils/store';
@@ -29,13 +30,14 @@ const Sidebar = ({ className }: SidebarProps) => {
   return (
     <aside
       className={cn(
-        'flex h-screen flex-col border-r-2 border-border/50 bg-background p-5 transition-all',
+        'flex h-screen w-60 flex-col border-r-2 border-border/50 bg-background py-5 transition-all',
         !expanded && 'w-20',
-        expanded && 'w-60',
         className
       )}
     >
-      <SidebarHeader />
+      <SectionContainer>
+        <SidebarHeader />
+      </SectionContainer>
       <Divider className="my-5" />
       <SectionContainer>
         <WorkspaceSection />
@@ -45,9 +47,9 @@ const Sidebar = ({ className }: SidebarProps) => {
         <NavigationSection />
       </SectionContainer>
       <Divider className="mb-6 mt-5" />
-      <SectionContainer>
+      <ScrollArea className="px-5">
         <PinnedSection />
-      </SectionContainer>
+      </ScrollArea>
       <div className="mt-auto">
         <Divider className="my-4" />
         <SectionContainer>
@@ -143,7 +145,7 @@ type DividerProps = {
 };
 
 const Divider = ({ className }: DividerProps) => {
-  return <div className={cn('-mx-5 h-0.5 bg-foreground/5', className)} />;
+  return <div className={cn('h-0.5 shrink-0 bg-foreground/5', className)} />;
 };
 
 type SectionContainerProps = {
@@ -154,7 +156,7 @@ const SectionContainer = ({ children }: SectionContainerProps) => {
   const sidebarStore = useStore(useSidebarToggle, (state) => state);
   const expanded = sidebarStore?.expanded;
 
-  return <div className={cn('flex justify-center', expanded && 'block')}>{children}</div>;
+  return <div className={cn('flex justify-center px-5', expanded && 'block')}>{children}</div>;
 };
 
 export default Sidebar;

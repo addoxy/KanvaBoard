@@ -24,12 +24,12 @@ const MobileSidebar = ({ className }: MobileSidebarProps) => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button size="icon" variant="outline" className="lg:hidden">
+        <Button size="icon" variant="outline" className="mr-6 lg:hidden">
           <Menu className="size-4" />
         </Button>
       </SheetTrigger>
       <SheetContent className="w-fit p-0">
-        <Sidebar className={cn('h-full', className)} />
+        <Sidebar className={cn('h-full w-80', className)} />
       </SheetContent>
     </Sheet>
   );

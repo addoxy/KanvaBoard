@@ -28,8 +28,15 @@ const PinnedSection = () => {
           </div>
         </div>
       )}
-      <div className="mt-3 flex flex-col gap-1 overflow-scroll">
+      <div className="mt-3 flex flex-col gap-1">
         <ProjectItem name="New project" />
+        <ProjectItem name="Another project" />
+        <ProjectItem name="Another project" />
+        <ProjectItem name="Another project" />
+        <ProjectItem name="Another project" />
+        <ProjectItem name="Another project" />
+        <ProjectItem name="Another project" />
+        <ProjectItem name="Another project" />
         <ProjectItem name="Another project" />
         <ProjectItem name="Another project" />
         <ProjectItem name="Another project" />
