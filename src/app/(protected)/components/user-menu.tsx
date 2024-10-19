@@ -13,7 +13,7 @@ import { useSidebarToggle } from '@/hooks/sidebar/use-sidebar-toggle';
 import { useUser } from '@/hooks/user/use-user';
 import { useStore } from '@/utils/store';
 import { cn } from '@/utils/utils';
-import { LogOut } from 'lucide-react';
+import { ChevronsUpDown, LogOut } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 
@@ -27,20 +27,22 @@ const UserMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="gap-2 text-ellipsis px-1.5 text-muted-foreground hover:bg-foreground/10"
-        >
-          <Avatar className="size-6 rounded-md text-xs">
+        <Button variant="outline" className="justify-start gap-2 px-2 py-5">
+          <Avatar className="size-7 rounded-md text-xs">
             <AvatarImage src={user?.image || ''} />
             <AvatarFallback className="rounded-md bg-primary text-background">
               {name?.substring(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          {expanded && <p className="w-36 truncate text-left font-normal">{name}</p>}
+          {expanded && (
+            <div className="flex items-center justify-between">
+              <p className="w-32 truncate text-left font-normal">{name}</p>
+              <ChevronsUpDown className="size-2 text-muted-foreground" />
+            </div>
+          )}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent side="right" align="end">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>

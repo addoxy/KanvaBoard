@@ -55,7 +55,7 @@ const userRoutes = new Hono()
     }
   })
   .post('/sign-up', zValidator('json', signUpSchema), async (c) => {
-    const { email, password } = c.req.valid('json');
+    const { name, email, password } = c.req.valid('json');
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Check if the email has been taken
@@ -69,6 +69,7 @@ const userRoutes = new Hono()
       // Create the user if the email has not been taken
       await db.user.create({
         data: {
+          name: name,
           email: email,
           password: hashedPassword,
         },

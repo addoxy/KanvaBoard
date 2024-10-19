@@ -1,7 +1,7 @@
 import { cn } from '@/utils/utils';
 
 type LogoProps = {
-  size: 'sm' | 'lg';
+  size: 'xs' | 'sm' | 'lg';
 };
 
 const Logo = ({ size }: LogoProps) => {
@@ -9,7 +9,7 @@ const Logo = ({ size }: LogoProps) => {
     <svg
       className={cn(
         'fill-current text-primary',
-        size === 'sm' && 'size-6',
+        size === 'sm' && 'size-5',
         size === 'lg' && 'size-40'
       )}
       id="logo-86"

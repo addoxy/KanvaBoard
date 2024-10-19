@@ -9,7 +9,7 @@ import {
   ChevronFirst,
   ChevronLast,
   CircleCheck,
-  Home,
+  LayoutGrid,
   LucideIcon,
   PanelsTopLeft,
 } from 'lucide-react';
@@ -29,36 +29,30 @@ const Sidebar = ({ className }: SidebarProps) => {
   return (
     <aside
       className={cn(
-        'flex flex-col bg-muted px-4 py-6 transition-all',
-        !expanded && 'w-[68px]',
-        expanded && 'w-56',
+        'flex h-screen flex-col border-r-2 border-border/50 bg-background p-5 transition-all',
+        !expanded && 'w-20',
+        expanded && 'w-60',
         className
       )}
     >
       <SidebarHeader />
-      {expanded && (
-        <>
-          <Divider className="my-4" />
-          <WorkspaceSection />
-        </>
-      )}
-      <Divider className="my-6" />
-      <div className="space-y-1">
-        <SidebarNavItem href="/dashboard" icon={Home}>
-          Dashboard
-        </SidebarNavItem>
-        <SidebarNavItem href="/my-tasks" icon={CircleCheck}>
-          My Tasks
-        </SidebarNavItem>
-        <SidebarNavItem href="/projects" icon={PanelsTopLeft}>
-          Projects
-        </SidebarNavItem>
-      </div>
-      <Divider className="my-6" />
-      <PinnedSection />
+      <Divider className="my-5" />
+      <SectionContainer>
+        <WorkspaceSection />
+      </SectionContainer>
+      <Divider className="mb-5 mt-6" />
+      <SectionContainer>
+        <NavigationSection />
+      </SectionContainer>
+      <Divider className="mb-6 mt-5" />
+      <SectionContainer>
+        <PinnedSection />
+      </SectionContainer>
       <div className="mt-auto">
         <Divider className="my-4" />
-        <UserMenu />
+        <SectionContainer>
+          <UserMenu />
+        </SectionContainer>
       </div>
     </aside>
   );
@@ -71,7 +65,7 @@ const SidebarHeader = () => {
   return (
     <div className="flex w-full items-center justify-between text-lg font-semibold">
       {expanded && (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 text-base">
           <Logo size="sm" />
           KanvaBoard
         </div>
@@ -80,13 +74,35 @@ const SidebarHeader = () => {
         {sidebarStore && (
           <Button
             onClick={() => sidebarStore.setExpanded(!expanded)}
-            variant="sidebar"
+            variant="outline"
             size="icon"
             className="hidden size-6 lg:flex"
           >
             {expanded ? <ChevronFirst className="size-4" /> : <ChevronLast className="size-4" />}
           </Button>
         )}
+      </div>
+    </div>
+  );
+};
+
+const NavigationSection = () => {
+  const sidebarStore = useStore(useSidebarToggle, (state) => state);
+  const expanded = sidebarStore?.expanded;
+
+  return (
+    <div className="flex flex-col">
+      {expanded && <span className="text-sm text-muted-foreground">Pages</span>}
+      <div className="mt-2 flex flex-col gap-1">
+        <SidebarNavItem href="/dashboard" icon={LayoutGrid}>
+          Dashboard
+        </SidebarNavItem>
+        <SidebarNavItem href="/my-tasks" icon={CircleCheck}>
+          My Tasks
+        </SidebarNavItem>
+        <SidebarNavItem href="/projects" icon={PanelsTopLeft}>
+          Projects
+        </SidebarNavItem>
       </div>
     </div>
   );
@@ -109,8 +125,10 @@ const SidebarNavItem = ({ href, children, icon }: SidebarNavItemProps) => {
       className={cn(
         buttonVariants({
           variant: 'ghost',
-          className:
+          className: cn(
             'w-full justify-start gap-2 px-2.5 font-normal text-foreground/80 hover:bg-foreground/10 hover:text-foreground',
+            !expanded && 'w-fit'
+          ),
         })
       )}
     >
@@ -125,7 +143,18 @@ type DividerProps = {
 };
 
 const Divider = ({ className }: DividerProps) => {
-  return <div className={cn('h-px w-full bg-foreground/5', className)} />;
+  return <div className={cn('-mx-5 h-0.5 bg-foreground/5', className)} />;
+};
+
+type SectionContainerProps = {
+  children: React.ReactNode;
+};
+
+const SectionContainer = ({ children }: SectionContainerProps) => {
+  const sidebarStore = useStore(useSidebarToggle, (state) => state);
+  const expanded = sidebarStore?.expanded;
+
+  return <div className={cn('flex justify-center', expanded && 'block')}>{children}</div>;
 };
 
 export default Sidebar;

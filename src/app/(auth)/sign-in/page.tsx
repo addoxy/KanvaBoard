@@ -111,7 +111,11 @@ const SignInForm = () => {
                 )}
               />
               <div className="mt-2 flex flex-col gap-2">
-                <Link href="/reset-password" className="ml-auto text-sm">
+                <Link
+                  href="/reset-password"
+                  aria-disabled={isPending}
+                  className="ml-auto text-sm aria-disabled:pointer-events-none aria-disabled:opacity-50"
+                >
                   <AnimatedUnderline>Forgot password?</AnimatedUnderline>
                 </Link>
                 <Button type="submit" disabled={isPending}>
