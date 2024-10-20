@@ -9,7 +9,7 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main>{children}</main>
+      <main className="p-5">{children}</main>
     </SidebarProvider>
   );
 }

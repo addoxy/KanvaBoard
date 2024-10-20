@@ -72,13 +72,10 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarSeparator className="my-2" />
       <SidebarContent className="scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-thin scrollbar-thumb-transparent group-hover:scrollbar-thumb-muted-foreground/30 scrollbar-track-transparent">
-        {state === 'expanded' && (
-          <>
-            <WorkspaceSection />
-          </>
-        )}
+        <WorkspaceSection />
+        <SidebarSeparator />
         <NavigationSection />
-        {state === 'collapsed' && <SidebarSeparator />}
+        <SidebarSeparator />
         <PinnedSection />
       </SidebarContent>
       <SidebarSeparator className="mt-4" />
@@ -91,6 +88,9 @@ export function AppSidebar() {
 
 const WorkspaceSection = () => {
   const { workspaces, isError, isPending, isSuccess } = useGetWorkspaces();
+  const { state } = useSidebar();
+  const isExpanded = state === 'expanded';
+  const isCollapsed = state === 'collapsed';
 
   const router = useRouter();
   const activeWorkspace = useActiveWorkspace();
@@ -113,17 +113,22 @@ const WorkspaceSection = () => {
                 <SidebarMenuButton>
                   {isPending && (
                     <div className="flex items-center gap-1">
-                      <Loader className="text-foreground" /> Loading...
+                      <Loader className="text-foreground" /> {isExpanded && 'Loading...'}
                     </div>
                   )}
                   {isError && 'Select a Workspace'}
                   {isSuccess ? (
                     activeWorkspace ? (
-                      <div className="flex items-center gap-2">
-                        <div className="flex size-6 items-center justify-center rounded-md bg-primary capitalize text-background">
+                      <div className={cn('flex items-center gap-2', isExpanded && 'truncate')}>
+                        <div
+                          className={cn(
+                            'flex size-7 shrink-0 items-center justify-center rounded-md bg-primary capitalize text-background',
+                            isCollapsed && '-ml-1.5'
+                          )}
+                        >
                           {activeWorkspace.name[0]}
                         </div>
-                        <span>{activeWorkspace.name}</span>
+                        {isExpanded && <span className="truncate">{activeWorkspace.name}</span>}
                       </div>
                     ) : (
                       'Select a workspace'
@@ -134,7 +139,11 @@ const WorkspaceSection = () => {
                   <ChevronDown className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
+              <DropdownMenuContent
+                side={isCollapsed ? 'right' : 'bottom'}
+                align={isCollapsed ? 'start' : 'center'}
+                className={cn(isExpanded && 'w-[--radix-popper-anchor-width]')}
+              >
                 {isPending && <p className="p-2 text-center text-sm">Loading...</p>}
                 {isError && <p className="p-2 text-sm text-destructive">Something went wrong</p>}
                 {isSuccess &&
@@ -165,7 +174,7 @@ const WorkspaceItem = ({ onSelect, workspace }: WorkspaceItemProps) => {
       <div className="flex size-6 items-center justify-center rounded-md bg-primary capitalize text-background">
         {workspace.name[0]}
       </div>
-      <span>{workspace.name}</span>
+      <span className="truncate">{workspace.name}</span>
     </DropdownMenuItem>
   );
 };
@@ -218,6 +227,7 @@ const MOCK_PROJECTS = [
 
 const PinnedSection = () => {
   const { state } = useSidebar();
+  const isExpanded = state === 'expanded';
 
   const [query, setQuery] = useState('');
 
@@ -232,7 +242,7 @@ const PinnedSection = () => {
         <Plus />
       </SidebarGroupAction>
       <SidebarGroupContent>
-        {state === 'expanded' && (
+        {isExpanded && (
           <div className="relative mb-3 mt-1 px-2">
             <Search className="absolute left-4 top-1/4 size-3.5 text-muted-foreground" />
             <Input
@@ -262,6 +272,8 @@ const UserMenu = () => {
   const user = useUser();
   const name = user?.name ? user.name : user?.email;
   const { state } = useSidebar();
+  const isExpanded = state === 'expanded';
+  const isCollapsed = state === 'collapsed';
 
   return (
     <SidebarMenu>
@@ -269,9 +281,7 @@ const UserMenu = () => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton>
-              <Avatar
-                className={cn('size-7 rounded-md text-xs', state === 'collapsed' && '-ml-1.5')}
-              >
+              <Avatar className={cn('size-7 rounded-md text-xs', isCollapsed && '-ml-1.5')}>
                 <AvatarImage src={user?.image || ''} />
                 <AvatarFallback className="rounded-md bg-primary text-background">
                   {name?.substring(0, 2).toUpperCase()}
@@ -283,7 +293,11 @@ const UserMenu = () => {
               </div>
             </SidebarMenuButton>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side="right" align="end" className="w-[--radix-popper-anchor-width]">
+          <DropdownMenuContent
+            side={isCollapsed ? 'right' : 'top'}
+            align={isCollapsed ? 'end' : 'center'}
+            className={cn(isExpanded && 'w-[--radix-popper-anchor-width]')}
+          >
             <DropdownMenuItem
               className="justify-between !text-destructive"
               onSelect={() => {
