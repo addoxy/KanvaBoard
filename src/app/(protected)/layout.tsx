@@ -1,6 +1,5 @@
-import { cn } from '@/utils/utils';
-import PageHeader from './components/page-header';
-import Sidebar from './components/sidebar';
+import { AppSidebar } from '@/components/app-sidebar';
+import { SidebarProvider } from '@/components/vendor/sidebar';
 
 type ProtectedLayoutProps = {
   children: React.ReactNode;
@@ -8,12 +7,9 @@ type ProtectedLayoutProps = {
 
 export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
   return (
-    <div className={cn('flex min-h-screen w-full')}>
-      <Sidebar className="hidden lg:flex lg:flex-col" />
-      <div className="flex h-full w-full flex-col p-6">
-        <PageHeader />
-        <div className="h-full w-full">{children}</div>
-      </div>
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <main>{children}</main>
+    </SidebarProvider>
   );
 }

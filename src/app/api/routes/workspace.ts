@@ -47,10 +47,6 @@ const workspaceRoutes = new Hono()
             },
           },
         },
-        include: {
-          owner: true,
-          members: true,
-        },
       });
 
       return c.json({ success: true, message: 'Successfully created workspace' }, 200);
